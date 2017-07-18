@@ -1,0 +1,6 @@
+framework module Pods_TopStoreUITests {
+  umbrella header "Pods-TopStoreUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
