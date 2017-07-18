@@ -127,6 +127,7 @@ extension ProductsViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCell.self), for: indexPath) as! ProductCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         let item = self.viewModel.products[indexPath.row]
 
@@ -152,6 +153,7 @@ extension ProductsViewController: UITableViewDataSource
         _ = cell.addButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
+                self.view.endEditing(true)
                 if let indexPath = tableView.indexPath(for: cell) {
                     let added = !item.added
 
