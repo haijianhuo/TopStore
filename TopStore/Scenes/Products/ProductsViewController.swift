@@ -84,19 +84,30 @@ class ProductsViewController: UIViewController {
             .addDisposableTo(disposeBag)
     }
     
-    func zoomImage(imageView: UIImageView) {
+    func zoomImage(imageView: UIImageView, imageUrl: String?) {
         
         guard let image = imageView.image else { return }
         
         let imageInfo = JTSImageInfo()
         
-        imageInfo.image = image
+        if let imageUrl = imageUrl {
+            if let image = ImageCache.default.retrieveImageInDiskCache(forKey: imageUrl, options: nil) {
+                imageInfo.image = image
+            }
+            else {
+                imageInfo.imageURL = URL(string: imageUrl)
+            }
+        }
+        else {
+            imageInfo.image = image
+        }
+
         
         imageInfo.referenceRect = imageView.frame
         imageInfo.referenceView = imageView.superview
         
         let imageViewer = JTSImageViewController(imageInfo: imageInfo, mode:JTSImageViewControllerMode.image, backgroundStyle: JTSImageViewControllerBackgroundOptions.scaled)!
-        
+        imageViewer.dismissalDelegate = self
         imageViewer.show(from: self, transition: JTSImageViewControllerTransition.fromOriginalPosition)
     }
     
@@ -133,7 +144,7 @@ extension ProductsViewController: UITableViewDataSource
 
         cell.titleLabel.text = item.name
         
-        if let url = URL(string: item.url) {
+        if let url = URL(string: item.url_small) {
             _ = cell.photoView.kf.setImage(with: url,
                                            placeholder: UIImage(named: "Placeholder"),
                                            options: [.transition(ImageTransition.fade(1))],
@@ -167,7 +178,7 @@ extension ProductsViewController: UITableViewDataSource
         _ = cell.photoButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
-                self.zoomImage(imageView: cell.photoView)
+                self.zoomImage(imageView: cell.photoView, imageUrl: item.url_large)
             }).addDisposableTo(cell.disposeBag)
 
         return cell
@@ -185,3 +196,17 @@ extension ProductsViewController: UITableViewDelegate
     }
 }
 
+// MARK: - JTSImageViewControllerDismissalDelegate, KVO removal
+
+extension ProductsViewController: JTSImageViewControllerDismissalDelegate
+{
+    func imageViewerDidDismiss(_ imageViewer: JTSImageViewController!) {
+        if let imageURL = imageViewer.imageInfo.imageURL {
+            if let image = imageViewer.image {
+                ImageCache.default.store(image, forKey: imageURL.absoluteString)
+                //print("store image: \(imageURL.absoluteString)")
+            }
+        }
+    }
+    
+}

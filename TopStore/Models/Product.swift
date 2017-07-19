@@ -12,7 +12,8 @@ import ObjectMapper
 class Product: Mappable {
 
     var identifier: Int!
-    var url: String!
+    var url_small: String!
+    var url_large: String!
     var name: String!
     var price: Float = 0.0
     var added: Bool = false
@@ -23,7 +24,8 @@ class Product: Mappable {
     
     public func mapping(map: Map) {
         identifier <- map["id"]
-        url <- map["image_url"]
+        url_small <- map["image_url"]
+        url_large <- map["images.1.url"]
         name <- map["name"]
         price <- map["category"]
     }

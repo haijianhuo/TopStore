@@ -98,7 +98,7 @@ class ProductsViewModel {
         
         let params = [
             "consumer_key": "uVZmwDBD2Ztt7X5AYBVujoem4BQHs7eGnLRzL6eQ",
-            "image_size": "4",
+            "image_size": "3,5",
             "term": query,
             "license_type": "0",
             "page": String(page)
