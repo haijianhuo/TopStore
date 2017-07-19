@@ -9,6 +9,85 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Photos-->
+        <scene sceneID="7sF-DL-a2d">
+            <objects>
+                <viewController id="ZQX-Wk-Kav" customClass="PhotosViewController" customModule="TopStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WyZ-MC-qWw"/>
+                        <viewControllerLayoutGuide type="bottom" id="Gar-cr-3Pl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eAI-H1-cJv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="tzO-r5-4zx">
+                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="hHI-dG-CV4"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cmF-vQ-qZd">
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ljb-Ry-YzE">
+                                    <size key="itemSize" width="300" height="300"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCell" id="HY8-An-IVd" customClass="PhotoCell" customModule="TopStore" customModuleProvider="target">
+                                        <rect key="frame" x="37.5" y="0.0" width="300" height="300"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Icn-s2-2ay">
+                                                    <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Icn-s2-2ay" secondAttribute="bottom" id="F6e-KX-Zux"/>
+                                            <constraint firstItem="Icn-s2-2ay" firstAttribute="leading" secondItem="HY8-An-IVd" secondAttribute="leading" id="N4q-i6-HU2"/>
+                                            <constraint firstItem="Icn-s2-2ay" firstAttribute="top" secondItem="HY8-An-IVd" secondAttribute="top" id="Yl2-7N-HYT"/>
+                                            <constraint firstAttribute="trailing" secondItem="Icn-s2-2ay" secondAttribute="trailing" id="rad-v0-g3q"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="Icn-s2-2ay" id="Nyz-62-f5e"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="ZQX-Wk-Kav" id="8jt-qg-SJo"/>
+                                    <outlet property="delegate" destination="ZQX-Wk-Kav" id="bgY-zb-6gc"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="cmF-vQ-qZd" firstAttribute="leading" secondItem="eAI-H1-cJv" secondAttribute="leading" id="4Hb-QN-m0q"/>
+                            <constraint firstItem="cmF-vQ-qZd" firstAttribute="top" secondItem="tzO-r5-4zx" secondAttribute="bottom" id="5fa-j0-UyY"/>
+                            <constraint firstAttribute="trailing" secondItem="tzO-r5-4zx" secondAttribute="trailing" id="9Kl-Ph-XdZ"/>
+                            <constraint firstItem="tzO-r5-4zx" firstAttribute="leading" secondItem="eAI-H1-cJv" secondAttribute="leading" id="Ara-CQ-gQ6"/>
+                            <constraint firstItem="tzO-r5-4zx" firstAttribute="top" secondItem="WyZ-MC-qWw" secondAttribute="bottom" id="hsy-hy-6T2"/>
+                            <constraint firstItem="Gar-cr-3Pl" firstAttribute="top" secondItem="cmF-vQ-qZd" secondAttribute="bottom" id="jH6-DF-Kv5"/>
+                            <constraint firstAttribute="trailing" secondItem="cmF-vQ-qZd" secondAttribute="trailing" id="r6r-6g-heD"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Photos" id="rPu-3j-ExQ"/>
+                    <connections>
+                        <outlet property="collectionView" destination="cmF-vQ-qZd" id="GMh-F6-e6s"/>
+                        <outlet property="searchBar" destination="tzO-r5-4zx" id="Tx6-TA-Mp9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RwZ-2X-3Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-15" y="-734"/>
+        </scene>
         <!--Products-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -41,7 +120,13 @@
                             <constraint firstItem="Ybc-nb-6g7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="qkJ-V8-Lm1"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Products" id="9l8-uo-4bd"/>
+                    <navigationItem key="navigationItem" title="Products" id="9l8-uo-4bd">
+                        <barButtonItem key="leftBarButtonItem" image="Photo" id="EdF-kI-KBq">
+                            <connections>
+                                <segue destination="ZQX-Wk-Kav" kind="show" id="eH2-l7-H4n"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="Qtv-rg-ZJx" id="Iyo-BU-JUU"/>
                         <outlet property="tableView" destination="Ybc-nb-6g7" id="1vA-Rt-0uz"/>
@@ -49,7 +134,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1148" y="115.59220389805098"/>
+            <point key="canvasLocation" x="-775" y="-143"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RC0-Nf-b0D">
@@ -62,12 +147,15 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="0CK-nC-dm7"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="REP-Xr-TDk"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xC-sw-hLq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="208.80000000000001" y="115.59220389805098"/>
+            <point key="canvasLocation" x="-1748" y="-734"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Photo" width="25" height="25"/>
+    </resources>
 </document>

@@ -99,6 +99,7 @@ class ProductsViewModel {
         let params = [
             "consumer_key": "uVZmwDBD2Ztt7X5AYBVujoem4BQHs7eGnLRzL6eQ",
             "image_size": "3,5",
+            "rpp": "44", // The number of results to return. Can not be over 100, default 20.
             "term": query,
             "license_type": "0",
             "page": String(page)

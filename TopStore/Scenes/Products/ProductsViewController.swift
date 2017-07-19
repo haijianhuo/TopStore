@@ -73,6 +73,7 @@ class ProductsViewController: UIViewController {
                 guard let `self` = self else { return false }
                 guard self.tableView.frame.height > 0 else { return false }
                 guard self.tableView.contentSize.height > 0 else { return false }
+                self.view.endEditing(true)
                 return offset.y + self.tableView.frame.height >= self.tableView.contentSize.height - 100
             }
             .subscribe(onNext: { [weak self] (element) in
@@ -196,7 +197,7 @@ extension ProductsViewController: UITableViewDelegate
     }
 }
 
-// MARK: - JTSImageViewControllerDismissalDelegate, KVO removal
+// MARK: - JTSImageViewControllerDismissalDelegate
 
 extension ProductsViewController: JTSImageViewControllerDismissalDelegate
 {
@@ -204,7 +205,6 @@ extension ProductsViewController: JTSImageViewControllerDismissalDelegate
         if let imageURL = imageViewer.imageInfo.imageURL {
             if let image = imageViewer.image {
                 ImageCache.default.store(image, forKey: imageURL.absoluteString)
-                //print("store image: \(imageURL.absoluteString)")
             }
         }
     }
