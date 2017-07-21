@@ -22,45 +22,74 @@ class PhotosViewController: UIViewController {
     
     let viewModel = ProductsViewModel()
 
+    var selectedIndexPath: IndexPath?
+    var visibleIndexPath: IndexPath?
+
+    var willRotate = false
+    var needRefresh = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.collectionView.alwaysBounceVertical = true
+        self.collectionView.allowsMultipleSelection = false
+        
         self.collectionView.backgroundColor = .clear
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
 
         bind()
-
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        self.collectionView.collectionViewLayout.invalidateLayout()
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        self.willRotate = true
         
-        let indexPaths = self.collectionView.indexPathsForVisibleItems
-        if indexPaths.count > 0 {
-            let sortedArray = indexPaths.sorted {$0.row < $1.row}
-            if let indexPath = sortedArray.first {
+        if (self.isViewLoaded && (self.view.window != nil)) {
+            let indexPaths = self.collectionView.indexPathsForVisibleItems
+            if indexPaths.count > 0 {
+                let sortedArray = indexPaths.sorted {$0.row < $1.row}
+                if let indexPath = sortedArray.first {
+                    self.collectionView.collectionViewLayout.invalidateLayout()
+                    
+                    coordinator.animate(alongsideTransition: nil, completion: {
+                        _ in
+                        self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+                        self.willRotate = false
+                    })
+                }
+            }
+            else {
                 self.collectionView.collectionViewLayout.invalidateLayout()
-                
-                coordinator.animate(alongsideTransition: nil, completion: {
-                    _ in
-                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
-                })
             }
         }
         else {
-            self.collectionView.collectionViewLayout.invalidateLayout()
-        }
+            self.needRefresh = true
+            coordinator.animate(alongsideTransition: nil, completion: {
+                _ in
+                self.willRotate = false
+            })
 
+        }
+        
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if self.needRefresh {
+            self.needRefresh = false
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            if let indexPath = self.selectedIndexPath {
+                let dispatchTime = DispatchTime.now() + 0.2
+                DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+                    self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
+                }
+            }
+
+        }
+    }
+    
     func bind() {
         
         searchBar
@@ -69,6 +98,7 @@ class PhotosViewController: UIViewController {
             .subscribe(onNext: { [weak self] (element) in
                 guard let `self` = self else { return }
                 DispatchQueue.global().async {
+                    self.selectedIndexPath = nil
                     self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
                 }
             }).addDisposableTo(disposeBag)
@@ -82,6 +112,7 @@ class PhotosViewController: UIViewController {
             .subscribe(onNext: { [weak self] (element) in
                 guard let `self` = self else { return }
                 DispatchQueue.global().async {
+                    self.selectedIndexPath = nil
                     self.viewModel.loadPage(query: element, page: 1)
                 }
             }).addDisposableTo(disposeBag)
@@ -93,12 +124,13 @@ class PhotosViewController: UIViewController {
             }
         }).addDisposableTo(disposeBag)
         
-        
         collectionView.rx.contentOffset
             .filter { [weak self] offset in
                 guard let `self` = self else { return false }
+                guard !self.willRotate else { return false }
                 guard self.collectionView.frame.height > 0 else { return false }
                 guard self.collectionView.contentSize.height > 0 else { return false }
+                
                 self.view.endEditing(true)
                 return offset.y + self.collectionView.frame.height >= self.collectionView.contentSize.height - 100
             }
@@ -135,6 +167,9 @@ extension PhotosViewController: UICollectionViewDataSource
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         let item = self.viewModel.products[indexPath.row]
+        
+        cell.layer.borderWidth = indexPath == self.selectedIndexPath ? 2 : 0
+        
         if let url = URL(string: item.url_small) {
             _ = cell.imageView.kf.setImage(with: url,
                                            placeholder: UIImage(named: "Placeholder"),
@@ -159,9 +194,22 @@ extension PhotosViewController: UICollectionViewDelegate
         
         self.view.endEditing(true)
         
-        let item = self.viewModel.products[indexPath.row]
-        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCell
-        self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
+        var indexPaths = [indexPath]
+        if let lastIndexPath = self.selectedIndexPath {
+            if lastIndexPath != indexPath {
+                indexPaths.append(lastIndexPath)
+            }
+        }
+        self.selectedIndexPath = indexPath
+        collectionView.reloadItems(at: indexPaths)
+        
+        let dispatchTime = DispatchTime.now() + 0.2
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+            let item = self.viewModel.products[indexPath.row]
+            if let cell = collectionView.cellForItem(at: indexPath) as? PhotoCell {
+                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
+            }
+        }
     }
 
     func zoomImage(imageView: UIImageView, imageUrl: String?) {
@@ -195,14 +243,25 @@ extension PhotosViewController: UICollectionViewDelegate
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension PhotosViewController: UICollectionViewDelegateFlowLayout
-{
+extension PhotosViewController : UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let picDimension = collectionView.frame.size.width / 4.0
-        return CGSize(width: picDimension, height: picDimension)
+        
+        var cellsPerRow:CGFloat
+        let cellPadding:CGFloat = 2
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            cellsPerRow = 8
+        }
+        else {
+            cellsPerRow = collectionView.frame.size.width > collectionView.frame.size.height ? 8 : 4
+        }
+
+        let widthMinusPadding = collectionView.frame.size.width - cellPadding * (cellsPerRow - 1)
+        let eachSide = widthMinusPadding / cellsPerRow
+        return CGSize(width: eachSide, height: eachSide)
     }
-  
 }
+
 
 // MARK: - JTSImageViewControllerDismissalDelegate
 

@@ -12,10 +12,9 @@ class PhotoCell: UICollectionViewCell {
     
     @IBOutlet var imageView: UIImageView!
         
-    override var isSelected: Bool {
-        willSet {
-            self.layer.borderWidth = newValue ? 2 : 0
-        }
-    }
-
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.borderColor = UIColor.red.cgColor
+   }
+    
 }
