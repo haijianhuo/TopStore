@@ -34,10 +34,31 @@ class PhotosViewController: UIViewController {
 
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        self.collectionView.collectionViewLayout.invalidateLayout()
+        let indexPaths = self.collectionView.indexPathsForVisibleItems
+        if indexPaths.count > 0 {
+            let sortedArray = indexPaths.sorted {$0.row < $1.row}
+            if let indexPath = sortedArray.first {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                
+                coordinator.animate(alongsideTransition: nil, completion: {
+                    _ in
+                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+                })
+            }
+        }
+        else {
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+
     }
 
     func bind() {

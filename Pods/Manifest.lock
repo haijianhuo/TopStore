@@ -20,7 +20,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.5.0)
   - JTSImageViewController (~> 1.5.1)
-  - Kingfisher (~> 3.0)
+  - Kingfisher (~> 3.10.3)
   - ObjectMapper (~> 2.2.7)
   - PKHUD (~> 4.0)
   - ReachabilitySwift (~> 3)
@@ -41,6 +41,6 @@ SPEC CHECKSUMS:
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
 
-PODFILE CHECKSUM: 6bfe61919b5ca664b2745a0b8cb8d58999fea1d0
+PODFILE CHECKSUM: f3c0cfa4577e6c9220e38a5f8e0ad0ab4c996ffe
 
 COCOAPODS: 1.2.1

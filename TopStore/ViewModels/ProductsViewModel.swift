@@ -11,7 +11,6 @@ import RxSwift
 import ObjectMapper
 import Alamofire
 import ReachabilitySwift
-import PKHUD
 
 class ProductsViewModel {
     
@@ -70,11 +69,6 @@ class ProductsViewModel {
         }
         
         if !reachability.isReachable {
-            DispatchQueue.main.async {
-                HUD.flash(.label("Internet is not reachable"), delay: 2.0) { _ in
-                    print("Internet is not reachable.")
-                }
-            }
             self.loadingPage = false
             return
         }

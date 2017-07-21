@@ -121,7 +121,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Products" id="9l8-uo-4bd">
-                        <barButtonItem key="leftBarButtonItem" image="Photo" id="EdF-kI-KBq">
+                        <barButtonItem key="rightBarButtonItem" image="Photo" id="EdF-kI-KBq">
                             <connections>
                                 <segue destination="ZQX-Wk-Kav" kind="show" id="eH2-l7-H4n"/>
                             </connections>
