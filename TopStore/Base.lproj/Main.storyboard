@@ -216,8 +216,16 @@
                     </view>
                     <navigationItem key="navigationItem" title="Cart" id="TWP-26-4zK">
                         <rightBarButtonItems>
-                            <barButtonItem image="CheckOut" id="z8r-uu-ENa"/>
-                            <barButtonItem image="ClearCart" id="dfj-cA-MjV"/>
+                            <barButtonItem image="CheckOut" id="z8r-uu-ENa">
+                                <connections>
+                                    <action selector="checkoutButtonTapped:" destination="T07-p1-xVY" id="ugk-tB-i3Y"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="ClearCart" id="dfj-cA-MjV">
+                                <connections>
+                                    <action selector="clearButtonTapped:" destination="T07-p1-xVY" id="A9E-QK-cJU"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>

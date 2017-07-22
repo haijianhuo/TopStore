@@ -41,6 +41,11 @@ class CartViewModel: NSObject {
         }
     }
 
+    func clearCart() {
+        self.products.removeAll()
+        self.productsUpdated.value = true
+    }
+
     func addToCart(_ product: Product) {
         self.products.insert(product, at: 0)
         self.productsUpdated.value = true

@@ -45,6 +45,18 @@ class CartViewController: UIViewController {
         
     }
     
+    @IBAction func clearButtonTapped(_ sender: Any) {
+        self.clearConfirm()
+    }
+    
+    @IBAction func checkoutButtonTapped(_ sender: Any) {
+        let alert = UIAlertController(title: "Checkout?", message: nil, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func updateBadge() {
         self.tabBarController?.tabBar.items?.last?.badgeValue =
         self.viewModel.products.count > 0 ?  String(self.viewModel.products.count) : nil
@@ -67,7 +79,6 @@ class CartViewController: UIViewController {
         else {
             imageInfo.image = image
         }
-
         
         imageInfo.referenceRect = imageView.frame
         imageInfo.referenceView = imageView.superview
@@ -77,6 +88,38 @@ class CartViewController: UIViewController {
         imageViewer.show(from: self, transition: JTSImageViewControllerTransition.fromOriginalPosition)
     }
     
+    func clearConfirm() {
+        let alert = UIAlertController(title: "Clear Cart?", message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { _ in
+            self.viewModel.clearCart()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    
+    func deleteConfirm(at indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Delete?", message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
+            self.deleteRow(at: indexPath)
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func deleteRow(at indexPath: IndexPath) {
+        self.viewModel.removeRow(at: indexPath, productsUpdated: false)
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        self.updateBadge()
+        
+    }
+
 }
 
 // MARK: - UITableViewDataSource
@@ -124,12 +167,12 @@ extension CartViewController: UITableViewDataSource
         cell.priceLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: item.price)
 
         
-        _ = cell.addButton.rx.tap
+        _ = cell.deleteButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
                 self.view.endEditing(true)
                 if let indexPath = tableView.indexPath(for: cell) {
-                    self.deleteRow(at: indexPath)
+                    self.deleteConfirm(at: indexPath)
                 }
 
                 
@@ -145,12 +188,6 @@ extension CartViewController: UITableViewDataSource
         
     }
     
-    func deleteRow(at indexPath: IndexPath) {
-        self.viewModel.removeRow(at: indexPath, productsUpdated: false)
-        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        self.updateBadge()
-
-    }
 }
 
 // MARK: - UITableViewDelegate

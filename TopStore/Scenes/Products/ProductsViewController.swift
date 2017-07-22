@@ -130,11 +130,11 @@ extension ProductsViewController: UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCell.self), for: indexPath) as! ProductCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         
-        let item = self.viewModel.products[indexPath.row]
+        let product = self.viewModel.products[indexPath.row]
 
-        cell.titleLabel.text = item.name
+        cell.titleLabel.text = product.name
         
-        if let url = URL(string: item.url_small) {
+        if let url = URL(string: product.url_small) {
             _ = cell.photoView.kf.setImage(with: url,
                                            placeholder: UIImage(named: "Placeholder"),
                                            options: [.transition(ImageTransition.fade(1))],
@@ -146,36 +146,39 @@ extension ProductsViewController: UITableViewDataSource
             cell.photoView.image = UIImage(named: "Placeholder")
         }
         
-        cell.priceLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: item.price)
+        cell.priceLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: product.price)
 
         
         _ = cell.addButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
                 self.view.endEditing(true)
-                
-                self.viewModel.addToCart(item)
-                
-//                if let indexPath = tableView.indexPath(for: cell) {
-//                    
-//                    let added = !item.added
-//
-//                    self.viewModel.updateRow(added: added, at: indexPath, productsUpdated: false)
-//                    self.tableView.reloadRows(at: [indexPath], with: .none)
-//                }
-
+                 self.addConfirm(product)
                 
             }).addDisposableTo(cell.disposeBag)
 
         _ = cell.photoButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
-                self.zoomImage(imageView: cell.photoView, imageUrl: item.url_large)
+                self.zoomImage(imageView: cell.photoView, imageUrl: product.url_large)
             }).addDisposableTo(cell.disposeBag)
 
         return cell
         
     }
+    
+    func addConfirm(_ product: Product) {
+        let alert = UIAlertController(title: "Add to Cart?", message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Add", style: .destructive) { _ in
+            self.viewModel.addToCart(product)
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - UITableViewDelegate

@@ -74,7 +74,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="addButton" destination="jhn-Kj-a6a" id="cE7-tC-feG"/>
+                <outlet property="deleteButton" destination="jhn-Kj-a6a" id="1QA-vp-Mf7"/>
                 <outlet property="photoButton" destination="dO5-2E-SWQ" id="xAD-M7-eB8"/>
                 <outlet property="photoView" destination="khq-7N-VO7" id="8AE-Bj-QWi"/>
                 <outlet property="priceLabel" destination="fC7-UV-LNH" id="bfB-Ec-iQz"/>
