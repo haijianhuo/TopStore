@@ -16,7 +16,8 @@ target 'TopStore' do
   pod 'ReachabilitySwift',      '~> 3'
   pod 'PKHUD',                  '~> 4.0'
   pod 'Kingfisher',             '~> 3.10.3'
-  
+  pod 'JSQCoreDataKit',         '~> 6.0.2'
+
   target 'TopStoreTests' do
     inherit! :search_paths
     # Pods for testing

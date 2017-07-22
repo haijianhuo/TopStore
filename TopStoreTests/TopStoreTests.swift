@@ -75,22 +75,6 @@ class TopStoreTests: XCTestCase {
         
         wait(for: [expectation_removeRow], timeout: 2)
         observer_removeRow.dispose()
-        
-        // updateRow
-        let added = self.viewModel.products[0].added
-        
-        let expectation_updateRow = self.expectation(description: "added flag toogles")
-        let observer_updateRow = viewModel.productsUpdated.asObservable().subscribe(onNext: { (element) in
-            if !added == self.viewModel.products[0].added {
-                print("added flag before and after update: \(added), \(self.viewModel.products[0].added)")
-                expectation_updateRow.fulfill()
-            }
-        })
-        
-        self.viewModel.updateRow(added: !added, at: IndexPath(row: 0, section: 0))
-        
-        wait(for: [expectation_updateRow], timeout: 2)
-        observer_updateRow.dispose()
 
     }
     

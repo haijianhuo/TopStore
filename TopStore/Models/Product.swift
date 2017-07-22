@@ -16,7 +16,6 @@ class Product: Mappable {
     var url_large: String!
     var name: String!
     var price: Float = 0.0
-    var added: Bool = false
     
     required init?(map: Map) {
         

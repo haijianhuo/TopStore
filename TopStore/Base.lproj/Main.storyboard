@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,7 +30,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cmF-vQ-qZd">
-                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="Ljb-Ry-YzE">
                                     <size key="itemSize" width="300" height="300"/>
@@ -86,7 +87,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RwZ-2X-3Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="36" y="-61"/>
+            <point key="canvasLocation" x="-135" y="203"/>
         </scene>
         <!--Products-->
         <scene sceneID="tne-QT-ifu">
@@ -128,7 +129,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="255" y="-1144"/>
+            <point key="canvasLocation" x="-134" y="-1127"/>
         </scene>
         <!--Prdoducts-->
         <scene sceneID="RC0-Nf-b0D">
@@ -147,20 +148,22 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xC-sw-hLq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1170" y="-770"/>
+            <point key="canvasLocation" x="-1241" y="-1289"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main Tab Bar Controller-->
         <scene sceneID="QgA-K6-gd6">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="uce-dM-eG7" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="uce-dM-eG7" customClass="MainTabBarController" customModule="TopStore" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Qby-0U-98e">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
                         <segue destination="iPW-3g-pGy" kind="relationship" relationship="viewControllers" id="Z0K-B1-eZc"/>
                         <segue destination="qBX-bp-6CB" kind="relationship" relationship="viewControllers" id="yVk-nF-h4w"/>
+                        <segue destination="MfR-62-ZHt" kind="relationship" relationship="viewControllers" id="kKL-Pp-NsP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEC-rC-qCh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -184,11 +187,72 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FSX-xf-Bqy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1447" y="0.0"/>
+            <point key="canvasLocation" x="-1534" y="322"/>
+        </scene>
+        <!--Cart-->
+        <scene sceneID="QcB-dy-sBj">
+            <objects>
+                <viewController id="T07-p1-xVY" customClass="CartViewController" customModule="TopStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ten-AZ-qae"/>
+                        <viewControllerLayoutGuide type="bottom" id="m2C-wA-ZsF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eaU-9R-Cur">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HnH-SN-B0F">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="m2C-wA-ZsF" firstAttribute="top" secondItem="HnH-SN-B0F" secondAttribute="bottom" id="HdN-0D-CtL"/>
+                            <constraint firstItem="HnH-SN-B0F" firstAttribute="top" secondItem="eaU-9R-Cur" secondAttribute="top" id="boC-0o-bNg"/>
+                            <constraint firstItem="HnH-SN-B0F" firstAttribute="leading" secondItem="eaU-9R-Cur" secondAttribute="leading" id="dGw-ZF-gf5"/>
+                            <constraint firstAttribute="trailing" secondItem="HnH-SN-B0F" secondAttribute="trailing" id="q8a-Rq-7gw"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Cart" id="TWP-26-4zK">
+                        <rightBarButtonItems>
+                            <barButtonItem image="CheckOut" id="z8r-uu-ENa"/>
+                            <barButtonItem image="ClearCart" id="dfj-cA-MjV"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="HnH-SN-B0F" id="9Fy-2w-r9g"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d60-HL-JDR" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-135" y="-459"/>
+        </scene>
+        <!--Cart-->
+        <scene sceneID="LPo-z8-sfJ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MfR-62-ZHt" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Cart" image="Cart" id="5n1-m5-T7y"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PHG-mS-pvd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="T07-p1-xVY" kind="relationship" relationship="rootViewController" id="k5X-DK-zhZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xFU-tC-5TO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1287" y="-574"/>
         </scene>
     </scenes>
     <resources>
         <image name="Box" width="25" height="25"/>
+        <image name="Cart" width="25" height="25"/>
+        <image name="CheckOut" width="25" height="25"/>
+        <image name="ClearCart" width="25" height="25"/>
         <image name="Photo" width="25" height="25"/>
     </resources>
 </document>

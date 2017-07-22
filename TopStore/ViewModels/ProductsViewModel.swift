@@ -22,13 +22,10 @@ class ProductsViewModel {
     var loadingPage = false
     
     let reachability = Reachability()!
+    let cartViewModel = CartViewModel.shared
 
-    func updateRow(added: Bool, at indexPath: IndexPath, productsUpdated: Bool = true) {
-        let item = self.products[indexPath.row]
-        item.added = added
-        if productsUpdated {
-            self.productsUpdated.value = true
-        }
+    func addToCart(_ product: Product) {
+        cartViewModel.addToCart(product)
     }
 
     func removeRow(at indexPath: IndexPath, productsUpdated: Bool = true) {

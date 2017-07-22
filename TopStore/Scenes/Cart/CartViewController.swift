@@ -1,5 +1,5 @@
 //
-//  ProductsViewController.swift
+//  CartViewController.swift
 //  TopStore
 //
 //  Created by Haijian Huo on 7/14/17.
@@ -12,23 +12,19 @@ import RxSwift
 import Kingfisher
 import JTSImageViewController
 
-class ProductsViewController: UIViewController {
+class CartViewController: UIViewController {
     
-    @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var tableView: UITableView!
     
     var disposeBag = DisposeBag()
     
-    let viewModel = ProductsViewModel()
+    let viewModel = CartViewModel.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.loadViewIfNeeded()
-        tableView.register(UINib(nibName: String(describing: ProductCell.self), bundle: nil), forCellReuseIdentifier: String(describing: ProductCell.self))
         
-        tableView.contentInset.top = self.searchBar.frame.height
-        tableView.scrollIndicatorInsets.top = tableView.contentInset.top
-
+        tableView.register(UINib(nibName: String(describing: CartCell.self), bundle: nil), forCellReuseIdentifier: String(describing: CartCell.self))
+        
         _ = tableView.rx.setDataSource(self)
         _ = tableView.rx.setDelegate(self)
         
@@ -37,52 +33,21 @@ class ProductsViewController: UIViewController {
     
     func bind() {
         
-        searchBar
-            .rx
-            .searchButtonClicked
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
-                }
-            }).addDisposableTo(disposeBag)
-
-        searchBar
-            .rx
-            .text
-            .map { $0! }
-            .throttle(1, scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.viewModel.loadPage(query: element, page: 1)
-                }
-            }).addDisposableTo(disposeBag)
         
         self.viewModel.productsUpdated.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.updateBadge()
             }
         }).addDisposableTo(disposeBag)
 
         
-        tableView.rx.contentOffset
-            .filter { [weak self] offset in
-                guard let `self` = self else { return false }
-                guard self.tableView.frame.height > 0 else { return false }
-                guard self.tableView.contentSize.height > 0 else { return false }
-                self.view.endEditing(true)
-                return offset.y + self.tableView.frame.height >= self.tableView.contentSize.height - 100
-            }
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.viewModel.loadNextPage()
-                }
-            })
-            .addDisposableTo(disposeBag)
+    }
+    
+    func updateBadge() {
+        self.tabBarController?.tabBar.items?.last?.badgeValue =
+        self.viewModel.products.count > 0 ?  String(self.viewModel.products.count) : nil
     }
     
     func zoomImage(imageView: UIImageView, imageUrl: String?) {
@@ -116,7 +81,7 @@ class ProductsViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 
-extension ProductsViewController: UITableViewDataSource
+extension CartViewController: UITableViewDataSource
 {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -126,8 +91,18 @@ extension ProductsViewController: UITableViewDataSource
         return viewModel.products.count
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.deleteRow(at: indexPath)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCell.self), for: indexPath) as! ProductCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CartCell.self), for: indexPath) as! CartCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         let item = self.viewModel.products[indexPath.row]
@@ -153,16 +128,9 @@ extension ProductsViewController: UITableViewDataSource
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
                 self.view.endEditing(true)
-                
-                self.viewModel.addToCart(item)
-                
-//                if let indexPath = tableView.indexPath(for: cell) {
-//                    
-//                    let added = !item.added
-//
-//                    self.viewModel.updateRow(added: added, at: indexPath, productsUpdated: false)
-//                    self.tableView.reloadRows(at: [indexPath], with: .none)
-//                }
+                if let indexPath = tableView.indexPath(for: cell) {
+                    self.deleteRow(at: indexPath)
+                }
 
                 
             }).addDisposableTo(cell.disposeBag)
@@ -176,11 +144,18 @@ extension ProductsViewController: UITableViewDataSource
         return cell
         
     }
+    
+    func deleteRow(at indexPath: IndexPath) {
+        self.viewModel.removeRow(at: indexPath, productsUpdated: false)
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        self.updateBadge()
+
+    }
 }
 
 // MARK: - UITableViewDelegate
 
-extension ProductsViewController: UITableViewDelegate
+extension CartViewController: UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -190,7 +165,7 @@ extension ProductsViewController: UITableViewDelegate
 
 // MARK: - JTSImageViewControllerDismissalDelegate
 
-extension ProductsViewController: JTSImageViewControllerDismissalDelegate
+extension CartViewController: JTSImageViewControllerDismissalDelegate
 {
     func imageViewerDidDismiss(_ imageViewer: JTSImageViewController!) {
         if let imageURL = imageViewer.imageInfo.imageURL {
