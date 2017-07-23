@@ -153,7 +153,11 @@ extension ProductsViewController: UITableViewDataSource
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
                 self.view.endEditing(true)
-                 self.addConfirm(product)
+                
+//                if let JSONString = product.toJSONString(prettyPrint: true) {
+//                    print("product: \(JSONString)")
+//                }
+                self.addConfirm(product)
                 
             }).addDisposableTo(cell.disposeBag)
 

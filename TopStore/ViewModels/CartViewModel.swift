@@ -14,8 +14,28 @@ import ReachabilitySwift
 import CoreData
 import JSQCoreDataKit
 
-class CartViewModel: NSObject {
-    static let shared = CartViewModel()
+class CartViewModel: NSObject
+{
+    private struct Static
+    {
+        static var instance: CartViewModel?
+    }
+    
+    class var shared: CartViewModel
+    {
+        if Static.instance == nil
+        {
+            Static.instance = CartViewModel()
+        }
+        
+        return Static.instance!
+    }
+    
+    func destroy()
+    {
+        CartViewModel.Static.instance = nil
+        print("destroyed Singleton instance")
+    }
     
     var stack: CoreDataStack!
     
@@ -27,6 +47,8 @@ class CartViewModel: NSObject {
     fileprivate override init() {
         super.init()
         
+        print("init singleton")
+
         let storeType = StoreType.sqlite(self.dataURL())
         let model = CoreDataModel(name: "TopStore", bundle: Bundle.main, storeType: storeType)
         let factory = CoreDataStackFactory(model: model)
@@ -42,6 +64,10 @@ class CartViewModel: NSObject {
         }
     }
     
+    deinit {
+        print("deinit singleton")
+    }
+
     func clearCart() {
         self.removeAllProductData()
         self.products.removeAll()
@@ -69,7 +95,7 @@ class CartViewModel: NSObject {
     }
     
     private func fetchProductData() -> [Product] {
-        
+        print("fetchProductData")
         var array = [Product]()
         
         let backgroundChildContext = stack.childContext(concurrencyType: .privateQueueConcurrencyType)
