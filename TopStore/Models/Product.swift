@@ -17,6 +17,8 @@ class Product: Mappable {
     var name: String!
     var price: Float = 0.0
     
+    var timeId: String?
+    
     required init?(map: Map) {
         
     }
