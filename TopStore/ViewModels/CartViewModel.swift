@@ -18,12 +18,12 @@ class CartViewModel: NSObject {
     static let shared = CartViewModel()
     
     var stack: CoreDataStack!
-
+    
     var products = [Product]([])
     var productsUpdated = Variable<Bool>(false)
-
+    
     let reachability = Reachability()!
-
+    
     fileprivate override init() {
         super.init()
         
@@ -41,18 +41,20 @@ class CartViewModel: NSObject {
             }
         }
     }
-
+    
     func clearCart() {
         self.removeAllProductData()
         self.products.removeAll()
         self.productsUpdated.value = true
     }
-
-    func addToCart(_ product: Product) {
+    
+    func addToCart(_ product: Product, productsUpdated: Bool = true) {
         product.timeId = self.timeId()
         self.insertProductData(product)
         self.products.insert(product, at: 0)
-        self.productsUpdated.value = true
+        if productsUpdated {
+            self.productsUpdated.value = true
+        }
     }
     
     func removeRow(at indexPath: IndexPath, productsUpdated: Bool = true) {
@@ -65,7 +67,7 @@ class CartViewModel: NSObject {
             self.productsUpdated.value = true
         }
     }
-
+    
     private func fetchProductData() -> [Product] {
         
         var array = [Product]()
@@ -87,7 +89,7 @@ class CartViewModel: NSObject {
             return array
         }
     }
-
+    
     private func removeAllProductData() {
         let backgroundChildContext = self.stack.childContext(concurrencyType: .privateQueueConcurrencyType)
         
@@ -103,15 +105,15 @@ class CartViewModel: NSObject {
             }
         }
     }
-
+    
     
     private func insertProductData(_ product: Product) {
         let backgroundChildContext = self.stack.childContext(concurrencyType: .privateQueueConcurrencyType)
-
+        
         _ = ProductData(context: backgroundChildContext, timeId: product.timeId, identifier: 0, url_small: product.url_small, url_large: product.url_large, name: product.name, price: Double(product.price), created: Date())
         saveContext(backgroundChildContext)
     }
-
+    
     private func removeProductData(timeId: String) {
         let backgroundChildContext = stack.childContext(concurrencyType: .privateQueueConcurrencyType)
         
@@ -129,7 +131,7 @@ class CartViewModel: NSObject {
         }
         
     }
-
+    
     
     private func dataURL() -> URL {
         let url = applicationSupportDirectoryURL()
@@ -157,10 +159,9 @@ class CartViewModel: NSObject {
             fatalError("*** Error finding default directory: \(error)")
         }
     }
-
+    
     private func timeId() -> String {
         return String(format: "%0.0f", Date().timeIntervalSince1970)
     }
-
+    
 }
-

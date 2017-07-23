@@ -16,25 +16,18 @@ class ProductsViewModel {
     
     var products = [Product]([])
     var productsUpdated = Variable<Bool>(false)
-
+    
     var query: String = ""
     var nextPage = 1
     var loadingPage = false
     
     let reachability = Reachability()!
     let cartViewModel = CartViewModel.shared
-
+    
     func addToCart(_ product: Product) {
         cartViewModel.addToCart(product)
     }
-
-    func removeRow(at indexPath: IndexPath, productsUpdated: Bool = true) {
-        self.products.remove(at: indexPath.row)
-        if productsUpdated {
-            self.productsUpdated.value = true
-        }
-    }
-
+    
     func loadNextPage() {
         if self.loadingPage {
             return
@@ -44,7 +37,7 @@ class ProductsViewModel {
         
         loadPage(query: self.query, page: self.nextPage)
     }
-
+    
     func loadPage(query: String, page: Int) {
         if page == 1 {
             self.query = query
@@ -69,7 +62,7 @@ class ProductsViewModel {
             self.loadingPage = false
             return
         }
-
+        
         Alamofire.request(url).responseJSON { response in
             guard let dict = response.result.value as? [String: Any] else { return }
             guard let items = dict["photos"] as? [[String: Any]] else {
@@ -87,7 +80,7 @@ class ProductsViewModel {
             self.productsUpdated.value = true
         }
     }
-
+    
     private func url(for query: String?, page: Int) -> URL? {
         guard let query = query, !query.isEmpty else { return nil }
         
@@ -110,4 +103,3 @@ class ProductsViewModel {
         return urlComponents.url
     }
 }
-
