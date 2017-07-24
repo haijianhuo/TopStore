@@ -89,7 +89,7 @@ class CartViewController: UIViewController {
     }
     
     func clearConfirm() {
-        let alert = UIAlertController(title: "Clear Cart?", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Clear Cart?", message: nil, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { _ in
             self.viewModel.clearCart()
@@ -102,7 +102,7 @@ class CartViewController: UIViewController {
 
     
     func deleteConfirm(at indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Delete?", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Delete?", message: nil, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
             self.deleteRow(at: indexPath)

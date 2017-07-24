@@ -150,9 +150,9 @@ class TopStoreTests: XCTestCase {
         observer.dispose()
     }
     
+    // test of loading saved shopping cart on app start
     func test_loadCart() {
 
-        // test of loading saved shopping cart on app start
         cartViewModel.addToCart(testProduct, productsUpdated: false)
         
         cartViewModel.destroy()
