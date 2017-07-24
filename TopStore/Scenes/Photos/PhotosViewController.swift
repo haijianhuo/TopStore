@@ -260,7 +260,7 @@ extension PhotosViewController : UICollectionViewDelegateFlowLayout {
         var cellsPerRow:CGFloat
         let cellPadding:CGFloat = 2
         if UIDevice.current.userInterfaceIdiom == .pad {
-            cellsPerRow = 8
+            cellsPerRow = 6
         }
         else {
             cellsPerRow = collectionView.frame.size.width > collectionView.frame.size.height ? 8 : 4
