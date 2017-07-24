@@ -39,6 +39,12 @@ class PhotosViewController: UIViewController {
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
 
         bind()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        let backgroundView = UIView(frame:self.collectionView.bounds)
+        backgroundView.addGestureRecognizer(tap)
+        self.collectionView.backgroundView = backgroundView
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -147,6 +153,10 @@ class PhotosViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func handleTap(_ sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
     }
     
 }

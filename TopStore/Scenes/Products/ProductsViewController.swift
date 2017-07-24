@@ -35,10 +35,13 @@ class ProductsViewController: UIViewController {
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.allowsMultipleSelection = false
         
-        //self.collectionView.backgroundColor = .clear
-        //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
-        
         bind()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        
+        let backgroundView = UIView(frame:self.collectionView.bounds)
+        backgroundView.addGestureRecognizer(tap)
+        self.collectionView.backgroundView = backgroundView
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -164,7 +167,7 @@ class ProductsViewController: UIViewController {
         }
         
     }
-    
+
     @IBAction func addButtonTapped(_ sender: UIButton) {
         
         self.view.endEditing(true)
@@ -189,6 +192,10 @@ class ProductsViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
+    }
+
+    func handleTap(_ sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
     }
 
 }
