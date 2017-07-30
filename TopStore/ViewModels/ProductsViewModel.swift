@@ -39,6 +39,7 @@ class ProductsViewModel {
     }
     
     func loadPage(query: String, page: Int) {
+        print("query,page:\(query), \(page)")
         if page == 1 {
             self.query = query
             self.nextPage = 1
@@ -64,11 +65,14 @@ class ProductsViewModel {
         }
         
         Alamofire.request(url).responseJSON { response in
-            guard let dict = response.result.value as? [String: Any] else { return }
-            guard let items = dict["photos"] as? [[String: Any]] else {
+            guard let dict = response.result.value as? [String: Any] else {
+                self.loadingPage = false
                 return
             }
-            
+            guard let items = dict["photos"] as? [[String: Any]] else {
+                self.loadingPage = false
+                return
+            }
             
             let products = Mapper<Product>().mapArray(JSONArray: items)
             if page == 1 {

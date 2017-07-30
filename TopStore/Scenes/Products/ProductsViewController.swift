@@ -31,6 +31,8 @@ class ProductsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ImageCache.default.maxCachePeriodInSecond = -1
+        
         // Do any additional setup after loading the view.
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.allowsMultipleSelection = false
