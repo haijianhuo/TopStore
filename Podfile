@@ -17,7 +17,6 @@ target 'TopStore' do
   pod 'PKHUD',                  '~> 4.0'
   pod 'Kingfisher',             '~> 3.10.3'
   pod 'JSQCoreDataKit',         '~> 6.0.2'
-  pod 'Hero',                   '~> 0.3.6'
 
   target 'TopStoreTests' do
     inherit! :search_paths

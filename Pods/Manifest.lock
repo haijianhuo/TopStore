@@ -1,6 +1,5 @@
 PODS:
   - Alamofire (4.5.0)
-  - Hero (0.3.6)
   - JSQCoreDataKit (6.0.3)
   - JTSImageViewController (1.5.1)
   - Kingfisher (3.10.3)
@@ -21,7 +20,6 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.5.0)
-  - Hero (~> 0.3.6)
   - JSQCoreDataKit (~> 6.0.2)
   - JTSImageViewController (~> 1.5.1)
   - Kingfisher (~> 3.10.3)
@@ -35,7 +33,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
-  Hero: d3c6f4dd80cdcdbb339be64e57ae3b5c3ab9938c
   JSQCoreDataKit: 304674c67bc913221f1c818a6fba999d8cc0d994
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   Kingfisher: a0ac82dc5bcf0388dd74b294cf2cc13730c63436
@@ -47,6 +44,6 @@ SPEC CHECKSUMS:
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
 
-PODFILE CHECKSUM: f42a736552f517915a40791ee7848996eea74ed4
+PODFILE CHECKSUM: d6f69de5511b38e6c92bd7a19831a8e745fed377
 
 COCOAPODS: 1.2.1
