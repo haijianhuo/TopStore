@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="uce-dM-eG7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="uce-dM-eG7">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,15 +24,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="tzO-r5-4zx">
-                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <searchBar contentMode="redraw" placeholder="Photos Search" translatesAutoresizingMaskIntoConstraints="NO" id="tzO-r5-4zx">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="hHI-dG-CV4"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cmF-vQ-qZd">
-                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="Ljb-Ry-YzE">
                                     <size key="itemSize" width="300" height="300"/>
@@ -81,6 +81,7 @@
                             <constraint firstAttribute="trailing" secondItem="cmF-vQ-qZd" secondAttribute="trailing" id="r6r-6g-heD"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Photos" image="Photo" id="TBv-lo-HmU"/>
                     <navigationItem key="navigationItem" title="Photos" id="rPu-3j-ExQ"/>
                     <connections>
                         <outlet property="collectionView" destination="cmF-vQ-qZd" id="GMh-F6-e6s"/>
@@ -89,26 +90,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RwZ-2X-3Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-135" y="203"/>
-        </scene>
-        <!--Prdoducts-->
-        <scene sceneID="RC0-Nf-b0D">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iPW-3g-pGy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Prdoducts" image="Box" id="RVF-35-Ua0"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zkb-lp-eGx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="5CJ-Hf-SnA" kind="relationship" relationship="rootViewController" id="Som-Vm-Hh3"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1xC-sw-hLq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1287" y="-1754"/>
+            <point key="canvasLocation" x="-1439" y="171"/>
         </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="QgA-K6-gd6">
@@ -120,34 +102,18 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <segue destination="iPW-3g-pGy" kind="relationship" relationship="viewControllers" id="Z0K-B1-eZc"/>
-                        <segue destination="qBX-bp-6CB" kind="relationship" relationship="viewControllers" id="yVk-nF-h4w"/>
+                        <segue destination="5CJ-Hf-SnA" kind="relationship" relationship="viewControllers" id="ya3-4V-eni"/>
+                        <segue destination="ZQX-Wk-Kav" kind="relationship" relationship="viewControllers" id="RcT-pC-pkr"/>
                         <segue destination="MfR-62-ZHt" kind="relationship" relationship="viewControllers" id="kKL-Pp-NsP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEC-rC-qCh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2246" y="-717"/>
-        </scene>
-        <!--Photos-->
-        <scene sceneID="oPt-JS-EWe">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qBX-bp-6CB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Photos" image="Photo" id="eH1-Fg-K0f"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cYa-sP-Miw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ZQX-Wk-Kav" kind="relationship" relationship="rootViewController" id="7kc-zf-Vkz"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FSX-xf-Bqy" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1534" y="322"/>
         </scene>
         <!--Cart-->
         <scene sceneID="QcB-dy-sBj">
@@ -227,15 +193,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="YsT-dr-FPy">
-                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <searchBar contentMode="redraw" placeholder="Products Search" translatesAutoresizingMaskIntoConstraints="NO" id="YsT-dr-FPy">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="DtZ-KS-EO7"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RKD-Kj-Ofz">
-                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="nDV-eq-Fd1">
                                     <size key="itemSize" width="300" height="150"/>
@@ -336,6 +302,7 @@
                             <constraint firstItem="RKD-Kj-Ofz" firstAttribute="top" secondItem="YsT-dr-FPy" secondAttribute="bottom" id="fWn-KL-1ul"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Products" image="Box" id="JLp-sQ-8je"/>
                     <navigationItem key="navigationItem" title="Products" id="pkk-xU-VQZ"/>
                     <connections>
                         <outlet property="collectionView" destination="RKD-Kj-Ofz" id="ENi-hH-kLK"/>
@@ -344,7 +311,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cnx-Ul-M9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-135.19999999999999" y="-1708.6956521739132"/>
+            <point key="canvasLocation" x="-1287" y="-1503"/>
         </scene>
     </scenes>
     <resources>

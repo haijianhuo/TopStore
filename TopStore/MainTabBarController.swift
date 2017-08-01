@@ -13,8 +13,14 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        for navViewController in self.viewControllers! {
-            _ = navViewController.childViewControllers[0].view
+        for viewController in self.viewControllers! {
+            if viewController.isKind(of: UINavigationController.self) {
+                _ = viewController.childViewControllers[0].view
+            }
+            else {
+                _ = viewController.view
+            }
+            
         }
     }
 
