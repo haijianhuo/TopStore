@@ -54,6 +54,8 @@
 		8D562C961F300BAE008C8F00 /* HeroTransition+UIViewControllerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C691F300BAE008C8F00 /* HeroTransition+UIViewControllerTransitioningDelegate.swift */; };
 		8D562C971F300BAE008C8F00 /* HeroTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C6A1F300BAE008C8F00 /* HeroTransition.swift */; };
 		8D562C981F300BAE008C8F00 /* HeroTransitionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C6B1F300BAE008C8F00 /* HeroTransitionState.swift */; };
+		8D562C9C1F301864008C8F00 /* HHPulseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C9A1F301864008C8F00 /* HHPulseButton.swift */; };
+		8D562C9D1F301864008C8F00 /* HHPulseButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D562C9B1F301864008C8F00 /* HHPulseButton.xib */; };
 		8DEC02711F19A79600AC228A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEC02701F19A79600AC228A /* AppDelegate.swift */; };
 		8DEC02761F19A79600AC228A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DEC02741F19A79600AC228A /* Main.storyboard */; };
 		8DEC02781F19A79600AC228A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DEC02771F19A79600AC228A /* Assets.xcassets */; };
@@ -145,6 +147,8 @@
 		8D562C691F300BAE008C8F00 /* HeroTransition+UIViewControllerTransitioningDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HeroTransition+UIViewControllerTransitioningDelegate.swift"; sourceTree = "<group>"; };
 		8D562C6A1F300BAE008C8F00 /* HeroTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroTransition.swift; sourceTree = "<group>"; };
 		8D562C6B1F300BAE008C8F00 /* HeroTransitionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroTransitionState.swift; sourceTree = "<group>"; };
+		8D562C9A1F301864008C8F00 /* HHPulseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHPulseButton.swift; sourceTree = "<group>"; };
+		8D562C9B1F301864008C8F00 /* HHPulseButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HHPulseButton.xib; sourceTree = "<group>"; };
 		8DEC026D1F19A79600AC228A /* TopStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DEC02701F19A79600AC228A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DEC02751F19A79600AC228A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -234,6 +238,7 @@
 		8D562C361F300BAE008C8F00 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				8D562C991F301864008C8F00 /* HHPulseButton */,
 				8D562C371F300BAE008C8F00 /* Hero */,
 			);
 			path = Vendors;
@@ -338,6 +343,15 @@
 				8D562C6B1F300BAE008C8F00 /* HeroTransitionState.swift */,
 			);
 			path = Transition;
+			sourceTree = "<group>";
+		};
+		8D562C991F301864008C8F00 /* HHPulseButton */ = {
+			isa = PBXGroup;
+			children = (
+				8D562C9A1F301864008C8F00 /* HHPulseButton.swift */,
+				8D562C9B1F301864008C8F00 /* HHPulseButton.xib */,
+			);
+			path = HHPulseButton;
 			sourceTree = "<group>";
 		};
 		8DEC02641F19A79600AC228A = {
@@ -592,6 +606,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DEC027B1F19A79600AC228A /* LaunchScreen.storyboard in Resources */,
+				8D562C9D1F301864008C8F00 /* HHPulseButton.xib in Resources */,
 				8DF66BA21F23A08600A9677A /* CartCell.xib in Resources */,
 				8DEC02781F19A79600AC228A /* Assets.xcassets in Resources */,
 				8D562C811F300BAE008C8F00 /* Info.plist in Resources */,
@@ -809,6 +824,7 @@
 				8D562C6F1F300BAE008C8F00 /* HeroViewPropertyViewContext.swift in Sources */,
 				8D562C921F300BAE008C8F00 /* HeroTransition+Interactive.swift in Sources */,
 				8DED0A4C1F1F14A5004E265E /* PhotoCell.swift in Sources */,
+				8D562C9C1F301864008C8F00 /* HHPulseButton.swift in Sources */,
 				8DF66BB11F23CAD200A9677A /* TopStore.xcdatamodeld in Sources */,
 				8DED0A4A1F1F1466004E265E /* PhotosViewController.swift in Sources */,
 				8DF66BA31F23A08600A9677A /* CartViewController.swift in Sources */,

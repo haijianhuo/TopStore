@@ -16,6 +16,7 @@ class ProductsViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet weak var avatarPulseButton: HHPulseButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
     var disposeBag = DisposeBag()
@@ -31,6 +32,12 @@ class ProductsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.avatarPulseButton.delegate = self
+        
+        if let image = UIImage(named:"photo_background") {
+            self.view.backgroundColor = UIColor(patternImage: image)
+        }
+        
         ImageCache.default.maxCachePeriodInSecond = -1
         
         // Do any additional setup after loading the view.
@@ -44,8 +51,22 @@ class ProductsViewController: UIViewController {
         let backgroundView = UIView(frame:self.collectionView.bounds)
         backgroundView.addGestureRecognizer(tap)
         self.collectionView.backgroundView = backgroundView
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(applicationDidBecomeActiveNotification(_:)), name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
+
     }
-    
+        
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.avatarPulseButton.animate(start: false)
+        
+    }
+
+    func applicationDidBecomeActiveNotification(_ notification: NSNotification?) {
+        
+        self.avatarPulseButton.animate(start: true)
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         self.willRotate = true
@@ -82,6 +103,8 @@ class ProductsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.avatarPulseButton.animate(start: true)
+
         if self.needRefresh {
             self.needRefresh = false
             self.collectionView.collectionViewLayout.invalidateLayout()
@@ -310,5 +333,11 @@ extension ProductsViewController: JTSImageViewControllerDismissalDelegate
         }
     }
     
+}
+
+extension ProductsViewController: HHPulseButtonDelegate {
+    func pulseButton(view: HHPulseButton, buttonPressed sender: AnyObject) {
+        print("buttonPressed")
+    }
 }
 
