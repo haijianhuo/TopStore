@@ -299,6 +299,7 @@
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="image" keyPath="image" value="Avatar"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="Me"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>

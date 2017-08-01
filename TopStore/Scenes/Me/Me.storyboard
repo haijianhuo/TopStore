@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="peF-47-6SW">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Me View Controller-->
+        <scene sceneID="agq-Jt-vFs">
+            <objects>
+                <viewController id="peF-47-6SW" customClass="MeViewController" customModule="TopStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aRr-eq-6AH"/>
+                        <viewControllerLayoutGuide type="bottom" id="k1o-Yx-Lfl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jRs-rh-SFP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qFr-Cw-7re" customClass="HHPulseButton" customModule="TopStore" customModuleProvider="target">
+                                <rect key="frame" x="75" y="65" width="225" height="225"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="qFr-Cw-7re" secondAttribute="height" multiplier="1:1" id="iAH-wK-I8d"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="Avatar"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="Me"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BIn-9w-2JN" userLabel="Close Button">
+                                <rect key="frame" x="0.0" y="20" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="8hH-Q9-9kV"/>
+                                    <constraint firstAttribute="width" constant="50" id="hYt-B9-HSy"/>
+                                </constraints>
+                                <state key="normal" image="Close"/>
+                                <connections>
+                                    <action selector="hero_dismissViewController" destination="egA-iL-7ca" eventType="touchUpInside" id="knk-WJ-wPX"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qFr-Cw-7re" firstAttribute="centerX" secondItem="jRs-rh-SFP" secondAttribute="centerX" id="07k-cs-42w"/>
+                            <constraint firstItem="BIn-9w-2JN" firstAttribute="leading" secondItem="jRs-rh-SFP" secondAttribute="leading" id="Azg-8v-kya"/>
+                            <constraint firstItem="qFr-Cw-7re" firstAttribute="leading" secondItem="jRs-rh-SFP" secondAttribute="leading" constant="133.5" id="Ihz-aX-S19">
+                                <variation key="heightClass=compact" constant="40"/>
+                            </constraint>
+                            <constraint firstItem="qFr-Cw-7re" firstAttribute="top" secondItem="aRr-eq-6AH" secondAttribute="bottom" constant="45" id="JWT-dM-Ovm"/>
+                            <constraint firstItem="qFr-Cw-7re" firstAttribute="height" secondItem="jRs-rh-SFP" secondAttribute="height" multiplier="0.6" id="L1I-Jm-aQl"/>
+                            <constraint firstItem="BIn-9w-2JN" firstAttribute="top" secondItem="aRr-eq-6AH" secondAttribute="bottom" id="ZOy-eC-6lM"/>
+                            <constraint firstItem="qFr-Cw-7re" firstAttribute="width" secondItem="jRs-rh-SFP" secondAttribute="width" multiplier="0.6" id="eXV-HC-kCT"/>
+                            <constraint firstItem="qFr-Cw-7re" firstAttribute="centerY" secondItem="jRs-rh-SFP" secondAttribute="centerY" id="vnE-D7-ekd"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Ihz-aX-S19"/>
+                                <exclude reference="L1I-Jm-aQl"/>
+                                <exclude reference="vnE-D7-ekd"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <exclude reference="07k-cs-42w"/>
+                                <include reference="Ihz-aX-S19"/>
+                                <exclude reference="JWT-dM-Ovm"/>
+                                <include reference="L1I-Jm-aQl"/>
+                                <exclude reference="eXV-HC-kCT"/>
+                                <include reference="vnE-D7-ekd"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="avatarPulseButton" destination="qFr-Cw-7re" id="B6j-J1-83e"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="egA-iL-7ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-788" y="-47"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Avatar" width="220" height="220"/>
+        <image name="Close" width="25" height="25"/>
+    </resources>
+</document>

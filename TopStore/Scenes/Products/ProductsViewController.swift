@@ -337,7 +337,10 @@ extension ProductsViewController: JTSImageViewControllerDismissalDelegate
 
 extension ProductsViewController: HHPulseButtonDelegate {
     func pulseButton(view: HHPulseButton, buttonPressed sender: AnyObject) {
-        print("buttonPressed")
+        let vc = viewController(forStoryboardName: "Me")
+        DispatchQueue.main.async {
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 }
 

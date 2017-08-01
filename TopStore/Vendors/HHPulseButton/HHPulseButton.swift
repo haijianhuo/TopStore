@@ -68,7 +68,7 @@ protocol HHPulseButtonDelegate: class {
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        print("self.bounds.size: \(self.bounds.size)")
+        //print("self.bounds.size: \(self.bounds.size)")
         self.pulseView.layer.cornerRadius = self.bounds.size.width/2
         self.pulseView.clipsToBounds = true
         self.pulseView.backgroundColor = .blue // UIColor(red: 171/255.0, green: 178/255.0, blue: 186/255.0, alpha: 0.5)
