@@ -12,10 +12,10 @@ target 'TopStore' do
   pod 'ObjectMapper',           '~> 2.2.7'
   pod 'Alamofire',              '~> 4.5.0'
   pod 'RxAlamofire',            '~> 3.0.3'
-  pod 'JTSImageViewController', '~> 1.5.1'
   pod 'ReachabilitySwift',      '~> 3'
   pod 'PKHUD',                  '~> 4.0'
   pod 'Kingfisher',             '~> 3.10.3'
+  pod 'CircleMenu',             '~> 2.0.5'
   pod 'JSQCoreDataKit',         '~> 6.0.2'
 
   target 'TopStoreTests' do

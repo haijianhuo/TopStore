@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		07C2C1FE7060968F34C42DD1 /* Pods_TopStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D14A7708C98585A82EAFE0CD /* Pods_TopStore.framework */; };
 		389DEDE8E997F9D8C5B9E166 /* Pods_TopStoreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCA3E4330818F84D066C2F7 /* Pods_TopStoreUITests.framework */; };
+		8D118B571F36D4280087D5B6 /* HHImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B551F36D4280087D5B6 /* HHImageInfo.swift */; };
+		8D118B581F36D4280087D5B6 /* HHImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B561F36D4280087D5B6 /* HHImageViewController.swift */; };
 		8D562C6C1F300BAE008C8F00 /* HeroAnimatorViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C391F300BAE008C8F00 /* HeroAnimatorViewContext.swift */; };
 		8D562C6D1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C3A1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift */; };
 		8D562C6E1F300BAE008C8F00 /* HeroDefaultAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C3B1F300BAE008C8F00 /* HeroDefaultAnimator.swift */; };
@@ -104,6 +106,8 @@
 		6DCA3E4330818F84D066C2F7 /* Pods_TopStoreUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TopStoreUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E7EA92341EA98525563E10C /* Pods-TopStoreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopStoreUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TopStoreUITests/Pods-TopStoreUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8B56FA74AD1ABD309E2EC454 /* Pods-TopStoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopStoreTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TopStoreTests/Pods-TopStoreTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8D118B551F36D4280087D5B6 /* HHImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageInfo.swift; sourceTree = "<group>"; };
+		8D118B561F36D4280087D5B6 /* HHImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageViewController.swift; sourceTree = "<group>"; };
 		8D562C391F300BAE008C8F00 /* HeroAnimatorViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroAnimatorViewContext.swift; sourceTree = "<group>"; };
 		8D562C3A1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroCoreAnimationViewContext.swift; sourceTree = "<group>"; };
 		8D562C3B1F300BAE008C8F00 /* HeroDefaultAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDefaultAnimator.swift; sourceTree = "<group>"; };
@@ -241,9 +245,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8D118B541F36D4280087D5B6 /* HHImageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8D118B551F36D4280087D5B6 /* HHImageInfo.swift */,
+				8D118B561F36D4280087D5B6 /* HHImageViewController.swift */,
+			);
+			path = HHImageViewController;
+			sourceTree = "<group>";
+		};
 		8D562C361F300BAE008C8F00 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				8D118B541F36D4280087D5B6 /* HHImageViewController */,
 				8D562C991F301864008C8F00 /* HHPulseButton */,
 				8D562C371F300BAE008C8F00 /* Hero */,
 			);
@@ -816,6 +830,7 @@
 				8D562C851F300BAE008C8F00 /* Parser.swift in Sources */,
 				8D562C801F300BAE008C8F00 /* HeroViewControllerDelegate.swift in Sources */,
 				8DED0A421F1E6450004E265E /* ProductCell.swift in Sources */,
+				8D118B571F36D4280087D5B6 /* HHImageInfo.swift in Sources */,
 				8D562C931F300BAE008C8F00 /* HeroTransition+Start.swift in Sources */,
 				8D562C7C1F300BAE008C8F00 /* HeroModifier.swift in Sources */,
 				8DED0A4F1F1F1A89004E265E /* ProductsViewModel.swift in Sources */,
@@ -830,6 +845,7 @@
 				8D562C8A1F300BAE008C8F00 /* DefaultAnimationPreprocessor.swift in Sources */,
 				8D562C741F300BAE008C8F00 /* CAMediaTimingFunction+Hero.swift in Sources */,
 				8D562C781F300BAE008C8F00 /* UIView+Hero.swift in Sources */,
+				8D118B581F36D4280087D5B6 /* HHImageViewController.swift in Sources */,
 				8D562C761F300BAE008C8F00 /* DispatchQueue+Hero.swift in Sources */,
 				8D562C911F300BAE008C8F00 /* HeroTransition+CustomTransition.swift in Sources */,
 				8D562C791F300BAE008C8F00 /* UIViewController+Hero.swift in Sources */,

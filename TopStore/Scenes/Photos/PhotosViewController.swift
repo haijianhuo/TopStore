@@ -10,7 +10,6 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
-import JTSImageViewController
 
 class PhotosViewController: UIViewController {
 
@@ -28,6 +27,14 @@ class PhotosViewController: UIViewController {
     var willRotate = false
     var needRefresh = false
     
+    let items: [(icon: String, color: UIColor)] = [
+        ("icon_home", UIColor(red:0.19, green:0.57, blue:1, alpha:1)),
+        ("icon_search", UIColor(red:0.22, green:0.74, blue:0, alpha:1)),
+        ("notifications-btn", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1)),
+        ("settings-btn", UIColor(red:0.51, green:0.15, blue:1, alpha:1)),
+        ("nearby-btn", UIColor(red:1, green:0.39, blue:0, alpha:1)),
+        ]
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -227,8 +234,9 @@ extension PhotosViewController: UICollectionViewDelegate
     func zoomImage(imageView: UIImageView, imageUrl: String?) {
         
         guard let image = imageView.image else { return }
-        
-        let imageInfo = JTSImageInfo()
+        guard let referenceView = imageView.superview else { return }
+
+        let imageInfo = HHImageInfo(referenceRect: imageView.frame, referenceView: referenceView)
         
         if let imageUrl = imageUrl {
             if let image = ImageCache.default.retrieveImageInDiskCache(forKey: imageUrl, options: nil) {
@@ -243,12 +251,9 @@ extension PhotosViewController: UICollectionViewDelegate
         }
         
         
-        imageInfo.referenceRect = imageView.frame
-        imageInfo.referenceView = imageView.superview
-        
-        let imageViewer = JTSImageViewController(imageInfo: imageInfo, mode:JTSImageViewControllerMode.image, backgroundStyle: JTSImageViewControllerBackgroundOptions.scaled)!
-        imageViewer.dismissalDelegate = self
-        imageViewer.show(from: self, transition: JTSImageViewControllerTransition.fromOriginalPosition)
+        let imageViewer = HHImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: .scaled)
+        imageViewer.delegate = self
+        imageViewer.show(from: self, transition: .fromOriginalPosition)
     }
 
 }
@@ -274,18 +279,22 @@ extension PhotosViewController : UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - HHImageViewControllerDelegate
 
-// MARK: - JTSImageViewControllerDismissalDelegate
-
-extension PhotosViewController: JTSImageViewControllerDismissalDelegate
+extension PhotosViewController: HHImageViewControllerDelegate
 {
-    func imageViewerDidDismiss(_ imageViewer: JTSImageViewController!) {
-        if let imageURL = imageViewer.imageInfo.imageURL {
-            if let image = imageViewer.image {
-                ImageCache.default.store(image, forKey: imageURL.absoluteString)
-            }
-        }
+    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) {
+        button.backgroundColor = items[atIndex].color
+        
+        button.setImage(UIImage(named: items[atIndex].icon), for: .normal)
+        
+        // set highlited image
+        let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
+        button.setImage(highlightedImage, for: .highlighted)
+        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
     }
     
+    func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) {
+        print("button did selected: \(atIndex)")
+    }
 }
-
