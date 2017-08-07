@@ -60,17 +60,6 @@ let HHImageViewController_DefaultBackgroundBlurRadius: CGFloat = 2.0
 
 class HHImageViewController: UIViewController {
 
-    private var isViewControllerBasedStatusBarAppearance: Bool = {
-        
-        if let object = Bundle.main.object(forInfoDictionaryKey: "UIViewControllerBasedStatusBarAppearance") {
-            let flag = object as! Bool
-            return flag
-            
-        }
-        return true
-        
-    }()
-    
     private(set) var imageInfo: HHImageInfo!
     private(set) var image: UIImage?
     private(set) var mode: HHImageViewControllerMode!
@@ -86,8 +75,6 @@ class HHImageViewController: UIViewController {
     private let HHImageViewController_MinimumFlickDismissalVelocity: CGFloat = 800.0
     
     private struct HHImageViewControllerStartingInfo {
-        var statusBarHiddenPriorToPresentation: Bool = false
-        var statusBarStylePriorToPresentation: UIStatusBarStyle = .default
         var startingReferenceFrameForThumbnail: CGRect = .zero
         var startingReferenceFrameForThumbnailInPresentingViewControllersOriginalOrientation: CGRect = .zero
         var startingReferenceCenterForThumbnail: CGPoint = .zero
@@ -159,6 +146,7 @@ class HHImageViewController: UIViewController {
 
     private var circleButton: CircleMenu!
     
+    private var isStatusBarHidden = UIApplication.shared.isStatusBarHidden
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,6 +175,10 @@ class HHImageViewController: UIViewController {
 
     }
     
+    deinit {
+        //print("\(#function), \(type(of: self)) *Log*")
+    }
+    
     override func viewDidLayoutSubviews() {
         self.updateLayoutsForCurrentOrientation()
     }
@@ -203,8 +195,10 @@ class HHImageViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.flags.viewHasAppeared = true
-        
-        
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return self.isStatusBarHidden
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
@@ -238,7 +232,6 @@ class HHImageViewController: UIViewController {
 
         }, completion: { [weak self] (context) in
             guard let `self` = self else { return }
-            
             self.lastUsedOrientation = UIApplication.shared.statusBarOrientation
             var flags = self.flags
             flags.isRotating = false
@@ -341,9 +334,6 @@ class HHImageViewController: UIViewController {
         transition: HHImageViewControllerTransition) {
             
             self.transition = transition
-            
-            self.startingInfo.statusBarHiddenPriorToPresentation = UIApplication.shared.isStatusBarHidden
-            self.startingInfo.statusBarStylePriorToPresentation = UIApplication.shared.statusBarStyle
             
             if (self.mode == .image) {
                 self.showImageViewerByExpandingFromOriginalPositionFromViewController(viewController: viewController)
@@ -557,7 +547,8 @@ class HHImageViewController: UIViewController {
         // the transition finishes.
         self.view.addSubview(self.imageView)
         
-        viewController.present(self, animated: false, completion: {
+        viewController.present(self, animated: false, completion: { [weak self] in
+            guard let `self` = self else { return }
             if UIApplication.shared.statusBarOrientation != self.startingInfo.startingInterfaceOrientation {
                 self.startingInfo.presentingViewControllerPresentedFromItsUnsupportedOrientation = true
             }
@@ -581,9 +572,6 @@ class HHImageViewController: UIViewController {
             }
             
             let duration = self.HHImageViewController_TransitionAnimationDuration
-            //            if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
-            //                duration *= 4;
-            //            }
             
             
             // Have to dispatch ahead two runloops,
@@ -614,15 +602,9 @@ class HHImageViewController: UIViewController {
                 self.imageView.layer.add(cornerRadiusAnimation, forKey:"cornerRadius")
                 self.imageView.layer.cornerRadius = 0.0
                 
-                UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: {
-                    
+                UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
+                    guard let `self` = self else { return }
                     self.flags.isTransitioningFromInitialModalToInteractiveState = true
-                    
-                    if self.isViewControllerBasedStatusBarAppearance {
-                        self.setNeedsStatusBarAppearanceUpdate()
-                    } else {
-                        UIApplication.shared.setStatusBarHidden(true, with: .fade)
-                    }
                     
                     var scaling: CGFloat
                     if !self.backgroundOptions.contains(.scaled)  {
@@ -632,6 +614,11 @@ class HHImageViewController: UIViewController {
                     }
                     
                     snapshotView.transform = snapshotView.transform.concatenating(CGAffineTransform(scaleX: scaling, y: scaling))
+                    
+                    if !self.isStatusBarHidden {
+                        self.isStatusBarHidden = true
+                        self.setNeedsStatusBarAppearanceUpdate()
+                    }
                     
                     if self.backgroundOptions.contains(.scaled) {
                         self.addMotionEffectsToSnapshotView()
@@ -656,27 +643,25 @@ class HHImageViewController: UIViewController {
                     if (self.image == nil) {
                         self.progressContainer.alpha = 1.0
                     }
-                }, completion: { (finished) in
-                    self.flags.isManuallyResizingTheScrollViewFrame = true
-                    self.scrollView.frame = self.view.bounds;
-                    self.flags.isManuallyResizingTheScrollViewFrame = false
-                    self.scrollView.addSubview(self.imageView)
-                    
-                    self.flags.isTransitioningFromInitialModalToInteractiveState = false
-                    self.flags.isAnimatingAPresentationOrDismissal = false
-                    self.flags.isPresented = true
-                    
-                    self.updateScrollViewAndImageViewForCurrentMetrics()
-                    
-                    if (self.flags.imageDownloadFailed) {
-                        //[weakSelf dismiss:YES];
-                    } else {
-                        self.view.isUserInteractionEnabled = true
-                    }
-                    
+                    }, completion: { [weak self] (finished) in
+                        guard let `self` = self else { return }
+                        self.flags.isManuallyResizingTheScrollViewFrame = true
+                        self.scrollView.frame = self.view.bounds;
+                        self.flags.isManuallyResizingTheScrollViewFrame = false
+                        self.scrollView.addSubview(self.imageView)
+                        
+                        self.flags.isTransitioningFromInitialModalToInteractiveState = false
+                        self.flags.isAnimatingAPresentationOrDismissal = false
+                        self.flags.isPresented = true
+                        
+                        self.updateScrollViewAndImageViewForCurrentMetrics()
+                        
+                        if (self.flags.imageDownloadFailed) {
+                            //[weakSelf dismiss:YES];
+                        } else {
+                            self.view.isUserInteractionEnabled = true
+                        }
                 })
-                
-
             }
             //}
         })
@@ -717,9 +702,6 @@ class HHImageViewController: UIViewController {
             self.closeCircelButtonIfNeeded()
 
             let duration = self.HHImageViewController_TransitionAnimationDuration
-            //                if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
-            //                    duration *= 4;
-            //                }
             
             let cornerRadiusAnimation = CABasicAnimation(keyPath: "cornerRadius")
             cornerRadiusAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -730,8 +712,8 @@ class HHImageViewController: UIViewController {
             self.imageView.layer.add(cornerRadiusAnimation, forKey: "cornerRadius")
             self.imageView.layer.cornerRadius = self.imageInfo.referenceCornerRadius
             
-            UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: {
-                
+            UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
+                guard let `self` = self else { return }
                 self.circleButton.alpha = 0
                 
                 if let snapshotView = self.snapshotView {
@@ -772,19 +754,11 @@ class HHImageViewController: UIViewController {
                         self.imageView.frame = self.startingInfo.startingReferenceFrameForThumbnail;
                     }
                     
-                    // Rotation not needed, so fade the status bar back in. Looks nicer.
-                    if self.isViewControllerBasedStatusBarAppearance {
-                        self.setNeedsStatusBarAppearanceUpdate()
-                    } else {
-                        UIApplication.shared.setStatusBarHidden(self.startingInfo.statusBarHiddenPriorToPresentation, with: .fade)
-                    }
                 }
-            }) { (finished) in
-                // Needed if dismissing from a different orientation then the one we started with
-                if !self.isViewControllerBasedStatusBarAppearance {
-                    UIApplication.shared.setStatusBarHidden(self.startingInfo.statusBarHiddenPriorToPresentation, with: .none)
-                }
-                self.presentingViewController?.dismiss(animated: false, completion: {
+            }) { [weak self] (finished) in
+                guard let `self` = self else { return }
+                self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
+                    guard let `self` = self else { return }
                     self.delegate?.imageViewerDidDismiss?(self)
                 })
             }
@@ -802,10 +776,6 @@ class HHImageViewController: UIViewController {
         self.closeCircelButtonIfNeeded()
 
         let duration = HHImageViewController_TransitionAnimationDuration
-//        if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
-//            duration *= 4;
-//        }
-        
         
         UIView.animate(withDuration: TimeInterval(duration), delay:0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
             guard let `self` = self else { return }
@@ -820,15 +790,10 @@ class HHImageViewController: UIViewController {
             
             self.blackBackdrop.alpha = 0
             self.scrollView.alpha = 0
-            if self.isViewControllerBasedStatusBarAppearance {
-                self.setNeedsStatusBarAppearanceUpdate()
-            } else {
-                UIApplication.shared.setStatusBarHidden(self.startingInfo.statusBarHiddenPriorToPresentation, with: .fade)
-            }
-            
         }, completion: { [weak self] (finished) in
             guard let `self` = self else { return }
-            self.presentingViewController?.dismiss(animated: false, completion: {
+            self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
+                guard let `self` = self else { return }
                 self.delegate?.imageViewerDidDismiss?(self)
             })
         })
@@ -842,10 +807,6 @@ class HHImageViewController: UIViewController {
         self.flags.isDismissing = true
         
         let duration = HHImageViewController_TransitionAnimationDuration
-        //    if (USE_DEBUG_SLOW_ANIMATIONS == 1) {
-        //    duration *= 4;
-        //    }
-        
         
         UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
             guard let `self` = self else { return }
@@ -860,15 +821,10 @@ class HHImageViewController: UIViewController {
             self.scrollView.alpha = 0
             let scaling = self.HHImageViewController_MaxScalingForExpandingOffscreenStyleTransition
             self.scrollView.transform = CGAffineTransform(scaleX: scaling, y: scaling)
-            
-            if self.isViewControllerBasedStatusBarAppearance {
-                self.setNeedsStatusBarAppearanceUpdate()
-            } else {
-                UIApplication.shared.setStatusBarHidden(self.startingInfo.statusBarHiddenPriorToPresentation, with: .fade)
-            }
         }) { [weak self] (finished) in
             guard let `self` = self else { return }
-            self.presentingViewController?.dismiss(animated: false, completion: {
+            self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
+                guard let `self` = self else { return }
                 self.delegate?.imageViewerDidDismiss?(self)
             })
         }
@@ -1473,7 +1429,8 @@ class HHImageViewController: UIViewController {
         
         if (bytesExpected > 0 && !self.flags.imageIsBeingReadFromDisk) {
             
-            UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState, .curveLinear], animations: {
+            UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState, .curveLinear], animations: { [weak self] in
+                guard let `self` = self else { return }
                 self.spinner.alpha = 0
                 self.progressView.alpha = 1
             }, completion: nil)

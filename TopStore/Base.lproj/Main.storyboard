@@ -393,25 +393,37 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FGl-62-2jA">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="42d-Q1-u1f">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="42d-Q1-u1f">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73W-k4-0RY">
-                                                <rect key="frame" x="0.0" y="0.0" width="125" height="50"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="6ng-ZF-ako"/>
+                                                    <constraint firstAttribute="width" constant="50" id="Q6P-ji-59E"/>
+                                                </constraints>
                                                 <state key="normal" image="Box"/>
                                                 <connections>
                                                     <action selector="tabButtonTapped:" destination="OJz-4R-41w" eventType="touchUpInside" id="wtY-vW-a40"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NAb-7U-mi5">
-                                                <rect key="frame" x="125" y="0.0" width="125" height="50"/>
+                                                <rect key="frame" x="162.5" y="0.0" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="9g3-sf-lIT"/>
+                                                    <constraint firstAttribute="width" constant="50" id="Tkx-t4-E8T"/>
+                                                </constraints>
                                                 <state key="normal" image="Photo"/>
                                                 <connections>
                                                     <action selector="tabButtonTapped:" destination="OJz-4R-41w" eventType="touchUpInside" id="r3d-B1-JXk"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGK-PA-35V">
-                                                <rect key="frame" x="250" y="0.0" width="125" height="50"/>
+                                                <rect key="frame" x="325" y="0.0" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="Fay-cz-UdY"/>
+                                                    <constraint firstAttribute="width" constant="50" id="k3b-Zq-qgb"/>
+                                                </constraints>
                                                 <state key="normal" image="Cart"/>
                                                 <connections>
                                                     <action selector="tabButtonTapped:" destination="OJz-4R-41w" eventType="touchUpInside" id="Qf5-au-swS"/>
@@ -490,7 +502,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QUw-Ur-lAw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2738" y="-1505"/>
+            <point key="canvasLocation" x="-3118" y="-1593"/>
         </scene>
     </scenes>
     <resources>
