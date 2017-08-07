@@ -13,6 +13,8 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tabBar.isHidden = true
+
         for viewController in self.viewControllers! {
             if viewController.isKind(of: UINavigationController.self) {
                 _ = viewController.childViewControllers[0].view

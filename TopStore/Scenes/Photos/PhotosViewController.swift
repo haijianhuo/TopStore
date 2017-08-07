@@ -65,10 +65,10 @@ class PhotosViewController: UIViewController {
             if indexPaths.count > 0 {
                 let sortedArray = indexPaths.sorted {$0.row < $1.row}
                 if let indexPath = sortedArray.first {
-                    self.collectionView.collectionViewLayout.invalidateLayout()
                     
                     coordinator.animate(alongsideTransition: nil, completion: {
                         _ in
+                        self.collectionView.collectionViewLayout.invalidateLayout()
                         self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
                         self.willRotate = false
                     })
@@ -274,6 +274,7 @@ extension PhotosViewController : UICollectionViewDelegateFlowLayout {
         }
 
         let widthMinusPadding = collectionView.frame.size.width - cellPadding * (cellsPerRow - 1)
+        
         let eachSide = widthMinusPadding / cellsPerRow
         return CGSize(width: eachSide, height: eachSide)
     }

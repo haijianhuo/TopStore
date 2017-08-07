@@ -11,6 +11,7 @@
 		389DEDE8E997F9D8C5B9E166 /* Pods_TopStoreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCA3E4330818F84D066C2F7 /* Pods_TopStoreUITests.framework */; };
 		8D118B571F36D4280087D5B6 /* HHImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B551F36D4280087D5B6 /* HHImageInfo.swift */; };
 		8D118B581F36D4280087D5B6 /* HHImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B561F36D4280087D5B6 /* HHImageViewController.swift */; };
+		8D1D38BF1F37F76C00F022AF /* TabBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */; };
 		8D562C6C1F300BAE008C8F00 /* HeroAnimatorViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C391F300BAE008C8F00 /* HeroAnimatorViewContext.swift */; };
 		8D562C6D1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C3A1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift */; };
 		8D562C6E1F300BAE008C8F00 /* HeroDefaultAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C3B1F300BAE008C8F00 /* HeroDefaultAnimator.swift */; };
@@ -108,6 +109,7 @@
 		8B56FA74AD1ABD309E2EC454 /* Pods-TopStoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopStoreTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TopStoreTests/Pods-TopStoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D118B551F36D4280087D5B6 /* HHImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageInfo.swift; sourceTree = "<group>"; };
 		8D118B561F36D4280087D5B6 /* HHImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageViewController.swift; sourceTree = "<group>"; };
+		8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarContainer.swift; sourceTree = "<group>"; };
 		8D562C391F300BAE008C8F00 /* HeroAnimatorViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroAnimatorViewContext.swift; sourceTree = "<group>"; };
 		8D562C3A1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroCoreAnimationViewContext.swift; sourceTree = "<group>"; };
 		8D562C3B1F300BAE008C8F00 /* HeroDefaultAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDefaultAnimator.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				8DED0A501F1F89F5004E265E /* README.md */,
 				8DEC02701F19A79600AC228A /* AppDelegate.swift */,
 				8DF66BB41F23EE2B00A9677A /* MainTabBarController.swift */,
+				8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */,
 				8D562CA51F30A91E008C8F00 /* UIKit+TopStore.swift */,
 				8DF66BAA1F23C4DA00A9677A /* CoreData */,
 				8DED0A4D1F1F1A89004E265E /* ViewModels */,
@@ -805,6 +808,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D1D38BF1F37F76C00F022AF /* TabBarContainer.swift in Sources */,
 				8D562C7D1F300BAE008C8F00 /* HeroPlugin.swift in Sources */,
 				8D562C821F300BAE008C8F00 /* HeroStringConvertible.swift in Sources */,
 				8DF66BA51F23B0B800A9677A /* CartViewModel.swift in Sources */,
