@@ -21,6 +21,8 @@ class PhotosViewController: UIViewController {
     
     let viewModel = ProductsViewModel()
 
+    @IBOutlet weak var coverView: UIView!
+    
     var selectedIndexPath: IndexPath?
     var visibleIndexPath: IndexPath?
 
@@ -38,6 +40,9 @@ class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.coverView.backgroundColor = .lightGray
+        self.coverView.isHidden = true
+        
         ImageCache.default.maxCachePeriodInSecond = -1
 
         // Do any additional setup after loading the view.
@@ -65,17 +70,20 @@ class PhotosViewController: UIViewController {
             if indexPaths.count > 0 {
                 let sortedArray = indexPaths.sorted {$0.row < $1.row}
                 if let indexPath = sortedArray.first {
-                    
+                    self.showCoverView(true)
                     coordinator.animate(alongsideTransition: nil, completion: {
                         _ in
                         self.collectionView.collectionViewLayout.invalidateLayout()
                         self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
                         self.willRotate = false
+                        self.showCoverView(false)
                     })
                 }
             }
             else {
+                self.showCoverView(true)
                 self.collectionView.collectionViewLayout.invalidateLayout()
+                self.showCoverView(false)
             }
         }
         else {
@@ -89,6 +97,13 @@ class PhotosViewController: UIViewController {
         
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if self.needRefresh {
+            self.showCoverView(true)
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -96,12 +111,25 @@ class PhotosViewController: UIViewController {
             self.needRefresh = false
             self.collectionView.collectionViewLayout.invalidateLayout()
             if let indexPath = self.selectedIndexPath {
-                let dispatchTime = DispatchTime.now() + 0.2
-                DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+                DispatchQueue.main.async {
                     self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
                 }
             }
-
+            self.showCoverView(false)
+        }
+    }
+    
+    func showCoverView(_ show :Bool) {
+        if show {
+            self.coverView.isHidden = false
+            self.coverView.alpha = 1
+        }
+        else {
+            UIView.animate(withDuration: 1.3, animations: {
+                self.coverView.alpha = 0
+            }, completion: { (finished) in
+                self.coverView.isHidden = true
+            })
         }
     }
     

@@ -18,6 +18,8 @@ class ProductsViewController: UIViewController {
     @IBOutlet weak var avatarPulseButton: HHPulseButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var coverView: UIView!
+    
     var disposeBag = DisposeBag()
     
     let viewModel = ProductsViewModel()
@@ -38,6 +40,9 @@ class ProductsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.coverView.backgroundColor = .lightGray
+        self.coverView.isHidden = true
         
         self.avatarPulseButton.delegate = self
         
@@ -85,14 +90,18 @@ class ProductsViewController: UIViewController {
                 if let indexPath = sortedArray.first {
                     coordinator.animate(alongsideTransition: nil, completion: {
                         _ in
+                        self.showCoverView(true)
                         self.collectionView.collectionViewLayout.invalidateLayout()
                         self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
                         self.willRotate = false
+                        self.showCoverView(false)
                     })
                 }
             }
             else {
+                self.showCoverView(true)
                 self.collectionView.collectionViewLayout.invalidateLayout()
+                self.showCoverView(false)
             }
         }
         else {
@@ -106,6 +115,13 @@ class ProductsViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if self.needRefresh {
+            self.showCoverView(true)
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -115,15 +131,29 @@ class ProductsViewController: UIViewController {
             self.needRefresh = false
             self.collectionView.collectionViewLayout.invalidateLayout()
             if let indexPath = self.selectedIndexPath {
-                let dispatchTime = DispatchTime.now() + 0.2
-                DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+                DispatchQueue.main.async {
                     self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
                 }
             }
+            self.showCoverView(false)
             
         }
     }
     
+    func showCoverView(_ show :Bool) {
+        if show {
+            self.coverView.isHidden = false
+            self.coverView.alpha = 1
+        }
+        else {
+            UIView.animate(withDuration: 1.8, animations: {
+                self.coverView.alpha = 0
+            }, completion: { (finished) in
+                self.coverView.isHidden = true
+            })
+        }
+    }
+
     func bind() {
         
         searchBar
