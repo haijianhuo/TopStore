@@ -25,7 +25,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhn-Kj-a6a">
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhn-Kj-a6a">
                         <rect key="frame" x="168" y="4" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="CqJ-v3-SzJ"/>
@@ -36,7 +36,7 @@
                             <action selector="deleteButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="HSK-SW-4Ow"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dO5-2E-SWQ">
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dO5-2E-SWQ">
                         <rect key="frame" x="8" y="4.5" width="135" height="135"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="135" id="meS-iS-lc3"/>

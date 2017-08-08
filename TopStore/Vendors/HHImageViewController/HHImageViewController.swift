@@ -25,7 +25,7 @@ import Kingfisher
      - parameter button:     A circle menu button object that circle menu is going to use when drawing the row. Don't change button.tag
      - parameter atIndex:    An button index.
      */
-    @objc optional func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Bool
+    @objc optional func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Int
     
     /**
      Tells the delegate that the specified index is now selected.
@@ -149,8 +149,8 @@ class HHImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if self.delegate?.imageViewController?(self, willDisplay: UIButton(), atIndex: 0) != nil {
-                self.setupCircleMenu()
+        if let buttonsCount = self.delegate?.imageViewController?(self, willDisplay: UIButton(), atIndex: 0) {
+                self.setupCircleMenu(buttonsCount)
         }
         
         if (self.mode == .image) {
@@ -359,7 +359,7 @@ class HHImageViewController: UIViewController {
 
 // MARK: - Setup
     
-    func setupCircleMenu() {
+    func setupCircleMenu(_ buttonsCount: Int) {
         let buttonSize: CGFloat = 50
         let distance: CGFloat = 80
         let bottomMargin: CGFloat = 5
@@ -367,7 +367,7 @@ class HHImageViewController: UIViewController {
             frame: CGRect(x: (self.view.frame.size.width - buttonSize)/2, y: self.view.frame.size.height - buttonSize/2 - distance - bottomMargin, width: buttonSize, height: buttonSize),
             normalIcon:"icon_menu",
             selectedIcon:"icon_close",
-            buttonsCount: 4,
+            buttonsCount: buttonsCount,
             duration: 0.5,
             distance: Float(distance))
         

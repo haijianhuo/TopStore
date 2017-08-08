@@ -32,11 +32,7 @@ class ProductsViewController: UIViewController {
     var needRefresh = false
     
     let items: [(icon: String, color: UIColor)] = [
-        ("icon_home", UIColor(red:0.19, green:0.57, blue:1, alpha:1)),
-        ("icon_search", UIColor(red:0.22, green:0.74, blue:0, alpha:1)),
-        ("notifications-btn", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1)),
-        ("settings-btn", UIColor(red:0.51, green:0.15, blue:1, alpha:1)),
-        ("nearby-btn", UIColor(red:1, green:0.39, blue:0, alpha:1)),
+        ("shopping_add", UIColor(red:0.19, green:0.57, blue:1, alpha:1))
         ]
 
     override func viewDidLoad() {
@@ -252,7 +248,7 @@ extension ProductsViewController: UICollectionViewDataSource
         else {
             cell.imageView.image = UIImage(named: "Placeholder")
         }
-        cell.delegate = self
+        //cell.delegate = self
         return cell
     }
     
@@ -265,6 +261,14 @@ extension ProductsViewController: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         self.view.endEditing(true)
+        
+        self.selectedIndexPath = indexPath
+        
+        let item = self.viewModel.products[indexPath.row]
+        if let cell = collectionView.cellForItem(at: indexPath) as? ProductCell {
+            self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
+        }
+
     }
     
 }
@@ -306,7 +310,7 @@ extension ProductsViewController: HHPulseButtonDelegate {
 
 extension ProductsViewController: HHImageViewControllerDelegate
 {
-    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Bool {
+    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Int {
         button.backgroundColor = items[atIndex].color
         
         button.setImage(UIImage(named: items[atIndex].icon), for: .normal)
@@ -316,11 +320,18 @@ extension ProductsViewController: HHImageViewControllerDelegate
         button.setImage(highlightedImage, for: .highlighted)
         button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
         
-        return true
+        return items.count
     }
     
     func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool {
-        print("button did selected: \(atIndex)")
+        //print("button did selected: \(atIndex)")
+        if atIndex == 0 {
+            if let selectedIndexPath = self.selectedIndexPath {
+                let product = self.viewModel.products[selectedIndexPath.row]
+                self.viewModel.addToCart(product)
+            }
+        }
+
         return true
     }
 }
@@ -339,30 +350,30 @@ extension ProductsViewController: UISearchBarDelegate
 
 // MARK: - ProductCellDelegate
 
-extension ProductsViewController: ProductCellDelegate
-{
-    func addButtonDidTap(_ cell: ProductCell, _ sender: Any) {
-        self.view.endEditing(true)
-        
-        if let indexPath = self.collectionView.indexPath(for: cell) {
-            self.selectedIndexPath = indexPath
-            let product = self.viewModel.products[indexPath.row]
-            self.addConfirm(product)
-        }
-    }
-    
-    func photoButtonDidTap(_ cell: ProductCell, _ sender: Any) {
-         if let indexPath = self.collectionView.indexPath(for: cell) {
-            self.selectedIndexPath = indexPath
-            
-            let item = self.viewModel.products[indexPath.row]
-            if let cell = collectionView.cellForItem(at: indexPath) as? ProductCell {
-                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
-            }
-        }
-    }
-    
-}
+//extension ProductsViewController: ProductCellDelegate
+//{
+//    func addButtonDidTap(_ cell: ProductCell, _ sender: Any) {
+//        self.view.endEditing(true)
+//        
+//        if let indexPath = self.collectionView.indexPath(for: cell) {
+//            self.selectedIndexPath = indexPath
+//            let product = self.viewModel.products[indexPath.row]
+//            self.addConfirm(product)
+//        }
+//    }
+//    
+//    func photoButtonDidTap(_ cell: ProductCell, _ sender: Any) {
+//         if let indexPath = self.collectionView.indexPath(for: cell) {
+//            self.selectedIndexPath = indexPath
+//            
+//            let item = self.viewModel.products[indexPath.row]
+//            if let cell = collectionView.cellForItem(at: indexPath) as? ProductCell {
+//                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
+//            }
+//        }
+//    }
+//    
+//}
 
 // MARK: - KRPullLoadViewDelegate
 

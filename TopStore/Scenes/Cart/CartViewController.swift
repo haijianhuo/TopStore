@@ -14,10 +14,16 @@ import Kingfisher
 class CartViewController: UIViewController {
     
     @IBOutlet var tableView: UITableView!
-    
+    var selectedIndexPath: IndexPath?
+
     var disposeBag = DisposeBag()
     
     let viewModel = CartViewModel.shared
+
+    let items: [(icon: String, color: UIColor)] = [
+        ("shopping_delete", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1))
+    ]
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +87,8 @@ class CartViewController: UIViewController {
         }
         
         let imageViewer = HHImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: .scaled)
+        imageViewer.delegate = self
+        imageViewer.showCircleMenuOnStart = true
         imageViewer.show(from: self, transition: .fromOriginalPosition)
     }
     
@@ -161,7 +169,7 @@ extension CartViewController: UITableViewDataSource
         }
         
         cell.priceLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: item.price)
-        cell.delegate = self
+        //cell.delegate = self
 
         return cell
         
@@ -175,12 +183,19 @@ extension CartViewController: UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.view.endEditing(true)
+        
+        self.selectedIndexPath = indexPath
+
+        let product = self.viewModel.products[indexPath.row]
+        if let cell = tableView.cellForRow(at: indexPath) as? CartCell {
+            self.zoomImage(imageView: cell.photoView, imageUrl: product.url_large)
+        }
+
     }
 }
 
 // MARK: - CartCellDelegate
-
+/*
 extension CartViewController: CartCellDelegate
 {
     func deleteButtonDidTap(_ cell: CartCell, _ sender: Any) {
@@ -196,5 +211,34 @@ extension CartViewController: CartCellDelegate
        }
     }
 }
+*/
 
+// MARK: - HHImageViewControllerDelegate
+
+extension CartViewController: HHImageViewControllerDelegate
+{
+    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Int {
+        button.backgroundColor = items[atIndex].color
+        
+        button.setImage(UIImage(named: items[atIndex].icon), for: .normal)
+        
+        // set highlited image
+        let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
+        button.setImage(highlightedImage, for: .highlighted)
+        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+        return items.count
+    }
+    
+    func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool {
+        //print("button did selected: \(atIndex)")
+        
+        if atIndex == 0 {
+            if let selectedIndexPath = self.selectedIndexPath {
+                self.deleteRow(at: selectedIndexPath)
+            }
+        }
+        
+        return true
+    }
+}
 
