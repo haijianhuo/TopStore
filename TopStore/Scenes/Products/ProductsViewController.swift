@@ -148,6 +148,10 @@ class ProductsViewController: UIViewController {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    
     func showCoverView(_ show :Bool) {
         if show {
             self.coverView.isHidden = false

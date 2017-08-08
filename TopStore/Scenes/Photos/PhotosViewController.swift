@@ -126,6 +126,10 @@ class PhotosViewController: UIViewController {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+
     func showCoverView(_ show :Bool) {
         if show {
             self.coverView.isHidden = false
@@ -142,31 +146,6 @@ class PhotosViewController: UIViewController {
     
     func bind() {
         
-//        searchBar
-//            .rx
-//            .searchButtonClicked
-//            .subscribe(onNext: { [weak self] (element) in
-//                guard let `self` = self else { return }
-//                DispatchQueue.global().async {
-//                    self.selectedIndexPath = nil
-//                    self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
-//                }
-//            }).addDisposableTo(disposeBag)
-        
-//        searchBar
-//            .rx
-//            .text
-//            .map { $0! }
-//            .throttle(1, scheduler: MainScheduler.instance)
-//            .distinctUntilChanged()
-//            .subscribe(onNext: { [weak self] (element) in
-//                guard let `self` = self else { return }
-//                DispatchQueue.global().async {
-//                    self.selectedIndexPath = nil
-//                    self.viewModel.loadPage(query: element, page: 1)
-//                }
-//            }).addDisposableTo(disposeBag)
-        
         self.viewModel.productsUpdated.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
@@ -174,29 +153,6 @@ class PhotosViewController: UIViewController {
             }
         }).addDisposableTo(disposeBag)
         
-//        collectionView.rx.contentOffset
-//            .filter { [weak self] offset in
-//                guard let `self` = self else { return false }
-//                guard !self.willRotate else { return false }
-//                guard self.collectionView.frame.height > 0 else { return false }
-//                guard self.collectionView.contentSize.height > 0 else { return false }
-//                
-//                self.view.endEditing(true)
-//                return offset.y + self.collectionView.frame.height >= self.collectionView.contentSize.height - 100
-//            }
-//            .subscribe(onNext: { [weak self] (element) in
-//                guard let `self` = self else { return }
-//                DispatchQueue.global().async {
-//                    self.viewModel.loadNextPage()
-//                }
-//            })
-//            .addDisposableTo(disposeBag)
-        
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func handleTap(_ sender: UITapGestureRecognizer) {
