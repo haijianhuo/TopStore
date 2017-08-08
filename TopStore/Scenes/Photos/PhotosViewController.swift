@@ -312,7 +312,7 @@ extension PhotosViewController : UICollectionViewDelegateFlowLayout {
 
 extension PhotosViewController: HHImageViewControllerDelegate
 {
-    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) {
+    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Bool {
         button.backgroundColor = items[atIndex].color
         
         button.setImage(UIImage(named: items[atIndex].icon), for: .normal)
@@ -321,9 +321,11 @@ extension PhotosViewController: HHImageViewControllerDelegate
         let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
         button.setImage(highlightedImage, for: .highlighted)
         button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+        return true
     }
     
-    func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) {
-        print("button did selected: \(atIndex)")
+    func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool {
+        //print("button did selected: \(atIndex)")
+        return true
     }
 }

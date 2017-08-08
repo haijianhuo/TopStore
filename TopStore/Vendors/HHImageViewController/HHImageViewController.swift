@@ -16,7 +16,7 @@ import Kingfisher
     /**
      Called after the imageViewController has finished dismissing.
      */
-    @objc optional func imageViewerDidDismiss(_ imageViewController: HHImageViewController)
+    @objc optional func imageViewerDidDismiss(_ imageViewController: HHImageViewController) -> Bool
     
     /**
      Tells the delegate the circle menu is about to draw a button for a particular index.
@@ -25,7 +25,7 @@ import Kingfisher
      - parameter button:     A circle menu button object that circle menu is going to use when drawing the row. Don't change button.tag
      - parameter atIndex:    An button index.
      */
-    @objc optional func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int)
+    @objc optional func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Bool
     
     /**
      Tells the delegate that the specified index is now selected.
@@ -34,7 +34,7 @@ import Kingfisher
      - parameter button:     A selected circle menu button. Don't change button.tag
      - parameter atIndex:    Selected button index
      */
-    @objc optional func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?)
+    @objc optional func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool
 
 }
 
@@ -99,10 +99,6 @@ class HHImageViewController: UIViewController {
         var imageDownloadFailed: Bool = false
     }
     
-    //#define USE_DEBUG_SLOW_ANIMATIONS 0
-
-
-    
     // General Info
 
     private(set) var transition: HHImageViewControllerTransition?
@@ -144,30 +140,16 @@ class HHImageViewController: UIViewController {
     private(set) var imageDownloadDataTask: URLSessionDataTask?
     private(set) var downloadProgressTimer: Timer?
 
-    private var circleButton: CircleMenu!
+    private var circleButton: CircleMenu?
     
     private var isStatusBarHidden = UIApplication.shared.isStatusBarHidden
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        let buttonSize: CGFloat = 50
-        let distance: CGFloat = 80
-        let bottomMargin: CGFloat = 5
-        circleButton = CircleMenu(
-            frame: CGRect(x: (self.view.frame.size.width - buttonSize)/2, y: self.view.frame.size.height - buttonSize/2 - distance - bottomMargin, width: buttonSize, height: buttonSize),
-            normalIcon:"icon_menu",
-            selectedIcon:"icon_close",
-            buttonsCount: 4,
-            duration: 0.5,
-            distance: Float(distance))
-        circleButton.delegate = self
-        circleButton.layer.cornerRadius = circleButton.frame.size.width / 2.0
-        circleButton.alpha = 0
-        
-        circleButton.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
-        self.view.addSubview(circleButton)
+        if self.delegate?.imageViewController?(self, willDisplay: UIButton(), atIndex: 0) != nil {
+                self.setupCircleMenu()
+        }
         
         if (self.mode == .image) {
             self.viewDidLoadForImageMode()
@@ -374,6 +356,28 @@ class HHImageViewController: UIViewController {
     }
 
 // MARK: - Setup
+    
+    func setupCircleMenu() {
+        let buttonSize: CGFloat = 50
+        let distance: CGFloat = 80
+        let bottomMargin: CGFloat = 5
+        self.circleButton = CircleMenu(
+            frame: CGRect(x: (self.view.frame.size.width - buttonSize)/2, y: self.view.frame.size.height - buttonSize/2 - distance - bottomMargin, width: buttonSize, height: buttonSize),
+            normalIcon:"icon_menu",
+            selectedIcon:"icon_close",
+            buttonsCount: 4,
+            duration: 0.5,
+            distance: Float(distance))
+        
+        if let circleButton = self.circleButton {
+            circleButton.delegate = self
+            circleButton.layer.cornerRadius = circleButton.frame.size.width / 2.0
+            circleButton.alpha = 0
+            
+            circleButton.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+            self.view.addSubview(circleButton)
+        }
+    }
     
     func setupImageAndDownloadIfNecessary(imageInfo: HHImageInfo) {
         if let image = imageInfo.image {
@@ -714,7 +718,9 @@ class HHImageViewController: UIViewController {
             
             UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
                 guard let `self` = self else { return }
-                self.circleButton.alpha = 0
+                if let circleButton = self.circleButton {
+                    circleButton.alpha = 0
+                }
                 
                 if let snapshotView = self.snapshotView {
                     snapshotView.transform = self.currentSnapshotRotationTransform
@@ -780,7 +786,9 @@ class HHImageViewController: UIViewController {
         UIView.animate(withDuration: TimeInterval(duration), delay:0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
             guard let `self` = self else { return }
             
-            self.circleButton.alpha = 0
+            if let circleButton = self.circleButton {
+                circleButton.alpha = 0
+            }
             
             if let snapshotView = self.snapshotView {
                 snapshotView.transform = self.currentSnapshotRotationTransform
@@ -1169,15 +1177,17 @@ class HHImageViewController: UIViewController {
             self.updateLayoutsForCurrentOrientation()
         }
         
-        if self.circleButton.alpha == 0 {
-            
-            let dispatchTime = DispatchTime.now() + 0.3
-            DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-                self.view.bringSubview(toFront: self.circleButton)
-                self.circleButton.alpha = 1
-                self.circleButton.sendActions(for: .touchUpInside)
+        if let circleButton = self.circleButton {
+            if circleButton.alpha == 0 {
+                
+                let dispatchTime = DispatchTime.now() + 0.3
+                DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+                    self.view.bringSubview(toFront: circleButton)
+                    circleButton.alpha = 1
+                    circleButton.sendActions(for: .touchUpInside)
+                }
+                
             }
-
         }
     }
 
@@ -1395,10 +1405,10 @@ class HHImageViewController: UIViewController {
 // MARK: circle button
     
     func closeCircelButtonIfNeeded() {
-        if self.circleButton.buttonsIsShown() {
-            self.circleButton.sendActions(for: .touchUpInside)
+        guard let circleButton = self.circleButton else { return }
+        if circleButton.buttonsIsShown() {
+            circleButton.sendActions(for: .touchUpInside)
         }
-
     }
     
 // MARK: - Progress Bar
@@ -1550,13 +1560,13 @@ extension HHImageViewController: CircleMenuDelegate
 
     func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
         
-        self.delegate?.imageViewController?(self, willDisplay: button, atIndex: atIndex)
+        _ = self.delegate?.imageViewController?(self, willDisplay: button, atIndex: atIndex)
         
     }
     
     func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
         //print("button did selected: \(atIndex)")
-        self.delegate?.imageViewController?(self, buttonDidSelected: button, atIndex: atIndex, image: self.image)
+        _ = self.delegate?.imageViewController?(self, buttonDidSelected: button, atIndex: atIndex, image: self.image)
         
         self.dismiss(animated: true)
     }
