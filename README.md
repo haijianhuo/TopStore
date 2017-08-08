@@ -18,15 +18,15 @@ Traditional Imperative Programming
 
 Features:
 
-Visual custom control desgin with xib and the custom control can be displayed visually on the storyboard like the stock cocoa control
+Visual custom control design with xib and the custom control can be displayed visually on the storyboard like the stock cocoa control
 
-Adaptive tab bar which will show the tab bar verticall on device vertical compact size class, it's a wrapper around the stock tab bar controller
+Adaptive tab bar which will show the tab bar vertical on device vertical compact size class, it's a wrapper around the stock tab bar controller
 
-Core Data, Core Annimation, Core Grahpics, UIView animation
+Core Data, Core Animation, Core Graphics, UIView animation
 
 Morph view controller animated transition with Hero
 
-Businness logic or view models unit tested
+Business logic or view models unit tested
 
 Instrument memory leak checked
 
