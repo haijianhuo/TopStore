@@ -214,6 +214,7 @@ class ProductsViewController: UIViewController {
         
         let imageViewer = HHImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: .scaled)
         imageViewer.delegate = self
+        imageViewer.showCircleMenuOnStart = true
         imageViewer.show(from: self, transition: .fromOriginalPosition)
     }
     

@@ -26,6 +26,8 @@ Core Data, Core Animation, Core Graphics, UIView animation
 
 Morph view controller animated transition with Hero
 
+Fade in animation for collection vew layout change
+
 Business logic or view models unit tested
 
 Instrument memory leak checked

@@ -1180,18 +1180,23 @@ class HHImageViewController: UIViewController {
         }
         
         if self.showCircleMenuOnStart {
-            self.showCircleMenu()
+            self.perform(#selector(showCircleMenu), with: nil, afterDelay: 0.3)
         }
     }
 
     func showCircleMenu() {
         guard let circleMenu = self.circleMenu else { return }
         if circleMenu.alpha == 0 {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+            
+            DispatchQueue.main.async {
                 self.view.bringSubview(toFront: circleMenu)
                 circleMenu.alpha = 1
-                circleMenu.sendActions(for: .touchUpInside)
+                if !circleMenu.buttonsIsShown() {
+                    circleMenu.sendActions(for: .touchUpInside)
+                }
             }
+            //DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+            //}
         }
     }
     
@@ -1241,6 +1246,14 @@ class HHImageViewController: UIViewController {
         if (self.flags.scrollViewIsAnimatingAZoom) {
             return
         }
+        
+        if let circleMenu = self.circleMenu {
+            if circleMenu.alpha != 0 {
+                self.closeCircelButtonIfNeeded()
+                return
+            }
+        }
+        
         self.dismiss(animated: true)
     }
     
@@ -1394,6 +1407,8 @@ class HHImageViewController: UIViewController {
         guard let circleMenu = self.circleMenu else { return }
         if circleMenu.buttonsIsShown() {
             circleMenu.sendActions(for: .touchUpInside)
+            circleMenu.alpha = 0
+            
         }
     }
     
@@ -1555,6 +1570,12 @@ extension HHImageViewController: CircleMenuDelegate
         _ = self.delegate?.imageViewController?(self, buttonDidSelected: button, atIndex: atIndex, image: self.image)
         
         self.dismiss(animated: true)
+    }
+    
+    func menuCollapsed(_ circleMenu: CircleMenu) {
+        DispatchQueue.main.async {
+            circleMenu.alpha = 0
+        }
     }
 }
 

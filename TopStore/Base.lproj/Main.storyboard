@@ -42,7 +42,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCell" id="HY8-An-IVd" customClass="PhotoCell" customModule="TopStore" customModuleProvider="target">
-                                        <rect key="frame" x="37.5" y="0.0" width="300" height="300"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
@@ -394,7 +394,7 @@
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="42d-Q1-u1f">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                        <rect key="frame" x="25" y="0.0" width="325" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73W-k4-0RY">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -408,7 +408,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NAb-7U-mi5">
-                                                <rect key="frame" x="162.5" y="0.0" width="50" height="50"/>
+                                                <rect key="frame" x="137.5" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="9g3-sf-lIT"/>
                                                     <constraint firstAttribute="width" constant="50" id="Tkx-t4-E8T"/>
@@ -419,7 +419,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGK-PA-35V">
-                                                <rect key="frame" x="325" y="0.0" width="50" height="50"/>
+                                                <rect key="frame" x="275" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="Fay-cz-UdY"/>
                                                     <constraint firstAttribute="width" constant="50" id="k3b-Zq-qgb"/>
@@ -436,10 +436,18 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="DKf-xR-fmR"/>
-                                    <constraint firstAttribute="trailing" secondItem="42d-Q1-u1f" secondAttribute="trailing" id="Ka4-hr-Nss"/>
-                                    <constraint firstItem="42d-Q1-u1f" firstAttribute="leading" secondItem="FGl-62-2jA" secondAttribute="leading" id="MZL-a2-UWH"/>
-                                    <constraint firstAttribute="bottom" secondItem="42d-Q1-u1f" secondAttribute="bottom" id="bt8-8m-VSZ"/>
-                                    <constraint firstItem="42d-Q1-u1f" firstAttribute="top" secondItem="FGl-62-2jA" secondAttribute="top" id="lnz-PA-YEc"/>
+                                    <constraint firstAttribute="trailing" secondItem="42d-Q1-u1f" secondAttribute="trailing" constant="25" id="Ka4-hr-Nss">
+                                        <variation key="heightClass=compact" constant="0.0"/>
+                                    </constraint>
+                                    <constraint firstItem="42d-Q1-u1f" firstAttribute="leading" secondItem="FGl-62-2jA" secondAttribute="leading" constant="25" id="MZL-a2-UWH">
+                                        <variation key="heightClass=compact" constant="0.0"/>
+                                    </constraint>
+                                    <constraint firstAttribute="bottom" secondItem="42d-Q1-u1f" secondAttribute="bottom" id="bt8-8m-VSZ">
+                                        <variation key="heightClass=compact" constant="25"/>
+                                    </constraint>
+                                    <constraint firstItem="42d-Q1-u1f" firstAttribute="top" secondItem="FGl-62-2jA" secondAttribute="top" id="lnz-PA-YEc">
+                                        <variation key="heightClass=compact" constant="25"/>
+                                    </constraint>
                                     <constraint firstAttribute="width" constant="50" id="rl4-S8-VoC"/>
                                 </constraints>
                                 <variation key="default">
