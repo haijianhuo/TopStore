@@ -2,7 +2,8 @@ PODS:
   - Alamofire (4.5.0)
   - CircleMenu (2.0.5)
   - JSQCoreDataKit (6.0.3)
-  - Kingfisher (3.10.3)
+  - Kingfisher (3.10.4)
+  - KRPullLoader (1.0.1)
   - ObjectMapper (2.2.8)
   - PKHUD (4.2.3)
   - ReachabilitySwift (3)
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - CircleMenu (~> 2.0.5)
   - JSQCoreDataKit (~> 6.0.2)
   - Kingfisher (~> 3.10.3)
+  - KRPullLoader (~> 1.0.1)
   - ObjectMapper (~> 2.2.7)
   - PKHUD (~> 4.0)
   - ReachabilitySwift (~> 3)
@@ -35,7 +37,8 @@ SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   CircleMenu: 7cef16b4401de5b545e5f06d720cb202ec64800d
   JSQCoreDataKit: 304674c67bc913221f1c818a6fba999d8cc0d994
-  Kingfisher: a0ac82dc5bcf0388dd74b294cf2cc13730c63436
+  Kingfisher: dc3a4983e86d2dfa89513664983a82340c11a289
+  KRPullLoader: 50cfb03a9fccdfbac70d1b6ca2982292ea86a912
   ObjectMapper: 3d571bb5af471c779e1160828cd9ad5c4ef90958
   PKHUD: c7692163a09875cbf15827dc581df3c5cf7f1015
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
@@ -44,6 +47,6 @@ SPEC CHECKSUMS:
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
 
-PODFILE CHECKSUM: 7001199f01daf568e9f21a1957f59ec5f3596171
+PODFILE CHECKSUM: 1e3371c5779a73925c2f94e31c03dc4a23823807
 
 COCOAPODS: 1.2.1

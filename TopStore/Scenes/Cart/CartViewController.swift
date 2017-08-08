@@ -161,24 +161,7 @@ extension CartViewController: UITableViewDataSource
         }
         
         cell.priceLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: item.price)
-
-        
-        _ = cell.deleteButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-                self.view.endEditing(true)
-                if let indexPath = tableView.indexPath(for: cell) {
-                    self.deleteConfirm(at: indexPath)
-                }
-
-                
-            }).addDisposableTo(cell.disposeBag)
-
-        _ = cell.photoButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-                self.zoomImage(imageView: cell.photoView, imageUrl: item.url_large)
-            }).addDisposableTo(cell.disposeBag)
+        cell.delegate = self
 
         return cell
         
@@ -195,3 +178,23 @@ extension CartViewController: UITableViewDelegate
         self.view.endEditing(true)
     }
 }
+
+// MARK: - CartCellDelegate
+
+extension CartViewController: CartCellDelegate
+{
+    func deleteButtonDidTap(_ cell: CartCell, _ sender: Any) {
+        if let indexPath = self.tableView.indexPath(for: cell) {
+            self.deleteConfirm(at: indexPath)
+        }
+    }
+    
+    func photoButtonDidTap(_ cell: CartCell, _ sender: Any) {
+        if let indexPath = self.tableView.indexPath(for: cell) {
+            let item = self.viewModel.products[indexPath.row]
+            self.zoomImage(imageView: cell.photoView, imageUrl: item.url_large)
+       }
+    }
+}
+
+

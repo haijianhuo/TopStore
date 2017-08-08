@@ -17,6 +17,7 @@ target 'TopStore' do
   pod 'Kingfisher',             '~> 3.10.3'
   pod 'CircleMenu',             '~> 2.0.5'
   pod 'JSQCoreDataKit',         '~> 6.0.2'
+  pod 'KRPullLoader',           '~> 1.0.1'
 
   target 'TopStoreTests' do
     inherit! :search_paths

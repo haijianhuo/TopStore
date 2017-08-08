@@ -235,7 +235,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yse-Hu-gM0">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                     <connections>
-                                                        <action selector="photoButtonTapped:" destination="5CJ-Hf-SnA" eventType="touchUpInside" id="Rjy-fY-cUh"/>
+                                                        <action selector="phototButtonTapped:" destination="HpW-Fk-hWC" eventType="touchUpInside" id="caH-wq-dDe"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4SX-vP-gJr">
@@ -252,7 +252,7 @@
                                                     </constraints>
                                                     <state key="normal" image="Add"/>
                                                     <connections>
-                                                        <action selector="addButtonTapped:" destination="5CJ-Hf-SnA" eventType="touchUpInside" id="eIa-H8-ofZ"/>
+                                                        <action selector="addButtonTapped:" destination="HpW-Fk-hWC" eventType="touchUpInside" id="JRO-U2-u84"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1.99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZQ-0c-wRa">

@@ -8,8 +8,18 @@
 
 import UIKit
 
+@objc protocol ProductCellDelegate: class {
+    
+    @objc optional func addButtonDidTap(_ cell: ProductCell, _ sender: Any)
+    
+    @objc optional func photoButtonDidTap(_ cell: ProductCell, _ sender: Any)
+}
+
+
 class ProductCell: UICollectionViewCell {
     
+    weak var delegate: ProductCellDelegate?
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     
@@ -22,4 +32,12 @@ class ProductCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
+    @IBAction func addButtonTapped(_ sender: Any) {
+        self.delegate?.addButtonDidTap?(self, sender)
+    }
+    
+    @IBAction func phototButtonTapped(_ sender: Any) {
+        self.delegate?.photoButtonDidTap?(self, sender)
+    }
+
 }

@@ -39,7 +39,7 @@ class ProductsViewModel {
     }
     
     func loadPage(query: String, page: Int) {
-        print("query,page:\(query), \(page)")
+        //print("query,page:\(query), \(page)")
         if page == 1 {
             self.query = query
             self.nextPage = 1

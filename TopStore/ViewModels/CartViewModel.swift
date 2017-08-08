@@ -33,8 +33,8 @@ class CartViewModel: NSObject
     
     func destroy()
     {
+        print("\(#function), \(type(of: self)) *Log*")
         CartViewModel.Static.instance = nil
-        print("destroyed Singleton instance")
     }
     
     var stack: CoreDataStack!
@@ -47,7 +47,8 @@ class CartViewModel: NSObject
     fileprivate override init() {
         super.init()
         
-        print("init singleton")
+        print("\(#function), \(type(of: self)) *Log*")
+
 
         let storeType = StoreType.sqlite(self.dataURL())
         let model = CoreDataModel(name: "TopStore", bundle: Bundle.main, storeType: storeType)
@@ -65,7 +66,7 @@ class CartViewModel: NSObject
     }
     
     deinit {
-        print("deinit singleton")
+        print("\(#function), \(type(of: self)) *Log*")
     }
 
     func clearCart() {
@@ -95,7 +96,7 @@ class CartViewModel: NSObject
     }
     
     private func fetchProductData() -> [Product] {
-        print("fetchProductData")
+        print("\(#function), \(type(of: self)) *Log*")
         var array = [Product]()
         
         let backgroundChildContext = stack.childContext(concurrencyType: .privateQueueConcurrencyType)

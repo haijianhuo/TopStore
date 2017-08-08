@@ -60,13 +60,15 @@ let HHImageViewController_DefaultBackgroundBlurRadius: CGFloat = 2.0
 
 class HHImageViewController: UIViewController {
 
+    weak var delegate: HHImageViewControllerDelegate?
+
     private(set) var imageInfo: HHImageInfo!
     private(set) var image: UIImage?
     private(set) var mode: HHImageViewControllerMode!
     private(set) var backgroundOptions: HHImageViewControllerBackgroundOptions!
 
-    weak var delegate: HHImageViewControllerDelegate?
-
+    var showCircleMenuOnStart = false
+    
     // Private Constants
     private let HHImageViewController_MinimumBackgroundScaling: CGFloat = 0.94
     private let HHImageViewController_TargetZoomForDoubleTap: CGFloat = 3.0
@@ -140,7 +142,7 @@ class HHImageViewController: UIViewController {
     private(set) var imageDownloadDataTask: URLSessionDataTask?
     private(set) var downloadProgressTimer: Timer?
 
-    private var circleButton: CircleMenu?
+    private var circleMenu: CircleMenu?
     
     private var isStatusBarHidden = UIApplication.shared.isStatusBarHidden
     
@@ -361,7 +363,7 @@ class HHImageViewController: UIViewController {
         let buttonSize: CGFloat = 50
         let distance: CGFloat = 80
         let bottomMargin: CGFloat = 5
-        self.circleButton = CircleMenu(
+        self.circleMenu = CircleMenu(
             frame: CGRect(x: (self.view.frame.size.width - buttonSize)/2, y: self.view.frame.size.height - buttonSize/2 - distance - bottomMargin, width: buttonSize, height: buttonSize),
             normalIcon:"icon_menu",
             selectedIcon:"icon_close",
@@ -369,13 +371,13 @@ class HHImageViewController: UIViewController {
             duration: 0.5,
             distance: Float(distance))
         
-        if let circleButton = self.circleButton {
-            circleButton.delegate = self
-            circleButton.layer.cornerRadius = circleButton.frame.size.width / 2.0
-            circleButton.alpha = 0
+        if let circleMenu = self.circleMenu {
+            circleMenu.delegate = self
+            circleMenu.layer.cornerRadius = circleMenu.frame.size.width / 2.0
+            circleMenu.alpha = 0
             
-            circleButton.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
-            self.view.addSubview(circleButton)
+            circleMenu.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+            self.view.addSubview(circleMenu)
         }
     }
     
@@ -718,8 +720,8 @@ class HHImageViewController: UIViewController {
             
             UIView.animate(withDuration: TimeInterval(duration), delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
                 guard let `self` = self else { return }
-                if let circleButton = self.circleButton {
-                    circleButton.alpha = 0
+                if let circleMenu = self.circleMenu {
+                    circleMenu.alpha = 0
                 }
                 
                 if let snapshotView = self.snapshotView {
@@ -765,7 +767,7 @@ class HHImageViewController: UIViewController {
                 guard let `self` = self else { return }
                 self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
                     guard let `self` = self else { return }
-                    self.delegate?.imageViewerDidDismiss?(self)
+                    _ = self.delegate?.imageViewerDidDismiss?(self)
                 })
             }
         }
@@ -786,8 +788,8 @@ class HHImageViewController: UIViewController {
         UIView.animate(withDuration: TimeInterval(duration), delay:0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
             guard let `self` = self else { return }
             
-            if let circleButton = self.circleButton {
-                circleButton.alpha = 0
+            if let circleMenu = self.circleMenu {
+                circleMenu.alpha = 0
             }
             
             if let snapshotView = self.snapshotView {
@@ -802,7 +804,7 @@ class HHImageViewController: UIViewController {
             guard let `self` = self else { return }
             self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
                 guard let `self` = self else { return }
-                self.delegate?.imageViewerDidDismiss?(self)
+                _ = self.delegate?.imageViewerDidDismiss?(self)
             })
         })
         
@@ -833,7 +835,7 @@ class HHImageViewController: UIViewController {
             guard let `self` = self else { return }
             self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
                 guard let `self` = self else { return }
-                self.delegate?.imageViewerDidDismiss?(self)
+                _ = self.delegate?.imageViewerDidDismiss?(self)
             })
         }
         
@@ -1177,20 +1179,22 @@ class HHImageViewController: UIViewController {
             self.updateLayoutsForCurrentOrientation()
         }
         
-        if let circleButton = self.circleButton {
-            if circleButton.alpha == 0 {
-                
-                let dispatchTime = DispatchTime.now() + 0.3
-                DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-                    self.view.bringSubview(toFront: circleButton)
-                    circleButton.alpha = 1
-                    circleButton.sendActions(for: .touchUpInside)
-                }
-                
-            }
+        if self.showCircleMenuOnStart {
+            self.showCircleMenu()
         }
     }
 
+    func showCircleMenu() {
+        guard let circleMenu = self.circleMenu else { return }
+        if circleMenu.alpha == 0 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+                self.view.bringSubview(toFront: circleMenu)
+                circleMenu.alpha = 1
+                circleMenu.sendActions(for: .touchUpInside)
+            }
+        }
+    }
+    
 // MARK: - Gesture Recognizer Actions
     
     func imageDoubleTapped(_ sender: UITapGestureRecognizer) {
@@ -1246,26 +1250,8 @@ class HHImageViewController: UIViewController {
             return
         }
         
-//        if self.image != nil && sender.state == .began {
-//            if let interactionsDelegate = self.interactionsDelegate {
-//                let location = sender.location(in: self.view)
-//                interactionsDelegate.imageViewerDidLongPress(imageViewer: self, atRect:CGRect(x: location.x, y: location.y, width: 0.0, height: 0.0))
-//            }
-//            
-//            var allowCopy = false
-//            
-//            if let interactionsDelegate = self.interactionsDelegate {
-//                allowCopy = interactionsDelegate.imageViewerAllowCopyToPasteboard(imageViewer: self)
-//            }
-//            
-//            if (allowCopy) {
-//                let location = sender.location(in: self.imageView)
-//                let menuController = UIMenuController.shared
-//                
-//                menuController.setTargetRect(CGRect(x: location.x, y: location.y, width: 0.0, height: 0.0), in: self.imageView)
-//                menuController.setMenuVisible(true, animated:true)
-//            }
-//        }
+        self.showCircleMenu()
+
     }
 
     func dismissingPanGestureRecognizerPanned(_ panner: UIPanGestureRecognizer) {
@@ -1405,9 +1391,9 @@ class HHImageViewController: UIViewController {
 // MARK: circle button
     
     func closeCircelButtonIfNeeded() {
-        guard let circleButton = self.circleButton else { return }
-        if circleButton.buttonsIsShown() {
-            circleButton.sendActions(for: .touchUpInside)
+        guard let circleMenu = self.circleMenu else { return }
+        if circleMenu.buttonsIsShown() {
+            circleMenu.sendActions(for: .touchUpInside)
         }
     }
     

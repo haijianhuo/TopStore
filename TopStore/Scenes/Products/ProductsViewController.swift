@@ -10,6 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
+import KRPullLoader
 
 class ProductsViewController: UIViewController {
     
@@ -30,6 +31,14 @@ class ProductsViewController: UIViewController {
     var willRotate = false
     var needRefresh = false
     
+    let items: [(icon: String, color: UIColor)] = [
+        ("icon_home", UIColor(red:0.19, green:0.57, blue:1, alpha:1)),
+        ("icon_search", UIColor(red:0.22, green:0.74, blue:0, alpha:1)),
+        ("notifications-btn", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1)),
+        ("settings-btn", UIColor(red:0.51, green:0.15, blue:1, alpha:1)),
+        ("nearby-btn", UIColor(red:1, green:0.39, blue:0, alpha:1)),
+        ]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +57,13 @@ class ProductsViewController: UIViewController {
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.allowsMultipleSelection = false
         
+        let loadMoreView = KRPullLoadView()
+        loadMoreView.delegate = self
+        collectionView.addPullLoadableView(loadMoreView, type: .loadMore)
+
+        
+        self.searchBar.delegate = self
+
         bind()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
@@ -148,31 +164,6 @@ class ProductsViewController: UIViewController {
 
     func bind() {
         
-        searchBar
-            .rx
-            .searchButtonClicked
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.selectedIndexPath = nil
-                    self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
-                }
-            }).addDisposableTo(disposeBag)
-        
-        searchBar
-            .rx
-            .text
-            .map { $0! }
-            .throttle(1, scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.selectedIndexPath = nil
-                    self.viewModel.loadPage(query: element, page: 1)
-                }
-            }).addDisposableTo(disposeBag)
-        
         self.viewModel.productsUpdated.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
@@ -180,59 +171,6 @@ class ProductsViewController: UIViewController {
             }
         }).addDisposableTo(disposeBag)
         
-        collectionView.rx.contentOffset
-            .filter { [weak self] offset in
-                guard let `self` = self else { return false }
-                guard !self.willRotate else { return false }
-                guard self.collectionView.frame.height > 0 else { return false }
-                guard self.collectionView.contentSize.height > 0 else { return false }
-                
-                self.view.endEditing(true)
-                return offset.y + self.collectionView.frame.height >= self.collectionView.contentSize.height - 100
-            }
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.viewModel.loadNextPage()
-                }
-            })
-            .addDisposableTo(disposeBag)
-        
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    @IBAction func photoButtonTapped(_ sender: UIButton) {
-        
-        guard let cell = sender.superview?.superview as? ProductCell else { return }
-        
-        if let indexPath = self.collectionView.indexPath(for: cell) {
-            self.selectedIndexPath = indexPath
-            
-            let item = self.viewModel.products[indexPath.row]
-            if let cell = collectionView.cellForItem(at: indexPath) as? ProductCell {
-                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
-            }
-
-        }
-        
-    }
-
-    @IBAction func addButtonTapped(_ sender: UIButton) {
-        
-        self.view.endEditing(true)
-        
-        guard let cell = sender.superview?.superview as? ProductCell else { return }
-        
-        if let indexPath = self.collectionView.indexPath(for: cell) {
-            self.selectedIndexPath = indexPath
-            
-            let product = self.viewModel.products[indexPath.row]
-            self.addConfirm(product)
-        }
     }
     
     func addConfirm(_ product: Product) {
@@ -250,6 +188,31 @@ class ProductsViewController: UIViewController {
     func handleTap(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
+    
+    func zoomImage(imageView: UIImageView, imageUrl: String?) {
+        
+        guard let image = imageView.image else { return }
+        guard let referenceView = imageView.superview else { return }
+        
+        let imageInfo = HHImageInfo(referenceRect: imageView.frame, referenceView: referenceView)
+        
+        if let imageUrl = imageUrl {
+            if let image = ImageCache.default.retrieveImageInDiskCache(forKey: imageUrl, options: nil) {
+                imageInfo.image = image
+            }
+            else {
+                imageInfo.imageURL = URL(string: imageUrl)
+            }
+        }
+        else {
+            imageInfo.image = image
+        }
+        
+        let imageViewer = HHImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: .scaled)
+        imageViewer.delegate = self
+        imageViewer.show(from: self, transition: .fromOriginalPosition)
+    }
+    
 
 }
 
@@ -284,7 +247,7 @@ extension ProductsViewController: UICollectionViewDataSource
         else {
             cell.imageView.image = UIImage(named: "Placeholder")
         }
-        
+        cell.delegate = self
         return cell
     }
     
@@ -297,29 +260,6 @@ extension ProductsViewController: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         self.view.endEditing(true)
-    }
-    
-    func zoomImage(imageView: UIImageView, imageUrl: String?) {
-        
-        guard let image = imageView.image else { return }
-        guard let referenceView = imageView.superview else { return }
-
-        let imageInfo = HHImageInfo(referenceRect: imageView.frame, referenceView: referenceView)
-        
-        if let imageUrl = imageUrl {
-            if let image = ImageCache.default.retrieveImageInDiskCache(forKey: imageUrl, options: nil) {
-                imageInfo.image = image
-            }
-            else {
-                imageInfo.imageURL = URL(string: imageUrl)
-            }
-        }
-        else {
-            imageInfo.image = image
-        }
-        
-        let imageViewer = HHImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: .scaled)
-        imageViewer.show(from: self, transition: .fromOriginalPosition)
     }
     
 }
@@ -353,6 +293,107 @@ extension ProductsViewController: HHPulseButtonDelegate {
         let vc = viewController(forStoryboardName: "Me")
         DispatchQueue.main.async {
             self.present(vc, animated: true, completion: nil)
+        }
+    }
+}
+
+// MARK: - HHImageViewControllerDelegate
+
+extension ProductsViewController: HHImageViewControllerDelegate
+{
+    func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Bool {
+        button.backgroundColor = items[atIndex].color
+        
+        button.setImage(UIImage(named: items[atIndex].icon), for: .normal)
+        
+        // set highlited image
+        let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
+        button.setImage(highlightedImage, for: .highlighted)
+        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+        
+        return true
+    }
+    
+    func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool {
+        print("button did selected: \(atIndex)")
+        return true
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension ProductsViewController: UISearchBarDelegate
+{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        DispatchQueue.global().async {
+            self.selectedIndexPath = nil
+            self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
+        }
+    }
+}
+
+// MARK: - ProductCellDelegate
+
+extension ProductsViewController: ProductCellDelegate
+{
+    func addButtonDidTap(_ cell: ProductCell, _ sender: Any) {
+        self.view.endEditing(true)
+        
+        if let indexPath = self.collectionView.indexPath(for: cell) {
+            self.selectedIndexPath = indexPath
+            let product = self.viewModel.products[indexPath.row]
+            self.addConfirm(product)
+        }
+    }
+    
+    func photoButtonDidTap(_ cell: ProductCell, _ sender: Any) {
+         if let indexPath = self.collectionView.indexPath(for: cell) {
+            self.selectedIndexPath = indexPath
+            
+            let item = self.viewModel.products[indexPath.row]
+            if let cell = collectionView.cellForItem(at: indexPath) as? ProductCell {
+                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
+            }
+        }
+    }
+    
+}
+
+// MARK: - KRPullLoadViewDelegate
+
+extension ProductsViewController: KRPullLoadViewDelegate {
+    
+    func pullLoadView(_ pullLoadView: KRPullLoadView, didChangeState state: KRPullLoaderState, viewType type: KRPullLoaderType) {
+        if type == .loadMore {
+            switch state {
+            case let .loading(completionHandler):
+                DispatchQueue.main.async {
+                    completionHandler()
+                }
+
+                DispatchQueue.global().async {
+                    self.viewModel.loadNextPage()
+                }
+            default: break
+            }
+            return
+        }
+        
+        switch state {
+        case .none:
+            pullLoadView.messageLabel.text = ""
+            
+        case let .pulling(offset, threshould):
+            if offset.y > threshould {
+                pullLoadView.messageLabel.text = "Pull more. offset: \(Int(offset.y)), threshould: \(Int(threshould)))"
+            } else {
+                pullLoadView.messageLabel.text = "Release to refresh. offset: \(Int(offset.y)), threshould: \(Int(threshould)))"
+            }
+        case let .loading(completionHandler):
+            pullLoadView.messageLabel.text = "Updating..."
+            DispatchQueue.main.async {
+                completionHandler()
+            }
         }
     }
 }

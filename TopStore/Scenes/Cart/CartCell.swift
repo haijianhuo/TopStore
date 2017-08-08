@@ -7,10 +7,17 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+
+@objc protocol CartCellDelegate: class {
+
+    @objc optional func deleteButtonDidTap(_ cell: CartCell, _ sender: Any)
+    
+    @objc optional func photoButtonDidTap(_ cell: CartCell, _ sender: Any)
+}
 
 class CartCell: UITableViewCell {
+
+    weak var delegate: CartCellDelegate?
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
@@ -20,22 +27,11 @@ class CartCell: UITableViewCell {
     
     @IBOutlet weak var photoButton: UIButton!
     
-    var disposeBag = DisposeBag()
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBAction func deleteButtonTapped(_ sender: Any) {
+        self.delegate?.deleteButtonDidTap?(self, sender)
     }
     
+    @IBAction func phototButtonTapped(_ sender: Any) {
+        self.delegate?.photoButtonDidTap?(self, sender)
+    }
 }

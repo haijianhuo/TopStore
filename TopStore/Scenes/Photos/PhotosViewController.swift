@@ -10,6 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
+import KRPullLoader
 
 class PhotosViewController: UIViewController {
 
@@ -51,6 +52,12 @@ class PhotosViewController: UIViewController {
         
         self.collectionView.backgroundColor = .clear
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
+        
+        let loadMoreView = KRPullLoadView()
+        loadMoreView.delegate = self
+        collectionView.addPullLoadableView(loadMoreView, type: .loadMore)
+
+        self.searchBar.delegate = self
 
         bind()
         
@@ -135,30 +142,30 @@ class PhotosViewController: UIViewController {
     
     func bind() {
         
-        searchBar
-            .rx
-            .searchButtonClicked
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.selectedIndexPath = nil
-                    self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
-                }
-            }).addDisposableTo(disposeBag)
+//        searchBar
+//            .rx
+//            .searchButtonClicked
+//            .subscribe(onNext: { [weak self] (element) in
+//                guard let `self` = self else { return }
+//                DispatchQueue.global().async {
+//                    self.selectedIndexPath = nil
+//                    self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
+//                }
+//            }).addDisposableTo(disposeBag)
         
-        searchBar
-            .rx
-            .text
-            .map { $0! }
-            .throttle(1, scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.selectedIndexPath = nil
-                    self.viewModel.loadPage(query: element, page: 1)
-                }
-            }).addDisposableTo(disposeBag)
+//        searchBar
+//            .rx
+//            .text
+//            .map { $0! }
+//            .throttle(1, scheduler: MainScheduler.instance)
+//            .distinctUntilChanged()
+//            .subscribe(onNext: { [weak self] (element) in
+//                guard let `self` = self else { return }
+//                DispatchQueue.global().async {
+//                    self.selectedIndexPath = nil
+//                    self.viewModel.loadPage(query: element, page: 1)
+//                }
+//            }).addDisposableTo(disposeBag)
         
         self.viewModel.productsUpdated.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
@@ -167,23 +174,23 @@ class PhotosViewController: UIViewController {
             }
         }).addDisposableTo(disposeBag)
         
-        collectionView.rx.contentOffset
-            .filter { [weak self] offset in
-                guard let `self` = self else { return false }
-                guard !self.willRotate else { return false }
-                guard self.collectionView.frame.height > 0 else { return false }
-                guard self.collectionView.contentSize.height > 0 else { return false }
-                
-                self.view.endEditing(true)
-                return offset.y + self.collectionView.frame.height >= self.collectionView.contentSize.height - 100
-            }
-            .subscribe(onNext: { [weak self] (element) in
-                guard let `self` = self else { return }
-                DispatchQueue.global().async {
-                    self.viewModel.loadNextPage()
-                }
-            })
-            .addDisposableTo(disposeBag)
+//        collectionView.rx.contentOffset
+//            .filter { [weak self] offset in
+//                guard let `self` = self else { return false }
+//                guard !self.willRotate else { return false }
+//                guard self.collectionView.frame.height > 0 else { return false }
+//                guard self.collectionView.contentSize.height > 0 else { return false }
+//                
+//                self.view.endEditing(true)
+//                return offset.y + self.collectionView.frame.height >= self.collectionView.contentSize.height - 100
+//            }
+//            .subscribe(onNext: { [weak self] (element) in
+//                guard let `self` = self else { return }
+//                DispatchQueue.global().async {
+//                    self.viewModel.loadNextPage()
+//                }
+//            })
+//            .addDisposableTo(disposeBag)
         
     }
 
@@ -329,3 +336,55 @@ extension PhotosViewController: HHImageViewControllerDelegate
         return true
     }
 }
+
+// MARK: - UISearchBarDelegate
+
+extension PhotosViewController: UISearchBarDelegate
+{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        DispatchQueue.global().async {
+            self.selectedIndexPath = nil
+            self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
+        }
+    }
+}
+
+// MARK: - KRPullLoadViewDelegate
+
+extension PhotosViewController: KRPullLoadViewDelegate {
+    
+    func pullLoadView(_ pullLoadView: KRPullLoadView, didChangeState state: KRPullLoaderState, viewType type: KRPullLoaderType) {
+        if type == .loadMore {
+            switch state {
+            case let .loading(completionHandler):
+                DispatchQueue.main.async {
+                    completionHandler()
+                }
+                
+                DispatchQueue.global().async {
+                    self.viewModel.loadNextPage()
+                }
+            default: break
+            }
+            return
+        }
+        
+        switch state {
+        case .none:
+            pullLoadView.messageLabel.text = ""
+            
+        case let .pulling(offset, threshould):
+            if offset.y > threshould {
+                pullLoadView.messageLabel.text = "Pull more. offset: \(Int(offset.y)), threshould: \(Int(threshould)))"
+            } else {
+                pullLoadView.messageLabel.text = "Release to refresh. offset: \(Int(offset.y)), threshould: \(Int(threshould)))"
+            }
+        case let .loading(completionHandler):
+            pullLoadView.messageLabel.text = "Updating..."
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
+    }
+}
+

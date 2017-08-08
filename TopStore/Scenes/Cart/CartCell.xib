@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -32,6 +32,9 @@
                             <constraint firstAttribute="width" constant="30" id="ufH-4a-WtQ"/>
                         </constraints>
                         <state key="normal" image="Trash"/>
+                        <connections>
+                            <action selector="deleteButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="HSK-SW-4Ow"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dO5-2E-SWQ">
                         <rect key="frame" x="8" y="4.5" width="135" height="135"/>
@@ -39,6 +42,9 @@
                             <constraint firstAttribute="width" constant="135" id="meS-iS-lc3"/>
                             <constraint firstAttribute="height" constant="135" id="rRC-cw-d5n"/>
                         </constraints>
+                        <connections>
+                            <action selector="phototButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9ag-MV-rQZ"/>
+                        </connections>
                     </button>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="khq-7N-VO7">
                         <rect key="frame" x="8" y="2" width="140" height="140"/>
