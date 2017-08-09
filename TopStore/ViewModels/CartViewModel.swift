@@ -42,6 +42,8 @@ class CartViewModel: NSObject
     var products = [Product]([])
     var productsUpdated = Variable<Bool>(false)
     
+    var totalAmount = Variable<Float>(0)
+
     let reachability = Reachability()!
     
     fileprivate override init() {
@@ -59,6 +61,7 @@ class CartViewModel: NSObject
             case .success(let s):
                 self.stack = s
                 self.products = self.fetchProductData()
+                self.updateTotalAmount()
             case .failure(let err):
                 assertionFailure("Error creating stack: \(err)")
             }
@@ -73,6 +76,7 @@ class CartViewModel: NSObject
         self.removeAllProductData()
         self.products.removeAll()
         self.productsUpdated.value = true
+        self.updateTotalAmount()
     }
     
     func addToCart(_ product: Product, productsUpdated: Bool = true) {
@@ -82,6 +86,7 @@ class CartViewModel: NSObject
         if productsUpdated {
             self.productsUpdated.value = true
         }
+        self.updateTotalAmount()
     }
     
     func removeRow(at indexPath: IndexPath, productsUpdated: Bool = true) {
@@ -93,6 +98,11 @@ class CartViewModel: NSObject
         if productsUpdated {
             self.productsUpdated.value = true
         }
+        self.updateTotalAmount()
+    }
+    
+    private func updateTotalAmount() {
+        self.totalAmount.value = products.map({$0.price}).reduce(0, +)
     }
     
     private func fetchProductData() -> [Product] {

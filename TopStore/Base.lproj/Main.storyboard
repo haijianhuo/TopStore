@@ -159,7 +159,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$159.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-H0-4d5">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$159.00" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-H0-4d5">
                                                 <rect key="frame" x="177.5" y="0.0" width="89" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -244,11 +244,12 @@
                     <connections>
                         <outlet property="summaryView" destination="6CV-p6-Zg7" id="oFg-Jp-sPR"/>
                         <outlet property="tableView" destination="HnH-SN-B0F" id="9Fy-2w-r9g"/>
+                        <outlet property="totalLabel" destination="Rr9-H0-4d5" id="7ik-wQ-8qd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d60-HL-JDR" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1139.2803598200901" y="-538.39999999999998"/>
+            <point key="canvasLocation" x="-954" y="-633"/>
         </scene>
         <!--Products-->
         <scene sceneID="4Q1-yG-4a0">

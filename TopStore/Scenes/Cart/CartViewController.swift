@@ -25,6 +25,7 @@ class CartViewController: UIViewController {
         ("shopping_delete", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1))
     ]
     
+    @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var summaryView: UIView!
 
     override func viewDidLoad() {
@@ -54,6 +55,12 @@ class CartViewController: UIViewController {
             }
         }).addDisposableTo(disposeBag)
 
+        self.viewModel.totalAmount.asObservable().subscribe(onNext: { [weak self] (element) in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+                self.totalLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: element)
+            }
+        }).addDisposableTo(disposeBag)
         
     }
     
