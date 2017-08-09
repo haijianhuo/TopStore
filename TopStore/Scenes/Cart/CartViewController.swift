@@ -10,6 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
+import PopupDialog
 
 class CartViewController: UIViewController {
     
@@ -61,11 +62,14 @@ class CartViewController: UIViewController {
     }
     
     @IBAction func checkoutButtonTapped(_ sender: Any) {
-        let alert = UIAlertController(title: "Checkout?", message: nil, preferredStyle: .alert)
+        let popup = PopupDialog(title: "Check out shopping cart", message: "Not implemented yet!", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+        }
         
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        let buttonOne = CancelButton(title: "OK") {
+        }
         
-        self.present(alert, animated: true, completion: nil)
+        popup.addButtons([buttonOne])
+        self.present(popup, animated: true, completion: nil)
     }
     
     func updateBadge() {
@@ -99,15 +103,18 @@ class CartViewController: UIViewController {
     }
     
     func clearConfirm() {
-        let alert = UIAlertController(title: "Clear Cart?", message: nil, preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Clear", style: .destructive) { _ in
+        let popup = PopupDialog(title: "Clear shopping cart", message: "Remove all items from shopping cart?", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+        }
+        
+        let buttonOne = CancelButton(title: "Cancel") {
+        }
+        
+        let buttonTwo = DestructiveButton(title: "Remove") {
             self.viewModel.clearCart()
-        })
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        self.present(alert, animated: true, completion: nil)
+        }
+        popup.addButtons([buttonOne, buttonTwo])
+        self.present(popup, animated: true, completion: nil)
     }
 
     

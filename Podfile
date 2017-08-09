@@ -18,7 +18,8 @@ target 'TopStore' do
   pod 'CircleMenu',             '~> 2.0.5'
   pod 'JSQCoreDataKit',         '~> 6.0.2'
   pod 'KRPullLoader',           '~> 1.0.1'
-
+  pod 'PopupDialog',            '~> 0.5.4'
+  
   target 'TopStoreTests' do
     inherit! :search_paths
     # Pods for testing
