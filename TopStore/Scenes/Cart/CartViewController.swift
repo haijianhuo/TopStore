@@ -24,9 +24,15 @@ class CartViewController: UIViewController {
         ("shopping_delete", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1))
     ]
     
+    @IBOutlet weak var summaryView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let image = UIImage(named:"photo_background") {
+            self.view.backgroundColor = UIColor(patternImage: image)
+        }
+
         
         tableView.register(UINib(nibName: String(describing: CartCell.self), bundle: nil), forCellReuseIdentifier: String(describing: CartCell.self))
         

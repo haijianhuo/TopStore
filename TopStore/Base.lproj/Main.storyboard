@@ -117,7 +117,7 @@
                     <connections>
                         <segue destination="5CJ-Hf-SnA" kind="relationship" relationship="viewControllers" id="ya3-4V-eni"/>
                         <segue destination="ZQX-Wk-Kav" kind="relationship" relationship="viewControllers" id="RcT-pC-pkr"/>
-                        <segue destination="MfR-62-ZHt" kind="relationship" relationship="viewControllers" id="kKL-Pp-NsP"/>
+                        <segue destination="T07-p1-xVY" kind="relationship" relationship="viewControllers" id="dx0-bi-Mer"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEC-rC-qCh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -137,58 +137,118 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HnH-SN-B0F">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="518"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6CV-p6-Zg7">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="IgL-r8-pQf">
+                                        <rect key="frame" x="10" y="10" width="355" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFC-rQ-MBc">
+                                                <rect key="frame" x="0.0" y="0.0" width="89" height="30"/>
+                                                <state key="normal" image="ClearCart"/>
+                                                <connections>
+                                                    <action selector="clearButtonTapped:" destination="T07-p1-xVY" eventType="touchUpInside" id="hbX-42-e3f"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSf-Y1-jux">
+                                                <rect key="frame" x="89" y="0.0" width="88.5" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$159.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-H0-4d5">
+                                                <rect key="frame" x="177.5" y="0.0" width="89" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRd-mH-Xuy">
+                                                <rect key="frame" x="266.5" y="0.0" width="88.5" height="30"/>
+                                                <state key="normal" image="CheckOut"/>
+                                                <connections>
+                                                    <action selector="checkoutButtonTapped:" destination="T07-p1-xVY" eventType="touchUpInside" id="guO-9E-mdv"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="fsM-CY-DZv"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="fsM-CY-DZv"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=compact" axis="vertical">
+                                            <mask key="constraints">
+                                                <include reference="fsM-CY-DZv"/>
+                                            </mask>
+                                        </variation>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="IgL-r8-pQf" secondAttribute="bottom" constant="10" id="8rv-CR-K4J"/>
+                                    <constraint firstItem="IgL-r8-pQf" firstAttribute="leading" secondItem="6CV-p6-Zg7" secondAttribute="leading" constant="10" id="GuG-Er-w1n"/>
+                                    <constraint firstAttribute="height" constant="50" id="gyY-4A-AUq"/>
+                                    <constraint firstItem="IgL-r8-pQf" firstAttribute="top" secondItem="6CV-p6-Zg7" secondAttribute="top" constant="10" id="nUa-f4-vrA"/>
+                                    <constraint firstAttribute="trailing" secondItem="IgL-r8-pQf" secondAttribute="trailing" constant="10" id="wpu-uN-WhK"/>
+                                </constraints>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="gyY-4A-AUq"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6CV-p6-Zg7" firstAttribute="leading" secondItem="eaU-9R-Cur" secondAttribute="leading" id="0ak-2a-jls"/>
+                            <constraint firstItem="HnH-SN-B0F" firstAttribute="top" secondItem="6CV-p6-Zg7" secondAttribute="bottom" id="BYp-BS-rku"/>
+                            <constraint firstAttribute="trailing" secondItem="6CV-p6-Zg7" secondAttribute="trailing" id="FOy-s6-pLG"/>
                             <constraint firstItem="m2C-wA-ZsF" firstAttribute="top" secondItem="HnH-SN-B0F" secondAttribute="bottom" id="HdN-0D-CtL"/>
-                            <constraint firstItem="HnH-SN-B0F" firstAttribute="top" secondItem="eaU-9R-Cur" secondAttribute="top" id="boC-0o-bNg"/>
+                            <constraint firstItem="m2C-wA-ZsF" firstAttribute="top" secondItem="6CV-p6-Zg7" secondAttribute="bottom" id="PVF-aI-FiA"/>
+                            <constraint firstItem="HnH-SN-B0F" firstAttribute="leading" secondItem="6CV-p6-Zg7" secondAttribute="trailing" id="boC-Rg-4Ca"/>
                             <constraint firstItem="HnH-SN-B0F" firstAttribute="leading" secondItem="eaU-9R-Cur" secondAttribute="leading" id="dGw-ZF-gf5"/>
+                            <constraint firstItem="6CV-p6-Zg7" firstAttribute="top" secondItem="ten-AZ-qae" secondAttribute="bottom" id="ieh-00-Uqn"/>
                             <constraint firstAttribute="trailing" secondItem="HnH-SN-B0F" secondAttribute="trailing" id="q8a-Rq-7gw"/>
+                            <constraint firstItem="HnH-SN-B0F" firstAttribute="top" secondItem="ten-AZ-qae" secondAttribute="bottom" id="s8G-gJ-3yE"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="boC-Rg-4Ca"/>
+                                <exclude reference="s8G-gJ-3yE"/>
+                                <exclude reference="PVF-aI-FiA"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <exclude reference="FOy-s6-pLG"/>
+                                <exclude reference="BYp-BS-rku"/>
+                                <include reference="boC-Rg-4Ca"/>
+                                <exclude reference="dGw-ZF-gf5"/>
+                                <include reference="s8G-gJ-3yE"/>
+                                <include reference="PVF-aI-FiA"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Cart" image="Cart" id="S3k-Rb-Piv"/>
                     <navigationItem key="navigationItem" title="Cart" id="TWP-26-4zK">
                         <rightBarButtonItems>
-                            <barButtonItem image="CheckOut" id="z8r-uu-ENa">
-                                <connections>
-                                    <action selector="checkoutButtonTapped:" destination="T07-p1-xVY" id="ugk-tB-i3Y"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="ClearCart" id="dfj-cA-MjV">
-                                <connections>
-                                    <action selector="clearButtonTapped:" destination="T07-p1-xVY" id="A9E-QK-cJU"/>
-                                </connections>
-                            </barButtonItem>
+                            <barButtonItem image="CheckOut" id="z8r-uu-ENa"/>
+                            <barButtonItem image="ClearCart" id="dfj-cA-MjV"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="summaryView" destination="6CV-p6-Zg7" id="oFg-Jp-sPR"/>
                         <outlet property="tableView" destination="HnH-SN-B0F" id="9Fy-2w-r9g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d60-HL-JDR" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-135" y="-459"/>
-        </scene>
-        <!--Cart-->
-        <scene sceneID="LPo-z8-sfJ">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MfR-62-ZHt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Cart" image="Cart" id="5n1-m5-T7y"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PHG-mS-pvd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="T07-p1-xVY" kind="relationship" relationship="rootViewController" id="k5X-DK-zhZ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xFU-tC-5TO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1287" y="-574"/>
+            <point key="canvasLocation" x="-1139.2803598200901" y="-538.39999999999998"/>
         </scene>
         <!--Products-->
         <scene sceneID="4Q1-yG-4a0">
