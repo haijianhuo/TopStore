@@ -73,8 +73,13 @@ class CartViewController: UIViewController {
     }
     
     func updateBadge() {
-        self.tabBarController?.tabBar.items?.last?.badgeValue =
-        self.viewModel.products.count > 0 ?  String(self.viewModel.products.count) : nil
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            if let tabBarContainer = appDelegate.window?.rootViewController as? TabBarContainer {
+                if let button = tabBarContainer.tabBarButton(name: .cart) {
+                    button.badgeString = self.viewModel.products.count > 0 ?  String(self.viewModel.products.count) : nil
+                }
+            }
+        }
     }
     
     func zoomImage(imageView: UIImageView, imageUrl: String?) {

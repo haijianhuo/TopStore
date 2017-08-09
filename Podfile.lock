@@ -28,7 +28,7 @@ DEPENDENCIES:
   - KRPullLoader (~> 1.0.1)
   - ObjectMapper (~> 2.2.7)
   - PKHUD (~> 4.0)
-  - PopupDialog
+  - PopupDialog (~> 0.5.4)
   - ReachabilitySwift (~> 3)
   - RxAlamofire (~> 3.0.3)
   - RxCocoa (~> 3.5.0)
@@ -50,6 +50,6 @@ SPEC CHECKSUMS:
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
 
-PODFILE CHECKSUM: 14a2728ed870c82ab07e8f6c42acfaa9f7709e33
+PODFILE CHECKSUM: a85399d6b9119efbab41ba2491387976f3e14ca6
 
 COCOAPODS: 1.2.1

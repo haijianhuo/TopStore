@@ -12,6 +12,7 @@
 		8D118B571F36D4280087D5B6 /* HHImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B551F36D4280087D5B6 /* HHImageInfo.swift */; };
 		8D118B581F36D4280087D5B6 /* HHImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B561F36D4280087D5B6 /* HHImageViewController.swift */; };
 		8D1D38BF1F37F76C00F022AF /* TabBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */; };
+		8D1D38C31F3B302400F022AF /* MIBadgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D38C21F3B302400F022AF /* MIBadgeButton.swift */; };
 		8D562C6C1F300BAE008C8F00 /* HeroAnimatorViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C391F300BAE008C8F00 /* HeroAnimatorViewContext.swift */; };
 		8D562C6D1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C3A1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift */; };
 		8D562C6E1F300BAE008C8F00 /* HeroDefaultAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D562C3B1F300BAE008C8F00 /* HeroDefaultAnimator.swift */; };
@@ -109,6 +110,7 @@
 		8D118B551F36D4280087D5B6 /* HHImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageInfo.swift; sourceTree = "<group>"; };
 		8D118B561F36D4280087D5B6 /* HHImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageViewController.swift; sourceTree = "<group>"; };
 		8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarContainer.swift; sourceTree = "<group>"; };
+		8D1D38C21F3B302400F022AF /* MIBadgeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIBadgeButton.swift; sourceTree = "<group>"; };
 		8D562C391F300BAE008C8F00 /* HeroAnimatorViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroAnimatorViewContext.swift; sourceTree = "<group>"; };
 		8D562C3A1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroCoreAnimationViewContext.swift; sourceTree = "<group>"; };
 		8D562C3B1F300BAE008C8F00 /* HeroDefaultAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDefaultAnimator.swift; sourceTree = "<group>"; };
@@ -254,9 +256,18 @@
 			path = HHImageViewController;
 			sourceTree = "<group>";
 		};
+		8D1D38C11F3B302400F022AF /* MIBadgeButton */ = {
+			isa = PBXGroup;
+			children = (
+				8D1D38C21F3B302400F022AF /* MIBadgeButton.swift */,
+			);
+			path = MIBadgeButton;
+			sourceTree = "<group>";
+		};
 		8D562C361F300BAE008C8F00 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				8D1D38C11F3B302400F022AF /* MIBadgeButton */,
 				8D118B541F36D4280087D5B6 /* HHImageViewController */,
 				8D562C991F301864008C8F00 /* HHPulseButton */,
 				8D562C371F300BAE008C8F00 /* Hero */,
@@ -826,6 +837,7 @@
 				8D562C961F300BAE008C8F00 /* HeroTransition+UIViewControllerTransitioningDelegate.swift in Sources */,
 				8D562C901F300BAE008C8F00 /* HeroTransition+Complete.swift in Sources */,
 				8DF66BA11F23A08600A9677A /* CartCell.swift in Sources */,
+				8D1D38C31F3B302400F022AF /* MIBadgeButton.swift in Sources */,
 				8D562C871F300BAE008C8F00 /* BasePreprocessor.swift in Sources */,
 				8D562C6E1F300BAE008C8F00 /* HeroDefaultAnimator.swift in Sources */,
 				8D562C851F300BAE008C8F00 /* Parser.swift in Sources */,

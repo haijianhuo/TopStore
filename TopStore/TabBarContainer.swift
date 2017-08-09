@@ -8,9 +8,15 @@
 
 import UIKit
 
+enum TabBarButtonName: Int {
+    case product = 0
+    case photo
+    case cart
+}
+
 class TabBarContainer: UIViewController {
 
-    @IBOutlet var tabButtons: [UIButton]!
+    @IBOutlet var tabButtons: [MIBadgeButton]!
     
     let tabBarButtonImages = ["Box", "Photo", "Cart"]
     var currentTag: Int = 0
@@ -29,10 +35,10 @@ class TabBarContainer: UIViewController {
             let image = UIImage(named: tabBarButtonImages[button.tag])?.withRenderingMode(.alwaysTemplate)
             button.setImage(image, for: .normal)
             button.tintColor = (button.tag == self.currentTag) ? nil : .lightGray
+            button.badgeEdgeInsets = UIEdgeInsetsMake(15, 0, 0, 15)
         }
     }
     
-
     @IBAction func tabButtonTapped(_ sender: UIButton) {
         
         if sender.tag == self.currentTag || sender.tag >= (self.mainTabBarController.tabBar.items?.count)! {
@@ -49,4 +55,13 @@ class TabBarContainer: UIViewController {
         self.currentTag = sender.tag
 
     }
+    
+    func tabBarButton(name: TabBarButtonName) -> MIBadgeButton? {
+        if name.rawValue >= (self.mainTabBarController.tabBar.items?.count)! {
+            return nil
+        }
+        return tabButtons[name.rawValue]
+    }
+    
+
 }

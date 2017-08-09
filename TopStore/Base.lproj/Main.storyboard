@@ -122,7 +122,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEC-rC-qCh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2246" y="-717"/>
+            <point key="canvasLocation" x="-2279" y="-1594"/>
         </scene>
         <!--Cart-->
         <scene sceneID="QcB-dy-sBj">
@@ -436,7 +436,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cnx-Ul-M9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1288.8" y="-1505.3973013493255"/>
+            <point key="canvasLocation" x="-1084" y="-1594"/>
         </scene>
         <!--Tab Bar Container-->
         <scene sceneID="EfG-Oe-ZQY">
@@ -456,7 +456,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="42d-Q1-u1f">
                                         <rect key="frame" x="25" y="0.0" width="325" height="50"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73W-k4-0RY">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73W-k4-0RY" customClass="MIBadgeButton" customModule="TopStore" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="6ng-ZF-ako"/>
@@ -467,7 +467,7 @@
                                                     <action selector="tabButtonTapped:" destination="OJz-4R-41w" eventType="touchUpInside" id="wtY-vW-a40"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NAb-7U-mi5">
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NAb-7U-mi5" customClass="MIBadgeButton" customModule="TopStore" customModuleProvider="target">
                                                 <rect key="frame" x="137.5" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="9g3-sf-lIT"/>
@@ -478,7 +478,7 @@
                                                     <action selector="tabButtonTapped:" destination="OJz-4R-41w" eventType="touchUpInside" id="r3d-B1-JXk"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGK-PA-35V">
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGK-PA-35V" customClass="MIBadgeButton" customModule="TopStore" customModuleProvider="target">
                                                 <rect key="frame" x="275" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="Fay-cz-UdY"/>
