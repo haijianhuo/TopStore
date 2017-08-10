@@ -35,7 +35,7 @@ import Kingfisher
      - parameter atIndex:    Selected button index
      */
     @objc optional func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool
-
+    
 }
 
 enum HHImageViewControllerMode: Int {
@@ -59,14 +59,14 @@ let HHImageViewController_DefaultAlphaForBackgroundDimmingOverlay: CGFloat = 0.6
 let HHImageViewController_DefaultBackgroundBlurRadius: CGFloat = 2.0
 
 class HHImageViewController: UIViewController {
-
+    
     weak var delegate: HHImageViewControllerDelegate?
-
+    
     private(set) var imageInfo: HHImageInfo!
     private(set) var image: UIImage?
     private(set) var mode: HHImageViewControllerMode!
     private(set) var backgroundOptions: HHImageViewControllerBackgroundOptions!
-
+    
     var showCircleMenuOnStart = false
     
     // Private Constants
@@ -102,7 +102,7 @@ class HHImageViewController: UIViewController {
     }
     
     // General Info
-
+    
     private(set) var transition: HHImageViewControllerTransition?
     
     
@@ -141,7 +141,7 @@ class HHImageViewController: UIViewController {
     // Image Downloading
     private(set) var imageDownloadDataTask: URLSessionDataTask?
     private(set) var downloadProgressTimer: Timer?
-
+    
     private var circleMenu: CircleMenu?
     
     private var isStatusBarHidden = UIApplication.shared.isStatusBarHidden
@@ -150,13 +150,13 @@ class HHImageViewController: UIViewController {
         super.viewDidLoad()
         
         if let buttonsCount = self.delegate?.imageViewController?(self, willDisplay: UIButton(), atIndex: 0) {
-                self.setupCircleMenu(buttonsCount)
+            self.setupCircleMenu(buttonsCount)
         }
         
         if (self.mode == .image) {
             self.viewDidLoadForImageMode()
         }
-
+        
     }
     
     deinit {
@@ -213,19 +213,19 @@ class HHImageViewController: UIViewController {
             self.cancelCurrentImageDrag(animated: false)
             self.updateLayoutsForCurrentOrientation()
             self.updateDimmingViewForCurrentZoomScale(animated: false)
-
-        }, completion: { [weak self] (context) in
-            guard let `self` = self else { return }
-            self.lastUsedOrientation = UIApplication.shared.statusBarOrientation
-            var flags = self.flags
-            flags.isRotating = false
-            self.flags = flags
+            
+            }, completion: { [weak self] (context) in
+                guard let `self` = self else { return }
+                self.lastUsedOrientation = UIApplication.shared.statusBarOrientation
+                var flags = self.flags
+                flags.isRotating = false
+                self.flags = flags
             }
         )
     }
     
-
-// MARK: - Public
+    
+    // MARK: - Public
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)   {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -247,7 +247,7 @@ class HHImageViewController: UIViewController {
         if self.mode == .image {
             self.setupImageAndDownloadIfNecessary(imageInfo: imageInfo)
         }
-
+        
     }
     
     func interfaceOrientation(from deviceOrientation: UIDeviceOrientation) ->UIInterfaceOrientation {
@@ -268,7 +268,7 @@ class HHImageViewController: UIViewController {
     
     
     func deviceOrientationDidChange(_ notification: NSNotification?) {
-    
+        
         /*
          viewWillTransitionToSize:withTransitionCoordinator: is not called when rotating from
          one landscape orientation to the other (or from one portrait orientation to another).
@@ -303,29 +303,29 @@ class HHImageViewController: UIViewController {
                                 self.updateLayoutsForCurrentOrientation()
                                 self.updateDimmingViewForCurrentZoomScale(animated: false)
                                 
-                }, completion: { [weak self] (finished) in
-                    guard let `self` = self else { return }
-                    var flags = self.flags
-                    flags.isRotating = false
-                    self.flags = flags
+                    }, completion: { [weak self] (finished) in
+                        guard let `self` = self else { return }
+                        var flags = self.flags
+                        flags.isRotating = false
+                        self.flags = flags
                 })
-
+                
             }
         }
     }
-
-    func show(from viewController: UIViewController,
-        transition: HHImageViewControllerTransition) {
-            
-            self.transition = transition
-            
-            if (self.mode == .image) {
-                self.showImageViewerByExpandingFromOriginalPositionFromViewController(viewController: viewController)
-            }
-    }
-
-    func dismiss(animated: Bool) {
     
+    func show(from viewController: UIViewController,
+              transition: HHImageViewControllerTransition) {
+        
+        self.transition = transition
+        
+        if (self.mode == .image) {
+            self.showImageViewerByExpandingFromOriginalPositionFromViewController(viewController: viewController)
+        }
+    }
+    
+    func dismiss(animated: Bool) {
+        
         // Early Return!
         if !self.flags.isPresented {
             return
@@ -343,8 +343,8 @@ class HHImageViewController: UIViewController {
             }
             else {
                 let startingRectForThumbnailIsNonZero = !self.startingInfo.startingReferenceFrameForThumbnail.equalTo(CGRect.zero)
-                    
-                 let useCollapsingThumbnailStyle = (startingRectForThumbnailIsNonZero
+                
+                let useCollapsingThumbnailStyle = (startingRectForThumbnailIsNonZero
                     && self.image != nil
                     && self.transition != .fromOffscreen)
                 
@@ -356,8 +356,8 @@ class HHImageViewController: UIViewController {
             }
         }
     }
-
-// MARK: - Setup
+    
+    // MARK: - Circle Menu
     
     func setupCircleMenu(_ buttonsCount: Int) {
         let buttonSize: CGFloat = 50
@@ -366,7 +366,7 @@ class HHImageViewController: UIViewController {
         self.circleMenu = CircleMenu(
             frame: CGRect(x: (self.view.frame.size.width - buttonSize)/2, y: self.view.frame.size.height - buttonSize/2 - distance - bottomMargin, width: buttonSize, height: buttonSize),
             normalIcon:"icon_menu",
-            selectedIcon:"icon_close",
+            selectedIcon:"icon_menu",
             buttonsCount: buttonsCount,
             duration: 0.5,
             distance: Float(distance))
@@ -380,6 +380,31 @@ class HHImageViewController: UIViewController {
             self.view.addSubview(circleMenu)
         }
     }
+    
+    func showCircleMenu() {
+        guard let circleMenu = self.circleMenu else { return }
+        if circleMenu.alpha == 0 {
+            DispatchQueue.main.async {
+                self.view.bringSubview(toFront: circleMenu)
+                circleMenu.alpha = 1
+                if !circleMenu.buttonsIsShown() {
+                    circleMenu.sendActions(for: .touchUpInside)
+                }
+            }
+        }
+    }
+    
+    func closeCircelButtonIfNeeded() {
+        guard let circleMenu = self.circleMenu else { return }
+        if circleMenu.buttonsIsShown() {
+            circleMenu.sendActions(for: .touchUpInside)
+            circleMenu.alpha = 0
+            
+        }
+    }
+    
+    // MARK: - Setup
+    
     
     func setupImageAndDownloadIfNecessary(imageInfo: HHImageInfo) {
         if let image = imageInfo.image {
@@ -422,7 +447,7 @@ class HHImageViewController: UIViewController {
     }
     
     func viewDidLoadForImageMode() {
-    
+        
         self.view.backgroundColor = .black
         self.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         
@@ -432,7 +457,7 @@ class HHImageViewController: UIViewController {
         self.blackBackdrop.backgroundColor = .black
         self.blackBackdrop.alpha = 0
         self.view.addSubview(self.blackBackdrop)
-
+        
         //self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         self.scrollView.frame = self.view.bounds
         self.scrollView.delegate = self
@@ -496,7 +521,7 @@ class HHImageViewController: UIViewController {
     
     
     func setupImageModeGestureRecognizers() {
-    
+        
         self.doubleTapperPhoto = UITapGestureRecognizer(target: self, action: #selector(imageDoubleTapped(_:)))
         self.doubleTapperPhoto.numberOfTapsRequired = 2
         self.doubleTapperPhoto.delegate = self
@@ -506,7 +531,7 @@ class HHImageViewController: UIViewController {
         self.longPresserPhoto.delegate = self
         
         self.singleTapperPhoto = UITapGestureRecognizer(target: self, action: #selector(imageSingleTapped(_:)))
-
+        
         
         self.singleTapperPhoto.require(toFail: self.doubleTapperPhoto)
         self.singleTapperPhoto.require(toFail: self.longPresserPhoto)
@@ -523,7 +548,7 @@ class HHImageViewController: UIViewController {
     }
     
     
-// MARK: - Presentation
+    // MARK: - Presentation
     
     func showImageViewerByExpandingFromOriginalPositionFromViewController(viewController: UIViewController) {
         
@@ -594,7 +619,7 @@ class HHImageViewController: UIViewController {
             //
             
             //DispatchQueue.main.async {
-
+            
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 
@@ -671,14 +696,14 @@ class HHImageViewController: UIViewController {
             }
             //}
         })
-
+        
     }
     
     
-// MARK: - Dismissal
+    // MARK: - Dismissal
     
     func dismissByCollapsingImageBackToOriginalPosition() {
-    
+        
         self.view.isUserInteractionEnabled = false
         self.flags.isAnimatingAPresentationOrDismissal = true
         self.flags.isDismissing = true
@@ -706,7 +731,7 @@ class HHImageViewController: UIViewController {
             guard let `self` = self else { return }
             
             self.closeCircelButtonIfNeeded()
-
+            
             let duration = self.HHImageViewController_TransitionAnimationDuration
             
             let cornerRadiusAnimation = CABasicAnimation(keyPath: "cornerRadius")
@@ -739,9 +764,9 @@ class HHImageViewController: UIViewController {
                     if (self.startingInfo.presentingViewControllerPresentedFromItsUnsupportedOrientation) {
                         let rectToConvert = self.startingInfo.startingReferenceFrameForThumbnailInPresentingViewControllersOriginalOrientation
                         if let rectForCentering = self.snapshotView?.convert(rectToConvert, to: self.view) {
-                        
+                            
                             centerInRect = CGPoint(x: rectForCentering.origin.x+rectForCentering.size.width/2.0,
-                                               y: rectForCentering.origin.y+rectForCentering.size.height/2.0)
+                                                   y: rectForCentering.origin.y+rectForCentering.size.height/2.0)
                         }
                         
                         newEndingRect = self.startingInfo.startingReferenceFrameForThumbnailInPresentingViewControllersOriginalOrientation
@@ -749,7 +774,7 @@ class HHImageViewController: UIViewController {
                         newEndingRect = self.startingInfo.startingReferenceFrameForThumbnail;
                         if let rectForCentering = self.snapshotView?.convert(self.startingInfo.startingReferenceFrameForThumbnail, to: self.view) {
                             centerInRect = CGPoint(x: rectForCentering.origin.x+rectForCentering.size.width/2.0,
-                                               y: rectForCentering.origin.y+rectForCentering.size.height/2.0)
+                                                   y: rectForCentering.origin.y+rectForCentering.size.height/2.0)
                         }
                     }
                     self.imageView.frame = newEndingRect;
@@ -771,18 +796,18 @@ class HHImageViewController: UIViewController {
                 })
             }
         }
-
+        
         
     }
     
     func dismissByCleaningUpAfterImageWasFlickedOffscreen() {
-    
+        
         self.view.isUserInteractionEnabled = false
         self.flags.isAnimatingAPresentationOrDismissal = true
         self.flags.isDismissing = true
         
         self.closeCircelButtonIfNeeded()
-
+        
         let duration = HHImageViewController_TransitionAnimationDuration
         
         UIView.animate(withDuration: TimeInterval(duration), delay:0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
@@ -800,18 +825,18 @@ class HHImageViewController: UIViewController {
             
             self.blackBackdrop.alpha = 0
             self.scrollView.alpha = 0
-        }, completion: { [weak self] (finished) in
-            guard let `self` = self else { return }
-            self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
+            }, completion: { [weak self] (finished) in
                 guard let `self` = self else { return }
-                _ = self.delegate?.imageViewerDidDismiss?(self)
-            })
+                self.presentingViewController?.dismiss(animated: false, completion: { [weak self] in
+                    guard let `self` = self else { return }
+                    _ = self.delegate?.imageViewerDidDismiss?(self)
+                })
         })
         
     }
     
     func dismissByExpandingImageToOffscreenPosition() {
-    
+        
         self.view.isUserInteractionEnabled = false
         self.flags.isAnimatingAPresentationOrDismissal = true
         self.flags.isDismissing = true
@@ -840,8 +865,8 @@ class HHImageViewController: UIViewController {
         }
         
     }
-
-// MARK: - Snapshots
+    
+    // MARK: - Snapshots
     
     func snapshotFromParentmostViewController(viewController: UIViewController) -> UIView? {
         guard let presentingViewController = self.parentmostViewController(from: viewController) else {return nil }
@@ -884,12 +909,12 @@ class HHImageViewController: UIViewController {
                 }, completion: nil)
         }
     }
-
-    func updateLayoutsForCurrentOrientation() {
     
+    func updateLayoutsForCurrentOrientation() {
+        
         guard let snapshotView = self.snapshotView
-        else {
-            return
+            else {
+                return
         }
         if self.mode == .image {
             self.updateScrollViewAndImageViewForCurrentMetrics()
@@ -994,11 +1019,11 @@ class HHImageViewController: UIViewController {
             }
         }
     }
-
-// MARK: - Update Dimming View for Zoom Scale
+    
+    // MARK: - Update Dimming View for Zoom Scale
     
     func updateDimmingViewForCurrentZoomScale(animated: Bool) {
-
+        
         let zoomScale = self.scrollView.zoomScale
         
         let targetAlpha = (zoomScale > 1) ? 1.0 : self.alphaForBackgroundDimmingOverlay()
@@ -1012,8 +1037,8 @@ class HHImageViewController: UIViewController {
                         self.blackBackdrop.alpha = targetAlpha
             }, completion: nil)
     }
-
-// MARK: - Options Delegate Convenience
+    
+    // MARK: - Options Delegate Convenience
     
     func alphaForBackgroundDimmingOverlay() -> CGFloat {
         return HHImageViewController_DefaultAlphaForBackgroundDimmingOverlay
@@ -1027,9 +1052,9 @@ class HHImageViewController: UIViewController {
         
         return .clear
     }
-
+    
     func updateScrollViewAndImageViewForCurrentMetrics() {
-
+        
         if !self.flags.isAnimatingAPresentationOrDismissal {
             self.flags.isManuallyResizingTheScrollViewFrame = true
             self.scrollView.frame = self.view.bounds
@@ -1051,13 +1076,13 @@ class HHImageViewController: UIViewController {
             self.scrollView.contentInset = self.contentInsetForScrollView(targetZoomScale: self.scrollView.zoomScale)
         }
     }
-
+    
     func contentInsetForScrollView(targetZoomScale: CGFloat) -> UIEdgeInsets {
         guard let image = self.image
             else {
                 return .zero
         }
-
+        
         var inset: UIEdgeInsets = .zero
         let boundsHeight = self.scrollView.bounds.size.height
         let boundsWidth = self.scrollView.bounds.size.width
@@ -1100,7 +1125,7 @@ class HHImageViewController: UIViewController {
         }
         return inset
     }
-
+    
     func resizedFrameForAutorotatingImageView(imageSize: CGSize) -> CGRect {
         
         var frame = self.view.bounds
@@ -1132,7 +1157,7 @@ class HHImageViewController: UIViewController {
         return frame;
     }
     
-// MARK: - Motion Effects
+    // MARK: - Motion Effects
     
     func addMotionEffectsToSnapshotView() {
         
@@ -1160,9 +1185,9 @@ class HHImageViewController: UIViewController {
             snapshotView.removeMotionEffect(effect)
         }
     }
-
-
-// MARK: - Interface Updates
+    
+    
+    // MARK: - Interface Updates
     
     func updateInterfaceWithImage(image: UIImage?) {
         guard let image = image else {
@@ -1183,27 +1208,12 @@ class HHImageViewController: UIViewController {
             self.perform(#selector(showCircleMenu), with: nil, afterDelay: 0.3)
         }
     }
-
-    func showCircleMenu() {
-        guard let circleMenu = self.circleMenu else { return }
-        if circleMenu.alpha == 0 {
-            
-            DispatchQueue.main.async {
-                self.view.bringSubview(toFront: circleMenu)
-                circleMenu.alpha = 1
-                if !circleMenu.buttonsIsShown() {
-                    circleMenu.sendActions(for: .touchUpInside)
-                }
-            }
-            //DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
-            //}
-        }
-    }
     
-// MARK: - Gesture Recognizer Actions
+    
+    // MARK: - Gesture Recognizer Actions
     
     func imageDoubleTapped(_ sender: UITapGestureRecognizer) {
-    
+        
         if (self.flags.scrollViewIsAnimatingAZoom) {
             return
         }
@@ -1258,17 +1268,17 @@ class HHImageViewController: UIViewController {
     }
     
     func imageLongPressed(_ sender: UILongPressGestureRecognizer) {
- 
+        
         if (self.flags.scrollViewIsAnimatingAZoom) {
             return
         }
         
         self.showCircleMenu()
-
+        
     }
-
-    func dismissingPanGestureRecognizerPanned(_ panner: UIPanGestureRecognizer) {
     
+    func dismissingPanGestureRecognizerPanned(_ panner: UIPanGestureRecognizer) {
+        
         if (self.flags.scrollViewIsAnimatingAZoom || self.flags.isAnimatingAPresentationOrDismissal) {
             return
         }
@@ -1312,9 +1322,9 @@ class HHImageViewController: UIViewController {
             }
         }
     }
-
     
-// MARK: - Dynamic Image Dragging
+    
+    // MARK: - Dynamic Image Dragging
     
     func startImageDragging(panGestureLocationInView: CGPoint, translationOffset: UIOffset) {
         self.imageDragStartingPoint = panGestureLocationInView
@@ -1342,8 +1352,8 @@ class HHImageViewController: UIViewController {
     func dismissImageWithFlick(velocity: CGPoint) {
         
         guard let imageDragOffsetFromImageCenter = self.imageDragOffsetFromImageCenter,
-                let attachmentBehavior = self.attachmentBehavior
-        else { return }
+            let attachmentBehavior = self.attachmentBehavior
+            else { return }
         
         self.flags.imageIsFlickingAwayForDismissal = true
         
@@ -1401,18 +1411,7 @@ class HHImageViewController: UIViewController {
         return CGPoint(x: startingCenter.x + velocity.x/3.0 , y: startingCenter.y + velocity.y/3.0)
     }
     
-// MARK: circle button
-    
-    func closeCircelButtonIfNeeded() {
-        guard let circleMenu = self.circleMenu else { return }
-        if circleMenu.buttonsIsShown() {
-            circleMenu.sendActions(for: .touchUpInside)
-            circleMenu.alpha = 0
-            
-        }
-    }
-    
-// MARK: - Progress Bar
+    // MARK: - Progress Bar
     
     func startProgressTimer() {
         
@@ -1435,7 +1434,7 @@ class HHImageViewController: UIViewController {
         guard let imageDownloadDataTask = self.imageDownloadDataTask else { return }
         
         var progress: Float = 0
-
+        
         let bytesExpected = imageDownloadDataTask.countOfBytesExpectedToReceive
         
         if (bytesExpected > 0 && !self.flags.imageIsBeingReadFromDisk) {
@@ -1444,17 +1443,17 @@ class HHImageViewController: UIViewController {
                 guard let `self` = self else { return }
                 self.spinner.alpha = 0
                 self.progressView.alpha = 1
-            }, completion: nil)
+                }, completion: nil)
             
             progress = Float(imageDownloadDataTask.countOfBytesReceived / bytesExpected)
         }
         self.progressView.progress = progress
     }
-
-// MARK: file download
+    
+    // MARK: file download
     
     func downloadImage(for imageURL: URL, completion: @escaping ((UIImage?) -> Swift.Void)) -> URLSessionDataTask? {
-    
+        
         let request = URLRequest(url: imageURL)
         let sesh = URLSession.shared
         
@@ -1496,7 +1495,7 @@ extension HHImageViewController: UIScrollViewDelegate
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
-
+    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         
         if self.flags.imageIsFlickingAwayForDismissal {
@@ -1522,7 +1521,7 @@ extension HHImageViewController: UIScrollViewDelegate
         self.scrollView.isScrollEnabled = (scale > 1)
         self.scrollView.contentInset = self.contentInsetForScrollView(targetZoomScale: scale)
     }
-
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.flags.imageIsFlickingAwayForDismissal {
             return
@@ -1543,7 +1542,7 @@ extension HHImageViewController: UIScrollViewDelegate
 extension HHImageViewController: UIGestureRecognizerDelegate
 {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-     
+        
         var shouldReceiveTouch = true
         
         if (shouldReceiveTouch && gestureRecognizer == self.panRecognizer) {
@@ -1558,7 +1557,7 @@ extension HHImageViewController: UIGestureRecognizerDelegate
 
 extension HHImageViewController: CircleMenuDelegate
 {
-
+    
     func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
         
         _ = self.delegate?.imageViewController?(self, willDisplay: button, atIndex: atIndex)

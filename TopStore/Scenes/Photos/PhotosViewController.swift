@@ -317,7 +317,7 @@ extension PhotosViewController: UISearchBarDelegate
         
         if let reachability = self.reachability {
             if !reachability.isReachable {
-                Drop.down("No Internet", state: .error, duration: 1.0)
+                Drop.down("Can Not Search\nNo Internet connection available.", state: .error, duration: 2.0)
                 return
             }
         }

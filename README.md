@@ -22,7 +22,7 @@ Visual custom control design with xib and the custom control can be displayed vi
 
 Adaptive tab bar which will show the tab bar vertical on device vertical compact size class, it's a wrapper around the stock tab bar controller
 
-Core Data, Core Animation, Core Graphics, UIView animation, ContainerView, StackView, Autolayout with AutoResizingMask, Adaptive layout with size classes
+Core Data, Core Animation, Core Graphics, UIView animation, ContainerView, StackView, Autolayout with AutoResizingMask, Adaptive layout with size classes, Add constraints programmatically
 
 Morph view controller animated transition with Hero
 
