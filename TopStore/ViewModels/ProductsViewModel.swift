@@ -21,7 +21,7 @@ class ProductsViewModel {
     var nextPage = 1
     var loadingPage = false
     
-    let reachability = Reachability()!
+    let reachability = Reachability()
     let cartViewModel = CartViewModel.shared
     
     func addToCart(_ product: Product) {
@@ -59,9 +59,11 @@ class ProductsViewModel {
             return
         }
         
-        if !reachability.isReachable {
-            self.loadingPage = false
-            return
+        if let reachability = self.reachability {
+            if !reachability.isReachable {
+                self.loadingPage = false
+                return
+            }
         }
         
         Alamofire.request(url).responseJSON { response in

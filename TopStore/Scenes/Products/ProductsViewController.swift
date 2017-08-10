@@ -11,6 +11,8 @@ import RxCocoa
 import RxSwift
 import Kingfisher
 import KRPullLoader
+import SwiftyDrop
+import ReachabilitySwift
 
 class ProductsViewController: UIViewController {
     
@@ -21,6 +23,8 @@ class ProductsViewController: UIViewController {
     
     @IBOutlet weak var coverView: UIView!
     
+    let reachability = Reachability()
+
     var disposeBag = DisposeBag()
     
     let viewModel = ProductsViewModel()
@@ -341,6 +345,13 @@ extension ProductsViewController: HHImageViewControllerDelegate
 extension ProductsViewController: UISearchBarDelegate
 {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let reachability = self.reachability {
+            if !reachability.isReachable {
+                Drop.down("No Internet", state: .error, duration: 1.0)
+                return
+            }
+        }
+
         DispatchQueue.global().async {
             self.selectedIndexPath = nil
             self.viewModel.loadPage(query: self.searchBar.text!, page: 1)

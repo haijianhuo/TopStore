@@ -19,6 +19,7 @@ target 'TopStore' do
   pod 'JSQCoreDataKit',         '~> 6.0.2'
   pod 'KRPullLoader',           '~> 1.0.1'
   pod 'PopupDialog',            '~> 0.5.4'
+  pod 'SwiftyDrop',             '~>3.0'
   
   target 'TopStoreTests' do
     inherit! :search_paths
