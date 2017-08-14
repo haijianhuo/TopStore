@@ -14,6 +14,8 @@ import ReachabilitySwift
 
 class ProductsViewModel {
     
+    var avatar = Variable<UIImage?>(nil)
+
     var products = [Product]([])
     var productsUpdated = Variable<Bool>(false)
     
@@ -23,7 +25,17 @@ class ProductsViewModel {
     
     let reachability = Reachability()
     let cartViewModel = CartViewModel.shared
+    let meViewModel = MeViewModel.shared
+
+    init() {
+        print("\(#function), \(type(of: self)) *Log*")
+        self.avatar = meViewModel.avatar
+    }
     
+    deinit {
+        print("\(#function), \(type(of: self)) *Log*")
+    }
+
     func addToCart(_ product: Product) {
         cartViewModel.addToCart(product)
     }

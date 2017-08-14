@@ -9,12 +9,17 @@
 import UIKit
 import CircleMenu
 import PopupDialog
+import RxCocoa
+import RxSwift
 
 class MeViewController: UIViewController {
 
     @IBOutlet weak var avatarPulseButton: HHPulseButton!
     
-    
+    var disposeBag = DisposeBag()
+
+    let viewModel = MeViewModel.shared
+
     fileprivate var circleMenu: CircleMenu?
 
     let items: [(icon: String, color: UIColor)] = [
@@ -27,9 +32,13 @@ class MeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.avatarPulseButton.image = viewModel.avatar.value
+
         self.setupCircleMenu(self.items.count)
         
         self.avatarPulseButton.delegate = self
+        
+        self.bind()
         
         if let image = UIImage(named:"photo_background") {
             self.view.backgroundColor = UIColor(patternImage: image)
@@ -55,6 +64,15 @@ class MeViewController: UIViewController {
     func applicationDidBecomeActiveNotification(_ notification: NSNotification?) {
         
         self.avatarPulseButton.animate(start: true)
+    }
+
+    func bind() {
+        self.viewModel.avatar.asObservable().subscribe(onNext: { [weak self] (image) in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+                self.avatarPulseButton.image = image
+            }
+        }).addDisposableTo(disposeBag)
     }
 
     // MARK: - Circle Menu
@@ -180,6 +198,7 @@ extension MeViewController: HHAvatarPickerDelegate
     func photoPickerDidPickImage(_ image: UIImage?, controller: HHAvatarPicker) {
         if let image = image {
             self.avatarPulseButton.image = image
+            _ = viewModel.saveImage(image: image)
         }
     }
 }

@@ -19,6 +19,7 @@
 		8D0C58451F41F40F00D615C8 /* HHAvatarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58401F41F40F00D615C8 /* HHAvatarPickerViewModel.swift */; };
 		8D0C58461F41F40F00D615C8 /* HHPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58411F41F40F00D615C8 /* HHPhotoCell.swift */; };
 		8D0C58471F41F40F00D615C8 /* HHProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58421F41F40F00D615C8 /* HHProduct.swift */; };
+		8D0C58491F42008400D615C8 /* MeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58481F42008400D615C8 /* MeViewModel.swift */; };
 		8D118B571F36D4280087D5B6 /* HHImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B551F36D4280087D5B6 /* HHImageInfo.swift */; };
 		8D118B581F36D4280087D5B6 /* HHImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B561F36D4280087D5B6 /* HHImageViewController.swift */; };
 		8D1D38BF1F37F76C00F022AF /* TabBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */; };
@@ -127,6 +128,7 @@
 		8D0C58401F41F40F00D615C8 /* HHAvatarPickerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHAvatarPickerViewModel.swift; sourceTree = "<group>"; };
 		8D0C58411F41F40F00D615C8 /* HHPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHPhotoCell.swift; sourceTree = "<group>"; };
 		8D0C58421F41F40F00D615C8 /* HHProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHProduct.swift; sourceTree = "<group>"; };
+		8D0C58481F42008400D615C8 /* MeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeViewModel.swift; sourceTree = "<group>"; };
 		8D118B551F36D4280087D5B6 /* HHImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageInfo.swift; sourceTree = "<group>"; };
 		8D118B561F36D4280087D5B6 /* HHImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageViewController.swift; sourceTree = "<group>"; };
 		8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarContainer.swift; sourceTree = "<group>"; };
@@ -550,6 +552,7 @@
 		8DED0A4D1F1F1A89004E265E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				8D0C58481F42008400D615C8 /* MeViewModel.swift */,
 				8DF66BA41F23B0B800A9677A /* CartViewModel.swift */,
 				8DED0A4E1F1F1A89004E265E /* ProductsViewModel.swift */,
 			);
@@ -874,6 +877,7 @@
 				8D562C6D1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift in Sources */,
 				8D0C582F1F41B79400D615C8 /* HHImageScrollView.swift in Sources */,
 				8DEC02711F19A79600AC228A /* AppDelegate.swift in Sources */,
+				8D0C58491F42008400D615C8 /* MeViewModel.swift in Sources */,
 				8D562CA21F30A52D008C8F00 /* MeViewController.swift in Sources */,
 				8D562C831F300BAE008C8F00 /* Lexer.swift in Sources */,
 				8D562C701F300BAE008C8F00 /* HeroDebugPlugin.swift in Sources */,

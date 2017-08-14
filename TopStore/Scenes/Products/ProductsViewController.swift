@@ -48,7 +48,8 @@ class ProductsViewController: UIViewController {
         self.coverView.isHidden = true
         
         self.avatarPulseButton.delegate = self
-        
+        self.avatarPulseButton.image = self.viewModel.avatar.value
+
         if let image = UIImage(named:"photo_background") {
             self.view.backgroundColor = UIColor(patternImage: image)
         }
@@ -173,6 +174,13 @@ class ProductsViewController: UIViewController {
 
     func bind() {
         
+        self.viewModel.avatar.asObservable().subscribe(onNext: { [weak self] (image) in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+                self.avatarPulseButton.image = image
+            }
+        }).addDisposableTo(disposeBag)
+
         self.viewModel.productsUpdated.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
