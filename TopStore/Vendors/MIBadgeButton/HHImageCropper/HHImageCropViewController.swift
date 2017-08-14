@@ -442,7 +442,7 @@ class HHImageCropViewController: UIViewController {
                 moveAndScaleLabel.text = "Move, Scale and Rotate"
                 moveAndScaleLabel.textColor = .white
                 moveAndScaleLabel.isOpaque = false
-                
+                //moveAndScaleLabel.isHidden = true
                 _moveAndScaleLabel = moveAndScaleLabel
                 return moveAndScaleLabel
             }
@@ -468,10 +468,9 @@ class HHImageCropViewController: UIViewController {
                 let cancelButton = UIButton()
                 cancelButton.translatesAutoresizingMaskIntoConstraints = false
                 cancelButton.setTitle("Cancel", for: .normal)
-                
+                cancelButton.setTitleColor(.gray, for: .highlighted)
                 cancelButton.addTarget(self, action: #selector(onCancelButtonTouch(_ :)), for: .touchUpInside)
                 cancelButton.isOpaque = false
-                
                 _cancelButton = cancelButton
                 return cancelButton
             }
@@ -496,6 +495,7 @@ class HHImageCropViewController: UIViewController {
                 let chooseButton = UIButton()
                 chooseButton.translatesAutoresizingMaskIntoConstraints = false
                 chooseButton.setTitle("Choose", for: .normal)
+                chooseButton.setTitleColor(.gray, for: .highlighted)
                 chooseButton.addTarget(self, action: #selector(onChooseButtonTouch(_ :)), for: .touchUpInside)
                 chooseButton.isOpaque = false
                 
@@ -524,72 +524,72 @@ class HHImageCropViewController: UIViewController {
     /**
      The inset of the circle mask rect's area within the crop view's area in portrait orientation. Default value is `15.0f`.
      */
-    var portraitCircleMaskRectInnerEdgeInset: CGFloat = 0
+    var portraitCircleMaskRectInnerEdgeInset: CGFloat = 15.0
     
     /**
      The inset of the square mask rect's area within the crop view's area in portrait orientation. Default value is `20.0f`.
      */
-    var portraitSquareMaskRectInnerEdgeInset: CGFloat = 0
+    var portraitSquareMaskRectInnerEdgeInset: CGFloat = 20.0
     
     /**
      The vertical space between the top of the 'Move and Scale' label and the top of the crop view in portrait orientation. Default value is `64.0f`.
      */
-    var portraitMoveAndScaleLabelTopAndCropViewTopVerticalSpace: CGFloat = 0
+    var portraitMoveAndScaleLabelTopAndCropViewTopVerticalSpace: CGFloat = 64.0
     
     /**
      The vertical space between the bottom of the crop view and the bottom of the 'Cancel' button in portrait orientation. Default value is `21.0f`.
      */
-    var portraitCropViewBottomAndCancelButtonBottomVerticalSpace: CGFloat = 0
+    var portraitCropViewBottomAndCancelButtonBottomVerticalSpace: CGFloat = 21.0
     
     /**
      The vertical space between the bottom of the crop view and the bottom of the 'Choose' button in portrait orientation. Default value is `21.0f`.
      */
-    var portraitCropViewBottomAndChooseButtonBottomVerticalSpace: CGFloat = 0
+    var portraitCropViewBottomAndChooseButtonBottomVerticalSpace: CGFloat = 21.0
     
     /**
      The horizontal space between the leading of the 'Cancel' button and the leading of the crop view in portrait orientation. Default value is `13.0f`.
      */
-    var portraitCancelButtonLeadingAndCropViewLeadingHorizontalSpace: CGFloat = 0
+    var portraitCancelButtonLeadingAndCropViewLeadingHorizontalSpace: CGFloat = 13.0
     
     /**
      The horizontal space between the trailing of the crop view and the trailing of the 'Choose' button in portrait orientation. Default value is `13.0f`.
      */
-    var portraitCropViewTrailingAndChooseButtonTrailingHorizontalSpace: CGFloat = 0
+    var portraitCropViewTrailingAndChooseButtonTrailingHorizontalSpace: CGFloat = 13.0
     
     /**
      The inset of the circle mask rect's area within the crop view's area in landscape orientation. Default value is `45.0f`.
      */
-    var landscapeCircleMaskRectInnerEdgeInset: CGFloat = 0
+    var landscapeCircleMaskRectInnerEdgeInset: CGFloat = 45.0
     
     /**
      The inset of the square mask rect's area within the crop view's area in landscape orientation. Default value is `45.0f`.
      */
-    var landscapeSquareMaskRectInnerEdgeInset: CGFloat = 0
+    var landscapeSquareMaskRectInnerEdgeInset: CGFloat = 45.0
     
     /**
      The vertical space between the top of the 'Move and Scale' label and the top of the crop view in landscape orientation. Default value is `12.0f`.
      */
-    var landscapeMoveAndScaleLabelTopAndCropViewTopVerticalSpace: CGFloat = 0
+    var landscapeMoveAndScaleLabelTopAndCropViewTopVerticalSpace: CGFloat = 12.0
     
     /**
      The vertical space between the bottom of the crop view and the bottom of the 'Cancel' button in landscape orientation. Default value is `12.0f`.
      */
-    var landscapeCropViewBottomAndCancelButtonBottomVerticalSpace: CGFloat = 0
+    var landscapeCropViewBottomAndCancelButtonBottomVerticalSpace: CGFloat = 12.0
     
     /**
      The vertical space between the bottom of the crop view and the bottom of the 'Choose' button in landscape orientation. Default value is `12.0f`.
      */
-    var landscapeCropViewBottomAndChooseButtonBottomVerticalSpace: CGFloat = 0
+    var landscapeCropViewBottomAndChooseButtonBottomVerticalSpace: CGFloat = 12.0
     
     /**
      The horizontal space between the leading of the 'Cancel' button and the leading of the crop view in landscape orientation. Default value is `13.0f`.
      */
-    var landscapeCancelButtonLeadingAndCropViewLeadingHorizontalSpace: CGFloat = 0
+    var landscapeCancelButtonLeadingAndCropViewLeadingHorizontalSpace: CGFloat = 13.0
     
     /**
      The horizontal space between the trailing of the crop view and the trailing of the 'Choose' button in landscape orientation. Default value is `13.0f`.
      */
-    var landscapeCropViewTrailingAndChooseButtonTrailingHorizontalSpace: CGFloat = 0
+    var landscapeCropViewTrailingAndChooseButtonTrailingHorizontalSpace: CGFloat = 13.0
     
     // private
     
