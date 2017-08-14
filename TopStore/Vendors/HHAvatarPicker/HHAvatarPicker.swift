@@ -12,6 +12,13 @@ import Kingfisher
 import KRPullLoader
 import SwiftyDrop
 import ReachabilitySwift
+import PopupDialog
+
+enum HHAvatarPickerMode {
+    case search
+    case photo
+    case camera
+}
 
 
 @objc protocol HHAvatarPickerDelegate: class {
@@ -25,6 +32,9 @@ import ReachabilitySwift
 class HHAvatarPicker: UIViewController {
 
     weak var delegate: HHAvatarPickerDelegate?
+    var picker: UIImagePickerController?
+    
+    var avatarPickerMode: HHAvatarPickerMode = .search
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -84,11 +94,53 @@ class HHAvatarPicker: UIViewController {
         let backgroundView = UIView(frame:self.collectionView.bounds)
         backgroundView.addGestureRecognizer(tap)
         self.collectionView.backgroundView = backgroundView
-        
-    }
+     }
     
     deinit {
         self.collectionView.removePullLoadableView(self.loadMoreView)
+    }
+    
+    func showPhotoLibrary() {
+        if self.picker != nil {
+            return
+        }
+        
+        let picker = UIImagePickerController()
+        self.picker = picker
+        picker.allowsEditing = false
+        picker.sourceType = .photoLibrary
+        picker.modalPresentationStyle = .fullScreen
+        picker.delegate = self
+        self.present(picker, animated: true, completion: nil)
+    }
+    
+    func shootPhoto() {
+        if self.picker != nil {
+            return
+        }
+        
+        let picker = UIImagePickerController()
+        self.picker = picker
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            picker.allowsEditing = false
+            picker.sourceType = UIImagePickerControllerSourceType.camera
+            picker.cameraDevice = .front
+
+            picker.cameraCaptureMode = .photo
+            picker.modalPresentationStyle = .fullScreen
+            picker.delegate = self
+            present(picker,animated: true,completion: nil)
+        } else {
+            let popup = PopupDialog(title: "Camera Not Found", message: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+            }
+            
+            let buttonOne = CancelButton(title: "OK") {
+            }
+            
+            popup.addButtons([buttonOne])
+            self.present(popup, animated: true, completion: nil)
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -147,6 +199,16 @@ class HHAvatarPicker: UIViewController {
             }
             self.showCoverView(false)
         }
+        
+        switch self.avatarPickerMode {
+        case .camera:
+            self.shootPhoto()
+        case .photo:
+            self.showPhotoLibrary()
+        default:
+            break
+        }
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -246,7 +308,59 @@ extension HHAvatarPicker: UICollectionViewDataSource
         imageViewer.show(from: self, transition: .fromOriginalPosition)
     }
     
+    func fixImageOrientation(src: UIImage?) -> UIImage? {
+        
+        guard let src = src else { return nil }
 
+        if src.imageOrientation == .up {
+            return src
+        }
+        
+        var transform: CGAffineTransform = .identity
+        
+        switch src.imageOrientation {
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: src.size.width, y: src.size.height)
+            transform = transform.rotated(by: .pi)
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: src.size.width, y: 0)
+            transform = transform.rotated(by: .pi/2)
+        case .right, .rightMirrored:
+            transform = transform.translatedBy(x: 0, y: src.size.height)
+            transform = transform.rotated(by: -.pi/2)
+            break
+        case .up, .upMirrored:
+            break
+        }
+        
+        switch src.imageOrientation {
+        case .upMirrored, .downMirrored:
+            transform.translatedBy(x: src.size.width, y: 0)
+            transform.scaledBy(x: -1, y: 1)
+        case .leftMirrored, .rightMirrored:
+            transform.translatedBy(x: src.size.height, y: 0)
+            transform.scaledBy(x: -1, y: 1)
+        case .up, .down, .left, .right:
+            break
+        }
+        
+        let ctx = CGContext(data: nil, width: Int(src.size.width), height: Int(src.size.height), bitsPerComponent: src.cgImage!.bitsPerComponent, bytesPerRow: 0, space: src.cgImage!.colorSpace!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+        
+        ctx.concatenate(transform)
+        
+        switch src.imageOrientation {
+        case .left, .leftMirrored, .right, .rightMirrored:
+            
+            ctx.draw(src.cgImage!, in: CGRect(x: 0, y: 0, width: src.size.height, height: src.size.width))
+        default:
+            ctx.draw(src.cgImage!, in: CGRect(x: 0, y: 0, width: src.size.width, height: src.size.height))
+
+        }
+        
+        let cgimg = ctx.makeImage()!
+        let img:UIImage = UIImage.init(cgImage: cgimg)
+        return img
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -406,7 +520,26 @@ extension HHAvatarPicker: HHImageCropViewControllerDelegate
             })
         })
     }
-    
-    
 }
 
+// MARK: UIImagePickerControllerDelegate, UINavigationControllerDelegate
+
+extension HHAvatarPicker: UIImagePickerControllerDelegate, UINavigationControllerDelegate
+{
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let chosenImage = self.fixImageOrientation(src: info[UIImagePickerControllerOriginalImage] as? UIImage) {
+            picker.dismiss(animated:true, completion: {
+                    let controller = HHImageCropViewController(image: chosenImage, cropMode: .circle)
+                    controller.delegate = self
+                    controller.rotationEnabled = true
+                    self.present(controller, animated: true, completion: nil)
+            })
+        }
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+}

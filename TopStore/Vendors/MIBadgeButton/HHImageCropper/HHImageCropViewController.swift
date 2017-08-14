@@ -101,20 +101,6 @@ enum HHImageCropMode: UInt {
 
 
 class HHImageCropViewController: UIViewController {
-//    /**
-//     Designated initializer. Initializes and returns a newly allocated view controller object with the specified image.
-//     
-//     @param originalImage The image for cropping.
-//     */
-//    - (instancetype)initWithImage:(UIImage *)originalImage;
-//    
-//    /**
-//     Initializes and returns a newly allocated view controller object with the specified image and the specified crop mode.
-//     
-//     @param originalImage The image for cropping.
-//     @param cropMode The mode for cropping.
-//     */
-//    - (instancetype)initWithImage:(UIImage *)originalImage cropMode:(HHImageCropMode)cropMode;
     
     ///-----------------------------
     /// @name Accessing the Delegate
