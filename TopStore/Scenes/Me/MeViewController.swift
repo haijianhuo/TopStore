@@ -8,6 +8,7 @@
 
 import UIKit
 import CircleMenu
+import PopupDialog
 
 class MeViewController: UIViewController {
 
@@ -142,6 +143,25 @@ extension MeViewController: CircleMenuDelegate
     func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
         //print("button did selected: \(atIndex)")
         self.menuCollapsed(circleMenu)
+        
+        if atIndex == 1 {
+            let storyboard = UIStoryboard(name: "HHAvatarPicker", bundle: nil)
+            if let controller = storyboard.instantiateInitialViewController() as? HHAvatarPicker {
+                controller.delegate = self
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
+        else {
+            let popup = PopupDialog(title: nil, message: "Not implemented yet!", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+            }
+            
+            let buttonOne = CancelButton(title: "OK") {
+            }
+            
+            popup.addButtons([buttonOne])
+            self.present(popup, animated: true, completion: nil)
+
+        }
     }
     
     func menuCollapsed(_ circleMenu: CircleMenu) {
@@ -152,4 +172,16 @@ extension MeViewController: CircleMenuDelegate
     }
 
 }
+
+// MARK: - HHAvatarPickerDelegate
+
+extension MeViewController: HHAvatarPickerDelegate
+{
+    func photoPickerDidPickImage(_ image: UIImage?, controller: HHAvatarPicker) {
+        if let image = image {
+            self.avatarPulseButton.image = image
+        }
+    }
+}
+
 

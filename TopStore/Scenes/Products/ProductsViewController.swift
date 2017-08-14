@@ -39,6 +39,8 @@ class ProductsViewController: UIViewController {
         ("shopping_add", UIColor(red:0.19, green:0.57, blue:1, alpha:1))
         ]
 
+    let loadMoreView = KRPullLoadView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,10 +59,9 @@ class ProductsViewController: UIViewController {
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.allowsMultipleSelection = false
         
-        let loadMoreView = KRPullLoadView()
-        loadMoreView.delegate = self
-        collectionView.addPullLoadableView(loadMoreView, type: .loadMore)
-
+        
+        self.loadMoreView.delegate = self
+        self.collectionView.addPullLoadableView(self.loadMoreView, type: .loadMore)
         
         self.searchBar.delegate = self
 
@@ -75,7 +76,11 @@ class ProductsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(applicationDidBecomeActiveNotification(_:)), name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
 
     }
-        
+    
+    deinit {
+        self.collectionView.removePullLoadableView(self.loadMoreView)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.avatarPulseButton.animate(start: false)

@@ -1565,10 +1565,9 @@ extension HHImageViewController: CircleMenuDelegate
     }
     
     func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
-        //print("button did selected: \(atIndex)")
-        _ = self.delegate?.imageViewController?(self, buttonDidSelected: button, atIndex: atIndex, image: self.image)
-        
-        self.dismiss(animated: true)
+        self.dismiss(animated: true, completion: {
+            _ = self.delegate?.imageViewController?(self, buttonDidSelected: button, atIndex: atIndex, image: self.image)
+        })
     }
     
     func menuCollapsed(_ circleMenu: CircleMenu) {

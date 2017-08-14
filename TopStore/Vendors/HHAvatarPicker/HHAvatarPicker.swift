@@ -1,6 +1,5 @@
 //
-//  PhotosViewController.swift
-//  TopStore
+//  HHAvatarPicker.swift
 //
 //  Created by Haijian Huo on 7/19/17.
 //  Copyright © 2017 Haijian Huo. All rights reserved.
@@ -14,8 +13,19 @@ import KRPullLoader
 import SwiftyDrop
 import ReachabilitySwift
 
-class PhotosViewController: UIViewController {
 
+@objc protocol HHAvatarPickerDelegate: class {
+    
+    /**
+     Tells the delegate that the original image has been cropped. Additionally provides a crop rect used to produce image.
+     */
+    @objc optional func photoPickerDidPickImage(_ image: UIImage?, controller: HHAvatarPicker)
+}
+
+class HHAvatarPicker: UIViewController {
+
+    weak var delegate: HHAvatarPickerDelegate?
+    
     @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -24,7 +34,7 @@ class PhotosViewController: UIViewController {
 
     var disposeBag = DisposeBag()
     
-    let viewModel = ProductsViewModel()
+    let viewModel = HHAvatarPickerViewModel()
 
     @IBOutlet weak var coverView: UIView!
     
@@ -35,7 +45,7 @@ class PhotosViewController: UIViewController {
     var needRefresh = false
     
     let items: [(icon: String, color: UIColor)] = [
-        ("shopping_add", UIColor(red:0.19, green:0.57, blue:1, alpha:1))
+        ("photo_select", UIColor(red:0.22, green:0.74, blue:0, alpha:1))
     ]
 
 //    let items: [(icon: String, color: UIColor)] = [
@@ -45,6 +55,7 @@ class PhotosViewController: UIViewController {
 //        ("settings-btn", UIColor(red:0.51, green:0.15, blue:1, alpha:1)),
 //        ("nearby-btn", UIColor(red:1, green:0.39, blue:0, alpha:1)),
 //        ]
+
     let loadMoreView = KRPullLoadView()
     
     override func viewDidLoad() {
@@ -61,7 +72,6 @@ class PhotosViewController: UIViewController {
         
         self.collectionView.backgroundColor = .clear
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
-        
         
         self.loadMoreView.delegate = self
         self.collectionView.addPullLoadableView(self.loadMoreView, type: .loadMore)
@@ -80,7 +90,7 @@ class PhotosViewController: UIViewController {
     deinit {
         self.collectionView.removePullLoadableView(self.loadMoreView)
     }
-
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         self.willRotate = true
@@ -172,11 +182,14 @@ class PhotosViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 
-extension PhotosViewController: UICollectionViewDataSource
+extension HHAvatarPicker: UICollectionViewDataSource
 {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -188,7 +201,7 @@ extension PhotosViewController: UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HHPhotoCell", for: indexPath) as! HHPhotoCell
         let item = self.viewModel.products[indexPath.row]
         
         cell.layer.borderWidth = indexPath == self.selectedIndexPath ? 2 : 0
@@ -207,39 +220,11 @@ extension PhotosViewController: UICollectionViewDataSource
         return cell
     }
     
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension PhotosViewController: UICollectionViewDelegate
-{
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        self.view.endEditing(true)
-        
-        var indexPaths = [indexPath]
-        if let lastIndexPath = self.selectedIndexPath {
-            if lastIndexPath != indexPath {
-                indexPaths.append(lastIndexPath)
-            }
-        }
-        self.selectedIndexPath = indexPath
-        collectionView.reloadItems(at: indexPaths)
-        
-        let dispatchTime = DispatchTime.now() + 0.2
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            let item = self.viewModel.products[indexPath.row]
-            if let cell = collectionView.cellForItem(at: indexPath) as? PhotoCell {
-                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
-            }
-        }
-    }
-
     func zoomImage(imageView: UIImageView, imageUrl: String?) {
         
         guard let image = imageView.image else { return }
         guard let referenceView = imageView.superview else { return }
-
+        
         let imageInfo = HHImageInfo(referenceRect: imageView.frame, referenceView: referenceView)
         
         if let imageUrl = imageUrl {
@@ -257,14 +242,44 @@ extension PhotosViewController: UICollectionViewDelegate
         
         let imageViewer = HHImageViewController(imageInfo: imageInfo, mode: .image, backgroundStyle: .scaled)
         imageViewer.delegate = self
+        imageViewer.showCircleMenuOnStart = true
         imageViewer.show(from: self, transition: .fromOriginalPosition)
+    }
+    
+
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension HHAvatarPicker: UICollectionViewDelegate
+{
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        self.view.endEditing(true)
+        
+        var indexPaths = [indexPath]
+        if let lastIndexPath = self.selectedIndexPath {
+            if lastIndexPath != indexPath {
+                indexPaths.append(lastIndexPath)
+            }
+        }
+        self.selectedIndexPath = indexPath
+        collectionView.reloadItems(at: indexPaths)
+        
+        let dispatchTime = DispatchTime.now() + 0.2
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+            let item = self.viewModel.products[indexPath.row]
+            if let cell = collectionView.cellForItem(at: indexPath) as? HHPhotoCell {
+                self.zoomImage(imageView: cell.imageView, imageUrl: item.url_large)
+            }
+        }
     }
 
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension PhotosViewController : UICollectionViewDelegateFlowLayout {
+extension HHAvatarPicker : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -286,7 +301,7 @@ extension PhotosViewController : UICollectionViewDelegateFlowLayout {
 
 // MARK: - HHImageViewControllerDelegate
 
-extension PhotosViewController: HHImageViewControllerDelegate
+extension HHAvatarPicker: HHImageViewControllerDelegate
 {
     func imageViewController(_ imageViewController: HHImageViewController, willDisplay button: UIButton, atIndex: Int) -> Int {
         button.backgroundColor = items[atIndex].color
@@ -301,22 +316,22 @@ extension PhotosViewController: HHImageViewControllerDelegate
     }
     
     func imageViewController(_ imageViewController: HHImageViewController, buttonDidSelected button: UIButton, atIndex: Int, image: UIImage?) -> Bool {
-        //print("button did selected: \(atIndex)")
-        
         if atIndex == 0 {
-            if let selectedIndexPath = self.selectedIndexPath {
-                let product = self.viewModel.products[selectedIndexPath.row]
-                self.viewModel.addToCart(product)
+            if let image = image {
+                let controller = HHImageCropViewController(image: image, cropMode: .circle)
+                controller.delegate = self
+                controller.rotationEnabled = true
+                self.present(controller, animated: true, completion: nil)
             }
         }
-
         return true
     }
+    
 }
 
 // MARK: - UISearchBarDelegate
 
-extension PhotosViewController: UISearchBarDelegate
+extension HHAvatarPicker: UISearchBarDelegate
 {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
@@ -336,7 +351,7 @@ extension PhotosViewController: UISearchBarDelegate
 
 // MARK: - KRPullLoadViewDelegate
 
-extension PhotosViewController: KRPullLoadViewDelegate {
+extension HHAvatarPicker: KRPullLoadViewDelegate {
     
     func pullLoadView(_ pullLoadView: KRPullLoadView, didChangeState state: KRPullLoaderState, viewType type: KRPullLoaderType) {
         if type == .loadMore {
@@ -371,5 +386,27 @@ extension PhotosViewController: KRPullLoadViewDelegate {
             }
         }
     }
+}
+
+// MARK: RSKImageCropViewControllerDelegate
+
+extension HHAvatarPicker: HHImageCropViewControllerDelegate
+{
+    
+    func imageCropViewControllerDidCancelCrop(controller: HHImageCropViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func imageCropViewController(controller: HHImageCropViewController, didCropImage croppedImage: UIImage?, usingCropRect cropRect: CGRect) {
+        controller.dismiss(animated: true, completion: {
+            self.dismiss(animated: true, completion: {
+                if let photoPickerDidPickImage = self.delegate?.photoPickerDidPickImage {
+                    photoPickerDidPickImage(croppedImage, self)
+                }
+            })
+        })
+    }
+    
+    
 }
 

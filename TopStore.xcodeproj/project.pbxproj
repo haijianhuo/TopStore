@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		07C2C1FE7060968F34C42DD1 /* Pods_TopStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D14A7708C98585A82EAFE0CD /* Pods_TopStore.framework */; };
 		389DEDE8E997F9D8C5B9E166 /* Pods_TopStoreUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCA3E4330818F84D066C2F7 /* Pods_TopStoreUITests.framework */; };
+		8D0C582D1F41B79400D615C8 /* CGGeometry+HHImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58281F41B79400D615C8 /* CGGeometry+HHImageCropper.swift */; };
+		8D0C582E1F41B79400D615C8 /* HHImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58291F41B79400D615C8 /* HHImageCropViewController.swift */; };
+		8D0C582F1F41B79400D615C8 /* HHImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C582A1F41B79400D615C8 /* HHImageScrollView.swift */; };
+		8D0C58301F41B79400D615C8 /* HHTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C582B1F41B79400D615C8 /* HHTouchView.swift */; };
+		8D0C58311F41B79400D615C8 /* UIImage+HHImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C582C1F41B79400D615C8 /* UIImage+HHImageCropper.swift */; };
+		8D0C58431F41F40F00D615C8 /* HHAvatarPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D0C583E1F41F40F00D615C8 /* HHAvatarPicker.storyboard */; };
+		8D0C58441F41F40F00D615C8 /* HHAvatarPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C583F1F41F40F00D615C8 /* HHAvatarPicker.swift */; };
+		8D0C58451F41F40F00D615C8 /* HHAvatarPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58401F41F40F00D615C8 /* HHAvatarPickerViewModel.swift */; };
+		8D0C58461F41F40F00D615C8 /* HHPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58411F41F40F00D615C8 /* HHPhotoCell.swift */; };
+		8D0C58471F41F40F00D615C8 /* HHProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0C58421F41F40F00D615C8 /* HHProduct.swift */; };
 		8D118B571F36D4280087D5B6 /* HHImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B551F36D4280087D5B6 /* HHImageInfo.swift */; };
 		8D118B581F36D4280087D5B6 /* HHImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D118B561F36D4280087D5B6 /* HHImageViewController.swift */; };
 		8D1D38BF1F37F76C00F022AF /* TabBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */; };
@@ -107,6 +117,16 @@
 		6DCA3E4330818F84D066C2F7 /* Pods_TopStoreUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TopStoreUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E7EA92341EA98525563E10C /* Pods-TopStoreUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopStoreUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TopStoreUITests/Pods-TopStoreUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8B56FA74AD1ABD309E2EC454 /* Pods-TopStoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopStoreTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TopStoreTests/Pods-TopStoreTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8D0C58281F41B79400D615C8 /* CGGeometry+HHImageCropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGGeometry+HHImageCropper.swift"; sourceTree = "<group>"; };
+		8D0C58291F41B79400D615C8 /* HHImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageCropViewController.swift; sourceTree = "<group>"; };
+		8D0C582A1F41B79400D615C8 /* HHImageScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageScrollView.swift; sourceTree = "<group>"; };
+		8D0C582B1F41B79400D615C8 /* HHTouchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHTouchView.swift; sourceTree = "<group>"; };
+		8D0C582C1F41B79400D615C8 /* UIImage+HHImageCropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+HHImageCropper.swift"; sourceTree = "<group>"; };
+		8D0C583E1F41F40F00D615C8 /* HHAvatarPicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HHAvatarPicker.storyboard; sourceTree = "<group>"; };
+		8D0C583F1F41F40F00D615C8 /* HHAvatarPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHAvatarPicker.swift; sourceTree = "<group>"; };
+		8D0C58401F41F40F00D615C8 /* HHAvatarPickerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHAvatarPickerViewModel.swift; sourceTree = "<group>"; };
+		8D0C58411F41F40F00D615C8 /* HHPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHPhotoCell.swift; sourceTree = "<group>"; };
+		8D0C58421F41F40F00D615C8 /* HHProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHProduct.swift; sourceTree = "<group>"; };
 		8D118B551F36D4280087D5B6 /* HHImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageInfo.swift; sourceTree = "<group>"; };
 		8D118B561F36D4280087D5B6 /* HHImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HHImageViewController.swift; sourceTree = "<group>"; };
 		8D1D38BE1F37F76C00F022AF /* TabBarContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarContainer.swift; sourceTree = "<group>"; };
@@ -247,6 +267,31 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8D0C58271F41B79400D615C8 /* HHImageCropper */ = {
+			isa = PBXGroup;
+			children = (
+				8D0C58291F41B79400D615C8 /* HHImageCropViewController.swift */,
+				8D0C582A1F41B79400D615C8 /* HHImageScrollView.swift */,
+				8D0C582B1F41B79400D615C8 /* HHTouchView.swift */,
+				8D0C58281F41B79400D615C8 /* CGGeometry+HHImageCropper.swift */,
+				8D0C582C1F41B79400D615C8 /* UIImage+HHImageCropper.swift */,
+			);
+			name = HHImageCropper;
+			path = MIBadgeButton/HHImageCropper;
+			sourceTree = "<group>";
+		};
+		8D0C583D1F41F40F00D615C8 /* HHAvatarPicker */ = {
+			isa = PBXGroup;
+			children = (
+				8D0C583F1F41F40F00D615C8 /* HHAvatarPicker.swift */,
+				8D0C583E1F41F40F00D615C8 /* HHAvatarPicker.storyboard */,
+				8D0C58401F41F40F00D615C8 /* HHAvatarPickerViewModel.swift */,
+				8D0C58411F41F40F00D615C8 /* HHPhotoCell.swift */,
+				8D0C58421F41F40F00D615C8 /* HHProduct.swift */,
+			);
+			path = HHAvatarPicker;
+			sourceTree = "<group>";
+		};
 		8D118B541F36D4280087D5B6 /* HHImageViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,7 +312,9 @@
 		8D562C361F300BAE008C8F00 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				8D0C583D1F41F40F00D615C8 /* HHAvatarPicker */,
 				8D1D38C11F3B302400F022AF /* MIBadgeButton */,
+				8D0C58271F41B79400D615C8 /* HHImageCropper */,
 				8D118B541F36D4280087D5B6 /* HHImageViewController */,
 				8D562C991F301864008C8F00 /* HHPulseButton */,
 				8D562C371F300BAE008C8F00 /* Hero */,
@@ -652,6 +699,7 @@
 				8DF66BA21F23A08600A9677A /* CartCell.xib in Resources */,
 				8DEC02781F19A79600AC228A /* Assets.xcassets in Resources */,
 				8D562C811F300BAE008C8F00 /* Info.plist in Resources */,
+				8D0C58431F41F40F00D615C8 /* HHAvatarPicker.storyboard in Resources */,
 				8D562CA01F30A4DB008C8F00 /* Me.storyboard in Resources */,
 				8DEC02761F19A79600AC228A /* Main.storyboard in Resources */,
 			);
@@ -821,7 +869,10 @@
 				8D562C821F300BAE008C8F00 /* HeroStringConvertible.swift in Sources */,
 				8DF66BA51F23B0B800A9677A /* CartViewModel.swift in Sources */,
 				8D562C6C1F300BAE008C8F00 /* HeroAnimatorViewContext.swift in Sources */,
+				8D0C58311F41B79400D615C8 /* UIImage+HHImageCropper.swift in Sources */,
+				8D0C582E1F41B79400D615C8 /* HHImageCropViewController.swift in Sources */,
 				8D562C6D1F300BAE008C8F00 /* HeroCoreAnimationViewContext.swift in Sources */,
+				8D0C582F1F41B79400D615C8 /* HHImageScrollView.swift in Sources */,
 				8DEC02711F19A79600AC228A /* AppDelegate.swift in Sources */,
 				8D562CA21F30A52D008C8F00 /* MeViewController.swift in Sources */,
 				8D562C831F300BAE008C8F00 /* Lexer.swift in Sources */,
@@ -829,6 +880,8 @@
 				8D562C941F300BAE008C8F00 /* HeroTransition+UINavigationControllerDelegate.swift in Sources */,
 				8D562C981F300BAE008C8F00 /* HeroTransitionState.swift in Sources */,
 				8D562C711F300BAE008C8F00 /* HeroDebugView.swift in Sources */,
+				8D0C58441F41F40F00D615C8 /* HHAvatarPicker.swift in Sources */,
+				8D0C58451F41F40F00D615C8 /* HHAvatarPickerViewModel.swift in Sources */,
 				8D562C8E1F300BAE008C8F00 /* HeroProgressRunner.swift in Sources */,
 				8D562C881F300BAE008C8F00 /* CascadePreprocessor.swift in Sources */,
 				8DF66BB51F23EE2B00A9677A /* MainTabBarController.swift in Sources */,
@@ -854,6 +907,7 @@
 				8D562C8C1F300BAE008C8F00 /* MatchPreprocessor.swift in Sources */,
 				8D562C771F300BAE008C8F00 /* UIKit+Hero.swift in Sources */,
 				8D562C7F1F300BAE008C8F00 /* HeroTypes.swift in Sources */,
+				8D0C58471F41F40F00D615C8 /* HHProduct.swift in Sources */,
 				8D562C8D1F300BAE008C8F00 /* SourcePreprocessor.swift in Sources */,
 				8D562C8A1F300BAE008C8F00 /* DefaultAnimationPreprocessor.swift in Sources */,
 				8D562C741F300BAE008C8F00 /* CAMediaTimingFunction+Hero.swift in Sources */,
@@ -870,9 +924,12 @@
 				8D562CA81F30A91E008C8F00 /* UIKit+TopStore.swift in Sources */,
 				8D562C7A1F300BAE008C8F00 /* HeroContext.swift in Sources */,
 				8D562C861F300BAE008C8F00 /* Regex.swift in Sources */,
+				8D0C58461F41F40F00D615C8 /* HHPhotoCell.swift in Sources */,
 				8D562C6F1F300BAE008C8F00 /* HeroViewPropertyViewContext.swift in Sources */,
 				8D562C921F300BAE008C8F00 /* HeroTransition+Interactive.swift in Sources */,
+				8D0C58301F41B79400D615C8 /* HHTouchView.swift in Sources */,
 				8DED0A4C1F1F14A5004E265E /* PhotoCell.swift in Sources */,
+				8D0C582D1F41B79400D615C8 /* CGGeometry+HHImageCropper.swift in Sources */,
 				8D562C9C1F301864008C8F00 /* HHPulseButton.swift in Sources */,
 				8DF66BB11F23CAD200A9677A /* TopStore.xcdatamodeld in Sources */,
 				8DED0A4A1F1F1466004E265E /* PhotosViewController.swift in Sources */,
