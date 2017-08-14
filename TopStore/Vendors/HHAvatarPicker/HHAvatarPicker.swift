@@ -110,14 +110,22 @@ class HHAvatarPicker: UIViewController {
         if self.picker != nil {
             return
         }
-        HUD.show(.progress)
-        let picker = UIImagePickerController()
-        self.picker = picker
-        picker.allowsEditing = false
-        picker.sourceType = .photoLibrary
-        picker.modalPresentationStyle = .fullScreen
-        picker.delegate = self
-        self.present(picker, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            HUD.show(.progress)
+        }
+        
+        DispatchQueue.main.async {
+            let picker = UIImagePickerController()
+            self.picker = picker
+            picker.allowsEditing = false
+            picker.sourceType = .photoLibrary
+            picker.modalPresentationStyle = .fullScreen
+            picker.delegate = self
+            self.present(picker, animated: true, completion: {
+                HUD.hide()
+            })
+        }
+
     }
     
     func shootPhoto() {
@@ -129,21 +137,29 @@ class HHAvatarPicker: UIViewController {
         self.picker = picker
         
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            HUD.show(.progress)
+            DispatchQueue.main.async {
+                HUD.show(.progress)
+            }
 
-            picker.allowsEditing = false
-            picker.sourceType = UIImagePickerControllerSourceType.camera
-            picker.cameraDevice = .front
+            DispatchQueue.main.async {
+                picker.allowsEditing = false
+                picker.sourceType = UIImagePickerControllerSourceType.camera
+                picker.cameraDevice = .front
+                
+                picker.cameraCaptureMode = .photo
+                picker.modalPresentationStyle = .fullScreen
+                picker.delegate = self
+                self.present(picker,animated: true, completion: {
+                    HUD.hide()
+                })
+            }
 
-            picker.cameraCaptureMode = .photo
-            picker.modalPresentationStyle = .fullScreen
-            picker.delegate = self
-            present(picker,animated: true,completion: nil)
         } else {
             let popup = PopupDialog(title: "Camera Not Found", message: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
             }
             
             let buttonOne = CancelButton(title: "OK") {
+                self.dismiss(animated: true, completion: nil)
             }
             
             popup.addButtons([buttonOne])
@@ -516,7 +532,9 @@ extension HHAvatarPicker: HHImageCropViewControllerDelegate
 {
     
     func imageCropViewControllerDidCancelCrop(controller: HHImageCropViewController) {
-        controller.dismiss(animated: true, completion: nil)
+        controller.dismiss(animated: true, completion: {
+            self.dismiss(animated: true, completion: nil)
+        })
     }
     
     func imageCropViewController(controller: HHImageCropViewController, didCropImage croppedImage: UIImage?, usingCropRect cropRect: CGRect) {
@@ -535,7 +553,6 @@ extension HHAvatarPicker: HHImageCropViewControllerDelegate
 extension HHAvatarPicker: UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        HUD.hide()
         
         if let chosenImage = self.fixImageOrientation(src: info[UIImagePickerControllerOriginalImage] as? UIImage) {
             picker.dismiss(animated:true, completion: {
@@ -548,7 +565,6 @@ extension HHAvatarPicker: UIImagePickerControllerDelegate, UINavigationControlle
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        HUD.hide()
 
         picker.dismiss(animated: true, completion: {
             self.dismiss(animated: true, completion: nil)
