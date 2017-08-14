@@ -13,6 +13,7 @@ import KRPullLoader
 import SwiftyDrop
 import ReachabilitySwift
 import PopupDialog
+import PKHUD
 
 enum HHAvatarPickerMode {
     case search
@@ -39,6 +40,8 @@ class HHAvatarPicker: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var closeButton: UIButton!
     
     let reachability = Reachability()
 
@@ -74,6 +77,9 @@ class HHAvatarPicker: UIViewController {
         self.coverView.backgroundColor = .lightGray
         self.coverView.isHidden = true
         
+        self.searchBar.isHidden = self.avatarPickerMode != .search
+        self.closeButton.isHidden = self.searchBar.isHidden
+        
         ImageCache.default.maxCachePeriodInSecond = -1
 
         // Do any additional setup after loading the view.
@@ -104,7 +110,7 @@ class HHAvatarPicker: UIViewController {
         if self.picker != nil {
             return
         }
-        
+        HUD.show(.progress)
         let picker = UIImagePickerController()
         self.picker = picker
         picker.allowsEditing = false
@@ -123,6 +129,8 @@ class HHAvatarPicker: UIViewController {
         self.picker = picker
         
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            HUD.show(.progress)
+
             picker.allowsEditing = false
             picker.sourceType = UIImagePickerControllerSourceType.camera
             picker.cameraDevice = .front
@@ -527,6 +535,7 @@ extension HHAvatarPicker: HHImageCropViewControllerDelegate
 extension HHAvatarPicker: UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        HUD.hide()
         
         if let chosenImage = self.fixImageOrientation(src: info[UIImagePickerControllerOriginalImage] as? UIImage) {
             picker.dismiss(animated:true, completion: {
@@ -539,7 +548,11 @@ extension HHAvatarPicker: UIImagePickerControllerDelegate, UINavigationControlle
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+        HUD.hide()
+
+        picker.dismiss(animated: true, completion: {
+            self.dismiss(animated: true, completion: nil)
+        })
     }
 
 }

@@ -102,6 +102,7 @@
                     <tabBarItem key="tabBarItem" title="Photos" image="Photo" id="TBv-lo-HmU"/>
                     <navigationItem key="navigationItem" title="Photos" id="rPu-3j-ExQ"/>
                     <connections>
+                        <outlet property="closeButton" destination="4dN-2a-Duw" id="mbD-cu-lAg"/>
                         <outlet property="collectionView" destination="cmF-vQ-qZd" id="GMh-F6-e6s"/>
                         <outlet property="coverView" destination="b6q-0K-Rti" id="nZs-Cl-AAy"/>
                         <outlet property="searchBar" destination="tzO-r5-4zx" id="Tx6-TA-Mp9"/>
