@@ -164,7 +164,7 @@ class ProductsViewController: UIViewController {
             self.coverView.alpha = 1
         }
         else {
-            UIView.animate(withDuration: 1.8, animations: {
+            UIView.animate(withDuration: 1.0, animations: {
                 self.coverView.alpha = 0
             }, completion: { (finished) in
                 self.coverView.isHidden = true
