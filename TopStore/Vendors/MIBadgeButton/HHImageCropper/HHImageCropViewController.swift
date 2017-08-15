@@ -756,38 +756,36 @@ class HHImageCropViewController: UIViewController {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        avoidEmptySpaceAroundImage = false
-        alwaysBounceVertical = false
-        alwaysBounceHorizontal = false
-        applyMaskToCroppedImage = false
-        maskLayerLineWidth = 1.0
-        rotationEnabled = false
-        cropMode = .circle
-        
-        portraitCircleMaskRectInnerEdgeInset = 15.0
-        portraitSquareMaskRectInnerEdgeInset = 20.0
-        portraitMoveAndScaleLabelTopAndCropViewTopVerticalSpace = 64.0
-        portraitCropViewBottomAndCancelButtonBottomVerticalSpace = 21.0
-        portraitCropViewBottomAndChooseButtonBottomVerticalSpace = 21.0
-        portraitCancelButtonLeadingAndCropViewLeadingHorizontalSpace = 13.0
-        portraitCropViewTrailingAndChooseButtonTrailingHorizontalSpace = 13.0
-        
-        landscapeCircleMaskRectInnerEdgeInset = 45.0
-        landscapeSquareMaskRectInnerEdgeInset = 45.0
-        landscapeMoveAndScaleLabelTopAndCropViewTopVerticalSpace = 12.0
-        landscapeCropViewBottomAndCancelButtonBottomVerticalSpace = 12.0
-        landscapeCropViewBottomAndChooseButtonBottomVerticalSpace = 12.0
-        landscapeCancelButtonLeadingAndCropViewLeadingHorizontalSpace = 13.0
-        landscapeCropViewTrailingAndChooseButtonTrailingHorizontalSpace = 13.0
-
     }
     
     convenience init(image: UIImage) {
         self.init()
         
         self.originalImage = image;
+        self.avoidEmptySpaceAroundImage = false
+        self.alwaysBounceVertical = false
+        self.alwaysBounceHorizontal = false
+        self.applyMaskToCroppedImage = false
+        self.maskLayerLineWidth = 1.0
+        self.rotationEnabled = false
+        self.cropMode = .circle
         
+        self.portraitCircleMaskRectInnerEdgeInset = 15.0
+        self.portraitSquareMaskRectInnerEdgeInset = 20.0
+        self.portraitMoveAndScaleLabelTopAndCropViewTopVerticalSpace = 64.0
+        self.portraitCropViewBottomAndCancelButtonBottomVerticalSpace = 21.0
+        self.portraitCropViewBottomAndChooseButtonBottomVerticalSpace = 21.0
+        self.portraitCancelButtonLeadingAndCropViewLeadingHorizontalSpace = 13.0
+        self.portraitCropViewTrailingAndChooseButtonTrailingHorizontalSpace = 13.0
+        
+        self.landscapeCircleMaskRectInnerEdgeInset = 45.0
+        self.landscapeSquareMaskRectInnerEdgeInset = 45.0
+        self.landscapeMoveAndScaleLabelTopAndCropViewTopVerticalSpace = 12.0
+        self.landscapeCropViewBottomAndCancelButtonBottomVerticalSpace = 12.0
+        self.landscapeCropViewBottomAndChooseButtonBottomVerticalSpace = 12.0
+        self.landscapeCancelButtonLeadingAndCropViewLeadingHorizontalSpace = 13.0
+        self.landscapeCropViewTrailingAndChooseButtonTrailingHorizontalSpace = 13.0
+
     }
     
     convenience init(image: UIImage, cropMode: HHImageCropMode) {
@@ -825,16 +823,6 @@ class HHImageCropViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     
-//        if let application = UIApplication.rsk_shared() {
-//            self.originalStatusBarHidden = application.isStatusBarHidden
-//            application.setStatusBarHidden(true, with: .fade)
-//        }
-        
-//        self.originalNavigationControllerNavigationBarHidden = (self.navigationController?.isNavigationBarHidden)!
-//        self.navigationController?.setNavigationBarHidden(true, animated: false)
-//        
-//        self.originalNavigationControllerNavigationBarShadowImage = self.navigationController?.navigationBar.shadowImage
-//        self.navigationController?.navigationBar.shadowImage = nil
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -846,13 +834,6 @@ class HHImageCropViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     
-//        if let application = UIApplication.rsk_shared() {
-//            application.setStatusBarHidden(self.originalStatusBarHidden, with: .fade)
-//        }
-//        
-//        self.navigationController?.setNavigationBarHidden(self.originalNavigationControllerNavigationBarHidden, animated: animated)
-//        self.navigationController?.navigationBar.shadowImage = self.originalNavigationControllerNavigationBarShadowImage;
-//        self.navigationController?.view.backgroundColor = self.originalNavigationControllerViewBackgroundColor;
     }
     
     override func viewWillLayoutSubviews() {
