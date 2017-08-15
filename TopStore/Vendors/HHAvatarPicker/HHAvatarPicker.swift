@@ -37,11 +37,11 @@ class HHAvatarPicker: UIViewController {
     
     var avatarPickerMode: HHAvatarPickerMode = .search
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    var searchBar: UISearchBar!
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    var collectionView: UICollectionView!
     
-    @IBOutlet weak var closeButton: UIButton!
+    var closeButton: UIButton!
     
     let reachability = Reachability()
 
@@ -49,33 +49,55 @@ class HHAvatarPicker: UIViewController {
     
     let viewModel = HHAvatarPickerViewModel()
 
-    @IBOutlet weak var coverView: UIView!
     
     var selectedIndexPath: IndexPath?
     var visibleIndexPath: IndexPath?
 
     var willRotate = false
     var needRefresh = false
+    var didSetupConstraints = false
     
     let items: [(icon: String, color: UIColor)] = [
         ("photo_select", UIColor(red:0.22, green:0.74, blue:0, alpha:1))
     ]
-
-//    let items: [(icon: String, color: UIColor)] = [
-//        ("icon_home", UIColor(red:0.19, green:0.57, blue:1, alpha:1)),
-//        ("icon_search", UIColor(red:0.22, green:0.74, blue:0, alpha:1)),
-//        ("notifications-btn", UIColor(red:0.96, green:0.23, blue:0.21, alpha:1)),
-//        ("settings-btn", UIColor(red:0.51, green:0.15, blue:1, alpha:1)),
-//        ("nearby-btn", UIColor(red:1, green:0.39, blue:0, alpha:1)),
-//        ]
 
     let loadMoreView = KRPullLoadView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.coverView.backgroundColor = .lightGray
-        self.coverView.isHidden = true
+        
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
+        
+        searchBar = UISearchBar()
+        searchBar.placeholder = "Photos Search"
+        searchBar.delegate = self
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(searchBar)
+        
+        closeButton = UIButton()
+        closeButton.setImage(UIImage(named: "Close"), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(closeButton)
+        
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.minimumLineSpacing = 2
+        layout.minimumInteritemSpacing = 0
+        
+        collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(HHPhotoCell.self, forCellWithReuseIdentifier: "HHPhotoCell")
+        collectionView.backgroundColor = .clear
+        collectionView.alwaysBounceVertical = true
+        collectionView.allowsMultipleSelection = false
+
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(collectionView)
+        
+
         
         self.searchBar.isHidden = self.avatarPickerMode != .search
         self.closeButton.isHidden = self.searchBar.isHidden
@@ -83,16 +105,10 @@ class HHAvatarPicker: UIViewController {
         ImageCache.default.maxCachePeriodInSecond = -1
 
         // Do any additional setup after loading the view.
-        self.collectionView.alwaysBounceVertical = true
-        self.collectionView.allowsMultipleSelection = false
-        
-        self.collectionView.backgroundColor = .clear
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "photo_background")!)
         
         self.loadMoreView.delegate = self
         self.collectionView.addPullLoadableView(self.loadMoreView, type: .loadMore)
 
-        self.searchBar.delegate = self
 
         bind()
         
@@ -100,12 +116,80 @@ class HHAvatarPicker: UIViewController {
         let backgroundView = UIView(frame:self.collectionView.bounds)
         backgroundView.addGestureRecognizer(tap)
         self.collectionView.backgroundView = backgroundView
+        
+        self.view.setNeedsUpdateConstraints()
+
      }
     
     deinit {
         self.collectionView.removePullLoadableView(self.loadMoreView)
     }
     
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        
+        if (!self.didSetupConstraints) {
+            
+            //closeButton
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .top, relatedBy: .equal,
+                                                       toItem: self.topLayoutGuide, attribute: .bottom, multiplier:1.0,
+                                                       constant:0.0))
+            
+            self.closeButton.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .width, relatedBy: .equal,
+                                                              toItem: nil, attribute: NSLayoutAttribute.width, multiplier:1.0,
+                                                              constant: 44))
+            
+            self.closeButton.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .height, relatedBy: .equal,
+                                                              toItem: nil, attribute: NSLayoutAttribute.height, multiplier:1.0,
+                                                              constant: 44))
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .leading, relatedBy: .equal,
+                                                       toItem: self.view, attribute: .leading, multiplier:1.0,
+                                                       constant:0.0))
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .trailing, relatedBy: .equal,
+                                                       toItem: self.searchBar, attribute: .leading, multiplier:1.0,
+                                                       constant:0.0))
+            
+            
+            //searchBar
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .top, relatedBy: .equal,
+                                                       toItem: self.topLayoutGuide, attribute: .bottom, multiplier:1.0,
+                                                       constant:0.0))
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .trailing, relatedBy: .equal,
+                                                       toItem: self.view, attribute: .trailing, multiplier:1.0,
+                                                       constant:0.0))
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .bottom, relatedBy: .equal,
+                                                       toItem: self.collectionView, attribute: .top, multiplier:1.0,
+                                                       constant:0.0))
+            
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .height, relatedBy: .equal,
+                                                       toItem: nil, attribute: NSLayoutAttribute.height, multiplier:1.0,
+                                                       constant: 44))
+            
+            
+            // collectionView
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.collectionView, attribute: .bottom, relatedBy: .equal,
+                                                       toItem: self.view, attribute: .bottom, multiplier:1.0,
+                                                       constant:0.0))
+            self.view.addConstraint(NSLayoutConstraint(item: self.collectionView, attribute: .leading, relatedBy: .equal,
+                                                       toItem: self.view, attribute: .leading, multiplier:1.0,
+                                                       constant:0.0))
+            self.view.addConstraint(NSLayoutConstraint(item: self.collectionView, attribute: .trailing, relatedBy: .equal,
+                                                       toItem: self.view, attribute: .trailing, multiplier:1.0,
+                                                       constant:0.0))
+            
+            self.didSetupConstraints = true
+            
+        } 
+    }
+
     func showPhotoLibrary() {
         if self.picker != nil {
             return
@@ -176,20 +260,20 @@ class HHAvatarPicker: UIViewController {
             if indexPaths.count > 0 {
                 let sortedArray = indexPaths.sorted {$0.row < $1.row}
                 if let indexPath = sortedArray.first {
-                    self.showCoverView(true)
+                    self.hideCollectionView(true)
                     coordinator.animate(alongsideTransition: nil, completion: {
                         _ in
                         self.collectionView.collectionViewLayout.invalidateLayout()
                         self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
                         self.willRotate = false
-                        self.showCoverView(false)
+                        self.hideCollectionView(false)
                     })
                 }
             }
             else {
-                self.showCoverView(true)
+                self.hideCollectionView(true)
                 self.collectionView.collectionViewLayout.invalidateLayout()
-                self.showCoverView(false)
+                self.hideCollectionView(false)
             }
         }
         else {
@@ -206,7 +290,7 @@ class HHAvatarPicker: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if self.needRefresh {
-            self.showCoverView(true)
+            self.hideCollectionView(true)
         }
     }
     
@@ -221,7 +305,7 @@ class HHAvatarPicker: UIViewController {
                     self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
                 }
             }
-            self.showCoverView(false)
+            self.hideCollectionView(false)
         }
         
         switch self.avatarPickerMode {
@@ -239,17 +323,14 @@ class HHAvatarPicker: UIViewController {
         self.view.endEditing(true)
     }
 
-    func showCoverView(_ show :Bool) {
-        if show {
-            self.coverView.isHidden = false
-            self.coverView.alpha = 1
+    private func hideCollectionView(_ hide: Bool) {
+        if hide {
+            self.collectionView.alpha = 0
         }
         else {
-            UIView.animate(withDuration: 1.3, animations: {
-                self.coverView.alpha = 0
-            }, completion: { (finished) in
-                self.coverView.isHidden = true
-            })
+            UIView.animate(withDuration: 1.0, animations: {
+                self.collectionView.alpha = 1
+            }, completion: nil)
         }
     }
     

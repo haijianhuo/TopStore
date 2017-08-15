@@ -159,30 +159,26 @@ extension MeViewController: CircleMenuDelegate
     }
     
     func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
-        //print("button did selected: \(atIndex)")
+        
         self.menuCollapsed(circleMenu)
         
-        //if atIndex == 1 {
-            let storyboard = UIStoryboard(name: "HHAvatarPicker", bundle: nil)
-            if let controller = storyboard.instantiateInitialViewController() as? HHAvatarPicker {
-                controller.delegate = self
-                
-                switch atIndex {
-                case 0:
-                    controller.avatarPickerMode = .camera
-                case 1:
-                    controller.avatarPickerMode = .search
-                case 2:
-                    controller.avatarPickerMode = .photo
-                default:
-                    break
-                }
-                
-                self.present(controller, animated: true, completion: nil)
-            }
-        //}
+        let controller = HHAvatarPicker()
+        controller.delegate = self
+        
+        switch atIndex {
+        case 0:
+            controller.avatarPickerMode = .camera
+        case 1:
+            controller.avatarPickerMode = .search
+        case 2:
+            controller.avatarPickerMode = .photo
+        default:
+            break
+        }
+        
+        self.present(controller, animated: true, completion: nil)
     }
-    
+
     func menuCollapsed(_ circleMenu: CircleMenu) {
         DispatchQueue.main.async {
             circleMenu.alpha = 0
