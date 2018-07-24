@@ -39,7 +39,7 @@ class HHAvatarPickerViewModel {
             self.nextPage = 1
         }
         
-        if query.characters.count == 0 {
+        if query.count == 0 {
             self.products.removeAll()
             self.loadingPage = false
             self.productsUpdated.value = true
@@ -65,7 +65,7 @@ class HHAvatarPickerViewModel {
                 self.loadingPage = false
                 return
             }
-            guard let items = dict["photos"] as? [[String: Any]] else {
+            guard let items = dict["hits"] as? [[String: Any]] else {
                 self.loadingPage = false
                 return
             }
@@ -85,19 +85,17 @@ class HHAvatarPickerViewModel {
         guard let query = query, !query.isEmpty else { return nil }
         
         let params = [
-            "consumer_key": "uVZmwDBD2Ztt7X5AYBVujoem4BQHs7eGnLRzL6eQ",
-            "image_size": "3,5",
-            "rpp": "48", // The number of results to return. Can not be over 100, default 20.
-            "term": query,
-            "license_type": "0",
+            "key": "9640291-0f83fe015c9bf829242f12fcc",
+            "q": query,
+            "per_page": "40",
             "page": String(page)
         ]
         
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
-        urlComponents.host = "api.500px.com"
-        urlComponents.path = "/v1/photos/search"
-        
+        urlComponents.host = "pixabay.com"
+        urlComponents.path = "/api/"
+
         
         urlComponents.queryItems = params.map { key, value in URLQueryItem(name: key, value: value) }
         return urlComponents.url

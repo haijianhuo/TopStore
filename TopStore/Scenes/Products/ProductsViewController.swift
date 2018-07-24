@@ -365,7 +365,7 @@ extension ProductsViewController: UISearchBarDelegate
             }
         }
 
-        DispatchQueue.global().async {
+        DispatchQueue.main.async {
             self.selectedIndexPath = nil
             self.viewModel.loadPage(query: self.searchBar.text!, page: 1)
         }

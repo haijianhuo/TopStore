@@ -25,9 +25,9 @@ class Product: Mappable {
     
     public func mapping(map: Map) {
         identifier <- map["id"]
-        url_small <- map["image_url"]
-        url_large <- map["images.1.url"]
-        name <- map["name"]
-        price <- map["category"]
+        url_small <- map["previewURL"]
+        url_large <- map["largeImageURL"]
+        name <- map["tags"]
+        price <- map["likes"]
     }
 }
