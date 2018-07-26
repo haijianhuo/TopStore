@@ -24,6 +24,7 @@ public enum HUDContentType {
 
     case label(String?)
     case systemActivity
+    case customView(view: UIView)
 }
 
 public final class HUD {
@@ -77,7 +78,7 @@ public final class HUD {
             return PKHUDSuccessView()
         case .error:
             return PKHUDErrorView()
-        case .progress():
+        case .progress:
             return PKHUDProgressView()
         case let .image(image):
             return PKHUDSquareBaseView(image: image)
@@ -99,6 +100,8 @@ public final class HUD {
             return PKHUDTextView(text: text)
         case .systemActivity:
             return PKHUDSystemActivityIndicatorView()
+        case let .customView(view):
+            return view
         }
     }
 }

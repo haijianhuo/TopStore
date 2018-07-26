@@ -61,7 +61,7 @@ class MeViewController: UIViewController {
         
     }
     
-    func applicationDidBecomeActiveNotification(_ notification: NSNotification?) {
+    @objc func applicationDidBecomeActiveNotification(_ notification: NSNotification?) {
         
         self.avatarPulseButton.animate(start: true)
     }
@@ -72,7 +72,7 @@ class MeViewController: UIViewController {
             DispatchQueue.main.async {
                 self.avatarPulseButton.image = image
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
     }
 
     // MARK: - Circle Menu
@@ -154,7 +154,7 @@ extension MeViewController: CircleMenuDelegate
         // set highlited image
         let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
         button.setImage(highlightedImage, for: .highlighted)
-        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+//        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
 
     }
     

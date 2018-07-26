@@ -9,16 +9,16 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CI Status](http://img.shields.io/travis/krimpedance/KRPullLoader.svg?style=flat)](https://travis-ci.org/krimpedance/KRPullLoader)
 
-<img src="./Resources/demo.gif" height=400>
+<img src="https://github.com/krimpedance/Resources/blob/master/KRPullLoader/demo.gif" height=400>
 
 ## Features
 - Easy-to-use
 - Possibles both of `pull refresh` and `load more`.
 
 ## Requirements
-- iOS 9.0+
-- Xcode 8.0+
-- Swift 3.0+
+- iOS 8.0+
+- Xcode 9.0+
+- Swift 4.0+
 
 ## DEMO
 To run the example project, clone the repo, and open `KRPullLoaderDemo.xcodeproj` from the DEMO directory.
@@ -96,8 +96,10 @@ This is enum which shows the state of the scrolling.
 I'm seeking bug reports and feature requests.
 
 ## Release Note
-- 1.0.1 : The bug by which the location of loading view isn't renewed is corrected.
-- 1.0.0 : First release.
+- 1.1.3 : Compatible with Swift 4.1.
+- 1.1.2 : Fixed bug of jerky scrolling. Improved performance.
+- 1.1.1 : Fixed bug when calling completion handler immediately.
+- 1.1.0 : Supported from iOS 8.0 and Swift 4.
 
 ## License
 KRPullLoader is available under the MIT license. See the LICENSE file for more info.

@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import ObjectMapper
 import Alamofire
-import ReachabilitySwift
+import Reachability
 import CoreData
 import JSQCoreDataKit
 

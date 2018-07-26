@@ -53,14 +53,14 @@ class CartViewController: UIViewController {
                 self.tableView.reloadData()
                 self.updateBadge()
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
 
         self.viewModel.totalAmount.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
                 self.totalLabel.text = CurrencyFormatter.dollarsFormatter.rw_string(from: element)
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
     }
     
@@ -69,8 +69,10 @@ class CartViewController: UIViewController {
     }
     
     @IBAction func checkoutButtonTapped(_ sender: Any) {
-        let popup = PopupDialog(title: "Check out shopping cart", message: "Not implemented yet!", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
-        }
+        let popup = PopupDialog(title: "Check out shopping cart", message: "Not implemented yet!", image: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, preferredWidth: 0.0, tapGestureDismissal: true, panGestureDismissal: false, hideStatusBar: false, completion: nil)
+        
+//        let popup = PopupDialog(title: "Check out shopping cart", message: "Not implemented yet!", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+//        }
         
         let buttonOne = CancelButton(title: "OK") {
         }
@@ -116,8 +118,10 @@ class CartViewController: UIViewController {
     
     func clearConfirm() {
         
-        let popup = PopupDialog(title: "Clear shopping cart", message: "Remove all items from shopping cart?", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
-        }
+        let popup = PopupDialog(title: "Clear shopping cart", message: "Remove all items from shopping cart?", image: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, preferredWidth: 0.0, tapGestureDismissal: true, panGestureDismissal: false, hideStatusBar: false, completion: nil)
+
+//        let popup = PopupDialog(title: "Clear shopping cart", message: "Remove all items from shopping cart?", buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+//        }
         
         let buttonOne = CancelButton(title: "Cancel") {
         }
@@ -250,7 +254,7 @@ extension CartViewController: HHImageViewControllerDelegate
         // set highlited image
         let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
         button.setImage(highlightedImage, for: .highlighted)
-        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+        //button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
         return items.count
     }
     

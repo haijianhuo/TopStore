@@ -6,21 +6,22 @@ target 'TopStore' do
   use_frameworks!
 
   # Pods for TopStore
-  pod 'RxSwift',                '~> 3.5.0'
-  pod 'RxCocoa',                '~> 3.5.0'
-  pod 'RxDataSources',          '~> 1.0.4'
-  pod 'ObjectMapper',           '~> 2.2.7'
-  pod 'Alamofire',              '~> 4.5.0'
-  pod 'RxAlamofire',            '~> 3.0.3'
-  pod 'ReachabilitySwift',      '~> 3'
-  pod 'PKHUD',                  '~> 4.0'
-  pod 'Kingfisher',             '~> 3.10.3'
-  pod 'CircleMenu',             '~> 2.0.5'
-  pod 'JSQCoreDataKit',         '~> 6.0.2'
-  pod 'KRPullLoader',           '~> 1.0.1'
-  pod 'PopupDialog',            '~> 0.5.4'
-  pod 'SwiftyDrop',             '~>3.0'
-  
+  pod 'Hero',                   '~> 1.2.0'
+  pod 'RxSwift',                '~> 4.2.0'
+  pod 'RxCocoa',                '~> 4.2.0'
+  pod 'RxDataSources',          '~> 3.0.2'
+  pod 'ObjectMapper',           '~> 3.3.0'
+  pod 'Alamofire',              '~> 4.7.3'
+  pod 'RxAlamofire',            '~> 4.2.0'
+  pod 'ReachabilitySwift',      '~> 4.1.0'
+  pod 'PKHUD',                  '~> 5.1.0'
+  pod 'Kingfisher',             '~> 4.8.0'
+  pod 'CircleMenu',             '~> 3.1.0'
+  pod 'JSQCoreDataKit',         '~> 7.0.0'
+  pod 'KRPullLoader',           '~> 1.1.3'
+  pod 'PopupDialog',            '~> 0.8.0'
+  pod 'SwiftyDrop',             '~> 4.1.0'
+
   target 'TopStoreTests' do
     inherit! :search_paths
     # Pods for testing

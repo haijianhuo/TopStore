@@ -23,7 +23,12 @@ SwiftyDrop is a lightweight pure Swift simple and beautiful dropdown message.
 ![Light](misc/Light.png)
 ![Dark](misc/Dark.png)
 
+### iPhone X
+
+![iPhoneX](misc/iPhoneX.png)
+
 ### iPad
+
 ![iPad](misc/iPadPortlait.png)
 
 ## Demo
@@ -33,7 +38,8 @@ Git clone or download this repository and open  **SwiftyDrop.xcodeproj** . You c
 ## Runtime Requirements
 
 - iOS8.0 or later
-- Xcode 7.0
+- Xcode 9.0
+- Swift 4.0
 
 ## Installation and Setup
 
@@ -41,7 +47,7 @@ Git clone or download this repository and open  **SwiftyDrop.xcodeproj** . You c
 
 **Information:** To use SwiftyDrop with a project targeting iOS 8.0 or lower, you must include the `SwiftyDrop/Drop.swift` source file directly in your project.
 
-###Installing with CocoaPods
+### Installing with CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a centralised dependency manager that automates the process of adding libraries to your Cocoa application. You can install it with the following command:
 
@@ -56,22 +62,22 @@ To integrate SwiftyDrop into your Xcode project using CocoaPods, specify it in y
 ```bash
 platform :ios, '8.0'
 use_frameworks!
-pod 'SwiftyDrop', '~>2.0'
+pod 'SwiftyDrop', '~>4.0'
 ```
 
-###Installing with Carthage
+### Installing with Carthage
 
 Just add to your Cartfile:
 
 ```ogdl
-github "morizotter/SwiftyDrop" ~> 2.0
+github "morizotter/SwiftyDrop" ~> 4.0
 ```
 
-###Manual Installation
+### Manual Installation
 
 To install SwiftyDrop without a dependency manager, please add all of the files in `/SwiftyDrop` to your Xcode Project.
 
-##Usage
+## Usage
 
 ### Basic
 

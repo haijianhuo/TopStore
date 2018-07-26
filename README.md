@@ -4,7 +4,7 @@ Photos Search for iOS.
 
 ## About
 
-TopStore is written in Swift 3.x
+TopStore is written in Swift 4.1
 
 The purpose of this app is to provide an architecture that supports easy unit test, reliable and fast development without 3rd party's frameworks limitation.
 
@@ -34,5 +34,5 @@ Instrument memory leak checked
 
 ## Requirements
 
-- iOS 9.3+
-- Xcode 8.3.3
+- iOS 11.4+
+- Xcode 9.4.1

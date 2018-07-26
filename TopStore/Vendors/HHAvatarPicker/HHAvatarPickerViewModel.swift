@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import ObjectMapper
 import Alamofire
-import ReachabilitySwift
+import Reachability
 
 class HHAvatarPickerViewModel {
     
@@ -54,7 +54,7 @@ class HHAvatarPickerViewModel {
         }
         
         if let reachability = self.reachability {
-            if !reachability.isReachable {
+            if reachability.connection == .none {
                 self.loadingPage = false
                 return
             }

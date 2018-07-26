@@ -11,7 +11,7 @@ import RxSwift
 import Kingfisher
 import KRPullLoader
 import SwiftyDrop
-import ReachabilitySwift
+import Reachability
 import PopupDialog
 import PKHUD
 
@@ -133,7 +133,7 @@ class HHAvatarPicker: UIViewController {
             //closeButton
             
             self.view.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .top, relatedBy: .equal,
-                                                       toItem: self.topLayoutGuide, attribute: .bottom, multiplier:1.0,
+                                                       toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier:1.0,
                                                        constant:0.0))
             
             self.closeButton.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .width, relatedBy: .equal,
@@ -156,7 +156,7 @@ class HHAvatarPicker: UIViewController {
             //searchBar
             
             self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .top, relatedBy: .equal,
-                                                       toItem: self.topLayoutGuide, attribute: .bottom, multiplier:1.0,
+                                                       toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier:1.0,
                                                        constant:0.0))
             
             self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .trailing, relatedBy: .equal,
@@ -239,8 +239,11 @@ class HHAvatarPicker: UIViewController {
             }
 
         } else {
-            let popup = PopupDialog(title: "Camera Not Found", message: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
-            }
+            
+            let popup = PopupDialog(title: "Camera Not Found", message: nil, image: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, preferredWidth: 0.0, tapGestureDismissal: true, panGestureDismissal: false, hideStatusBar: false, completion: nil)
+
+//            let popup = PopupDialog(title: "Camera Not Found", message: nil, buttonAlignment: .horizontal, transitionStyle: .zoomIn, gestureDismissal: true) {
+//            }
             
             let buttonOne = CancelButton(title: "OK") {
                 self.dismiss(animated: true, completion: nil)
@@ -341,11 +344,11 @@ class HHAvatarPicker: UIViewController {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
     }
     
-    func handleTap(_ sender: UITapGestureRecognizer) {
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
@@ -530,7 +533,7 @@ extension HHAvatarPicker: HHImageViewControllerDelegate
         // set highlited image
         let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
         button.setImage(highlightedImage, for: .highlighted)
-        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+//        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
         return items.count
     }
     
@@ -555,7 +558,7 @@ extension HHAvatarPicker: UISearchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         if let reachability = self.reachability {
-            if !reachability.isReachable {
+            if reachability.connection == .none {
                 Drop.down("Can Not Search\nNo Internet connection available.", state: .error, duration: 2.0)
                 return
             }

@@ -932,19 +932,19 @@ class HHImageCropViewController: UIViewController {
     
     // MARK: - Action handling
     
-    func onCancelButtonTouch(_ sender: UIBarButtonItem) {
+    @objc func onCancelButtonTouch(_ sender: UIBarButtonItem) {
         self.cancelCrop()
     }
     
-    func onChooseButtonTouch(_ sender: UIBarButtonItem) {
+    @objc func onChooseButtonTouch(_ sender: UIBarButtonItem) {
         self.cropImage()
     }
     
-    func handleDoubleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+    @objc func handleDoubleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         self.reset(animated: true)
     }
     
-    func handleRotation(_ gestureRecognizer: UIRotationGestureRecognizer) {
+    @objc func handleRotation(_ gestureRecognizer: UIRotationGestureRecognizer) {
         
         self.rotationAngle = self.rotationAngle + gestureRecognizer.rotation
         

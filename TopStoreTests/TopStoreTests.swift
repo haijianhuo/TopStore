@@ -28,8 +28,8 @@ class TopStoreTests: XCTestCase {
 
         if let product = Product(JSONString: "{}") {
             product.identifier = 163606345
-            product.url_small = "https://drscdn.500px.org/photo/163606345/m%3D1170_k%3D1_a%3D1/v2?client_application_id=40471&webp=true&sig=97f2ad47dcde9022cda41556c59ca504814f630335ade7e052cf60b95f6025ce"
-            product.url_large = "https://drscdn.500px.org/photo/163606345/w%3D280_h%3D280/v2?client_application_id=40471&webp=true&v=3&sig=ee6f4ff5da669eeb48b9ca01d76d955931c9e8b3349460ae621ba1e6632d5989"
+            product.url_large = "https://drscdn.500px.org/photo/163606345/m%3D1170_k%3D1_a%3D1/v2?client_application_id=40471&webp=true&sig=97f2ad47dcde9022cda41556c59ca504814f630335ade7e052cf60b95f6025ce"
+            product.url_small = "https://drscdn.500px.org/photo/163606345/w%3D280_h%3D280/v2?client_application_id=40471&webp=true&v=3&sig=ee6f4ff5da669eeb48b9ca01d76d955931c9e8b3349460ae621ba1e6632d5989"
             product.name = "Cottage cheese with blueberries"
             product.price = 23
             testProduct = product
@@ -47,7 +47,7 @@ class TopStoreTests: XCTestCase {
     // enter search text to load first page
     func test_loadPage() {
         
-        let searchText = "Cookie"
+        let searchText = "cat"
         
         let expectation = self.expectation(description: "name contains search text")
         let observer = viewModel.productsUpdated.asObservable().subscribe(onNext: { (element) in
@@ -61,14 +61,14 @@ class TopStoreTests: XCTestCase {
         
         self.viewModel.loadPage(query: searchText, page: 1)
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 5)
         observer.dispose()
     }
     
     // loadNextPage
     func test_loadNextPage() {
         
-        let searchText = "Cookie"
+        let searchText = "cat"
         viewModel.query = searchText
         viewModel.nextPage = 2
         
@@ -84,7 +84,7 @@ class TopStoreTests: XCTestCase {
         
         self.viewModel.loadNextPage()
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 5)
         observer.dispose()
     }
     

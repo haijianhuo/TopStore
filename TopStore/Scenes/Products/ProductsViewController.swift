@@ -12,7 +12,7 @@ import RxSwift
 import Kingfisher
 import KRPullLoader
 import SwiftyDrop
-import ReachabilitySwift
+import Reachability
 
 class ProductsViewController: UIViewController {
     
@@ -88,7 +88,7 @@ class ProductsViewController: UIViewController {
         
     }
 
-    func applicationDidBecomeActiveNotification(_ notification: NSNotification?) {
+    @objc func applicationDidBecomeActiveNotification(_ notification: NSNotification?) {
         
         self.avatarPulseButton.animate(start: true)
     }
@@ -179,14 +179,14 @@ class ProductsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.avatarPulseButton.image = image
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
 
         self.viewModel.productsUpdated.asObservable().subscribe(onNext: { [weak self] (element) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
     }
     
@@ -202,7 +202,7 @@ class ProductsViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    func handleTap(_ sender: UITapGestureRecognizer) {
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
@@ -335,7 +335,7 @@ extension ProductsViewController: HHImageViewControllerDelegate
         // set highlited image
         let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
         button.setImage(highlightedImage, for: .highlighted)
-        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+//        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
         
         return items.count
     }
@@ -359,7 +359,7 @@ extension ProductsViewController: UISearchBarDelegate
 {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let reachability = self.reachability {
-            if !reachability.isReachable {
+            if reachability.connection == .none {
                 Drop.down("Can Not Search\nNo Internet connection available.", state: .error, duration: 2.0)
                 return
             }

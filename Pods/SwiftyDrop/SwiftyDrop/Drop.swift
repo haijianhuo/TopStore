@@ -12,9 +12,11 @@ public protocol DropStatable {
     var blurEffect: UIBlurEffect? { get }
     var font: UIFont? { get }
     var textColor: UIColor? { get }
+    var textAlignment: NSTextAlignment? { get }
 }
 
 public enum DropState: DropStatable {
+    
     case `default`, info, success, warning, error, color(UIColor), blur(UIBlurEffectStyle)
     
     public var backgroundColor: UIColor? {
@@ -47,6 +49,13 @@ public enum DropState: DropStatable {
         default: return nil
         }
     }
+    
+    public var textAlignment: NSTextAlignment? {
+        switch self {
+        default:
+            return .center
+        }
+    }
 }
 
 public typealias DropAction = () -> Void
@@ -73,8 +82,7 @@ public final class Drop: UIView {
         self.duration = duration
         
         scheduleUpTimer(duration)
-        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(Drop.deviceOrientationDidChange(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
     override init(frame: CGRect) {
@@ -90,12 +98,12 @@ public final class Drop: UIView {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func applicationDidEnterBackground(_ notification: Notification) {
+    @objc func applicationDidEnterBackground(_ notification: Notification) {
         stopUpTimer()
         removeFromSuperview()
     }
     
-    func deviceOrientationDidChange(_ notification: Notification) {
+    @objc func deviceOrientationDidChange(_ notification: Notification) {
         updateHeight()
     }
     
@@ -103,7 +111,7 @@ public final class Drop: UIView {
         scheduleUpTimer(0.0)
     }
     
-    func upFromTimer(_ timer: Timer) {
+    @objc func upFromTimer(_ timer: Timer) {
         if let interval = timer.userInfo as? Double {
             Drop.up(self, interval: interval)
         }
@@ -135,11 +143,11 @@ public final class Drop: UIView {
 }
 
 extension Drop {
-    public class func down(_ status: String, state: DropState = .default, duration: Double = Drop.PRESET_DURATION, action: DropAction? = nil) {
+    public class func down(_ status: String, state: DropState = .default, duration: Double = 4.0, action: DropAction? = nil) {
         show(status, state: state, duration: duration, action: action)
     }
 
-    public class func down<T: DropStatable>(_ status: String, state: T, duration: Double = Drop.PRESET_DURATION, action: DropAction? = nil) {
+    public class func down<T: DropStatable>(_ status: String, state: T, duration: Double = 4.0, action: DropAction? = nil) {
         show(status, state: state, duration: duration, action: action)
     }
 
@@ -176,7 +184,7 @@ extension Drop {
             withDuration: TimeInterval(0.25),
             delay: TimeInterval(0.0),
             options: [.allowUserInteraction, .curveEaseOut],
-            animations: { _ in
+            animations: {
                 superview.layoutIfNeeded()
             }, completion: nil
         )
@@ -192,7 +200,7 @@ extension Drop {
             withDuration: interval,
             delay: TimeInterval(0.0),
             options: [.allowUserInteraction, .curveEaseIn],
-            animations: { _ in
+            animations: {
                 superview.layoutIfNeeded()
             }) { [weak drop] finished -> Void in
                 if let drop = drop { drop.removeFromSuperview() }
@@ -260,7 +268,7 @@ extension Drop {
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.numberOfLines = 0
         statusLabel.font = state.font ?? UIFont.systemFont(ofSize: 17.0)
-        statusLabel.textAlignment = .center
+        statusLabel.textAlignment = state.textAlignment ?? .center
         statusLabel.text = status
         statusLabel.textColor = state.textColor ?? .white
         labelParentView.addSubview(statusLabel)
@@ -272,6 +280,7 @@ extension Drop {
             ]
         )
         self.statusLabel = statusLabel
+        NotificationCenter.default.addObserver(self, selector: #selector(Drop.deviceOrientationDidChange(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
         self.layoutIfNeeded()
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.up(_:))))
@@ -280,12 +289,12 @@ extension Drop {
 }
 
 extension Drop {
-    func up(_ sender: AnyObject) {
+    @objc func up(_ sender: AnyObject) {
         action?()
         self.up()
     }
     
-    func pan(_ sender: AnyObject) {
+    @objc func pan(_ sender: AnyObject) {
         let pan = sender as! UIPanGestureRecognizer
         switch pan.state {
         case .began:
@@ -314,7 +323,7 @@ extension Drop {
                     withDuration: TimeInterval(0.1),
                     delay: TimeInterval(0.0),
                     options: [.allowUserInteraction, .curveEaseOut],
-                    animations: { _ in
+                    animations: {
                         superview.layoutIfNeeded()
                     }, completion: nil
                 )

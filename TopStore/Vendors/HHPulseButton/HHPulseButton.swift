@@ -97,7 +97,7 @@ protocol HHPulseButtonDelegate: class {
         return anim
     }
 
-    func buttonPressed(_ sender: AnyObject) {
+    @objc func buttonPressed(_ sender: AnyObject) {
         if self.isAnimating {
             return
         }

@@ -12,7 +12,7 @@ import RxSwift
 import Kingfisher
 import KRPullLoader
 import SwiftyDrop
-import ReachabilitySwift
+import Reachability
 
 class PhotosViewController: UIViewController {
 
@@ -164,11 +164,11 @@ class PhotosViewController: UIViewController {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
     }
     
-    func handleTap(_ sender: UITapGestureRecognizer) {
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
@@ -296,7 +296,7 @@ extension PhotosViewController: HHImageViewControllerDelegate
         // set highlited image
         let highlightedImage  = UIImage(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
         button.setImage(highlightedImage, for: .highlighted)
-        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
+//        button.tintColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.3)
         return items.count
     }
     
@@ -321,7 +321,7 @@ extension PhotosViewController: UISearchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         if let reachability = self.reachability {
-            if !reachability.isReachable {
+            if reachability.connection == .none {
                 Drop.down("Can Not Search\nNo Internet connection available.", state: .error, duration: 2.0)
                 return
             }

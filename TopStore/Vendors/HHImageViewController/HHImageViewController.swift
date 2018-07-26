@@ -267,7 +267,7 @@ class HHImageViewController: UIViewController {
     }
     
     
-    func deviceOrientationDidChange(_ notification: NSNotification?) {
+    @objc func deviceOrientationDidChange(_ notification: NSNotification?) {
         
         /*
          viewWillTransitionToSize:withTransitionCoordinator: is not called when rotating from
@@ -381,7 +381,7 @@ class HHImageViewController: UIViewController {
         }
     }
     
-    func showCircleMenu() {
+    @objc func showCircleMenu() {
         guard let circleMenu = self.circleMenu else { return }
         if circleMenu.alpha == 0 {
             DispatchQueue.main.async {
@@ -1212,7 +1212,7 @@ class HHImageViewController: UIViewController {
     
     // MARK: - Gesture Recognizer Actions
     
-    func imageDoubleTapped(_ sender: UITapGestureRecognizer) {
+    @objc func imageDoubleTapped(_ sender: UITapGestureRecognizer) {
         
         if (self.flags.scrollViewIsAnimatingAZoom) {
             return
@@ -1252,7 +1252,7 @@ class HHImageViewController: UIViewController {
         CATransaction.commit()
     }
     
-    func imageSingleTapped(_ sender: Any) {
+    @objc func imageSingleTapped(_ sender: Any) {
         if (self.flags.scrollViewIsAnimatingAZoom) {
             return
         }
@@ -1267,7 +1267,7 @@ class HHImageViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    func imageLongPressed(_ sender: UILongPressGestureRecognizer) {
+    @objc func imageLongPressed(_ sender: UILongPressGestureRecognizer) {
         
         if (self.flags.scrollViewIsAnimatingAZoom) {
             return
@@ -1277,7 +1277,7 @@ class HHImageViewController: UIViewController {
         
     }
     
-    func dismissingPanGestureRecognizerPanned(_ panner: UIPanGestureRecognizer) {
+    @objc func dismissingPanGestureRecognizerPanned(_ panner: UIPanGestureRecognizer) {
         
         if (self.flags.scrollViewIsAnimatingAZoom || self.flags.isAnimatingAPresentationOrDismissal) {
             return
@@ -1429,7 +1429,7 @@ class HHImageViewController: UIViewController {
         self.downloadProgressTimer = nil
     }
     
-    func progressTimerFired(_ timer: Timer) {
+    @objc func progressTimerFired(_ timer: Timer) {
         
         guard let imageDownloadDataTask = self.imageDownloadDataTask else { return }
         
