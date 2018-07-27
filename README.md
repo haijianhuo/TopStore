@@ -34,5 +34,5 @@ Instrument memory leak checked
 
 ## Requirements
 
-- iOS 11.4+
+- iOS 10.3+
 - Xcode 9.4.1

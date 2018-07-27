@@ -133,7 +133,7 @@ class HHAvatarPicker: UIViewController {
             //closeButton
             
             self.view.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .top, relatedBy: .equal,
-                                                       toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier:1.0,
+                                                       toItem: self.topLayoutGuide, attribute: .bottom, multiplier:1.0,
                                                        constant:0.0))
             
             self.closeButton.addConstraint(NSLayoutConstraint(item: self.closeButton, attribute: .width, relatedBy: .equal,
@@ -156,7 +156,7 @@ class HHAvatarPicker: UIViewController {
             //searchBar
             
             self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .top, relatedBy: .equal,
-                                                       toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier:1.0,
+                                                       toItem: self.topLayoutGuide, attribute: .bottom, multiplier:1.0,
                                                        constant:0.0))
             
             self.view.addConstraint(NSLayoutConstraint(item: self.searchBar, attribute: .trailing, relatedBy: .equal,
